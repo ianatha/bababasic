@@ -1,0 +1,9 @@
+GOSUB "sub1"
+GOSUB "sub2"
+END
+LABEL "sub1"
+PRINT "sub1"
+RETURN
+LABEL "sub2"
+PRINT "sub2"
+RETURN
