@@ -1,0 +1,20 @@
+10 A% = 10 : B% = 20
+20 PRINT A%, B%
+30 SWAP A%, B%
+40 PRINT A%, B%
+50 A# = 10 : B# = 20
+60 PRINT A#, B#
+70 SWAP A#, B#
+80 PRINT A#, B#
+90 A! = 10 : B! = 20
+100 PRINT A!, B!
+110 SWAP A!, B!
+120 PRINT A!, B!
+130 A@ = 10 : B@ = 20
+140 PRINT A@, B@
+150 SWAP A@, B@
+160 PRINT A@, B@
+170 A$ = "10" : B$ = "20"
+180 PRINT A$, B$
+190 SWAP A$, B$
+200 PRINT A$, B$
