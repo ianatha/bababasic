@@ -12,6 +12,7 @@ public class PuffinBasicIR {
 
     private final PuffinBasicSymbolTable symbolTable;
     private final List<Instruction> instructions;
+
     public PuffinBasicIR(PuffinBasicSymbolTable symbolTable) {
         this.symbolTable = symbolTable;
         this.instructions = new ArrayList<>();

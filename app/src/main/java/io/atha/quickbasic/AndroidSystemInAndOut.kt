@@ -1,6 +1,5 @@
 package io.atha.quickbasic
 
-import android.util.Log
 import io.github.rosemoe.sora.widget.CodeEditor
 import it.unimi.dsi.fastutil.ints.IntList
 import org.puffinbasic.domain.PuffinBasicSymbolTable
@@ -10,10 +9,9 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.io.PrintStream
-import java.lang.StringBuilder
 import java.nio.charset.StandardCharsets
 
-public class AndroidSystemInAndOut(val editor: CodeEditor) : PuffinBasicFile {
+class AndroidSystemInAndOut(val editor: CodeEditor) : PuffinBasicFile {
     private val `in`: BufferedReader
     private val out: PrintStream
 
