@@ -571,8 +571,6 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(Intent.createChooser(intent, "Save a .BAS file"), 0x87134)
             }
 
-            R.id.open_test_activity -> startActivity(Intent(this, RunActivity::class.java))
-
             R.id.text_undo -> editor.undo()
             R.id.text_redo -> editor.redo()
             R.id.goto_end -> editor.setSelection(
