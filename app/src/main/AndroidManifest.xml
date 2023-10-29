@@ -13,11 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".LspLanguageServerService"
-            android:enabled="true"
-            android:exported="false"
-            android:process=":languageServerService" />
 
         <profileable
             android:shell="true"
