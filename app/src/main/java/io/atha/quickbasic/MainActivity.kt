@@ -604,6 +604,17 @@ class MainActivity : AppCompatActivity() {
                 editor.setText(editor.text.toString() + "REM --- OUTPUT END\n")
             }
 
+            R.id.about -> {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.about)
+                    .setMessage(R.string.about_contents)
+                    .setPositiveButton(
+                        android.R.string.ok
+                    ) { dialog, _ -> dialog.dismiss() }
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .show()
+            }
+
             R.id.magnifier -> {
                 item.isChecked = !item.isChecked
                 editor.getComponent(Magnifier::class.java).isEnabled = item.isChecked

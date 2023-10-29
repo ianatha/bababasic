@@ -49,5 +49,6 @@
   <string name="copy_text">コピー</string>
       
   <string name="text_selection_more">もっと…</string>
-  
+  <string name="about">情報</string>
+
 </resources>

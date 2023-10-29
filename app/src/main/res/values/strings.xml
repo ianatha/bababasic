@@ -24,4 +24,6 @@
     <string name="paste_text">Paste</string>
     <string name="copy_text">Copy</string>
     <string name="text_selection_more">More…</string>
+    <string name="about">About</string>
+    <string name="about_contents" tools:ignore="MissingTranslation">BabaBASIC is an open-source project made by Ian Atha. I started making this app because my 65-year-old father, who was a programmer in the 80s, asked me to find him an Android app to showcase programming to others using BASIC, so I pulled an all-nighter and made this. For anything you might need, please email ian@atha.io.</string>
 </resources>
