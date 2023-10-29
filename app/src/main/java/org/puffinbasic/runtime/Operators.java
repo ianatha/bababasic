@@ -1,19 +1,18 @@
 package org.puffinbasic.runtime;
 
+import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.INT32;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.DIVISION_BY_ZERO;
+
 import org.puffinbasic.domain.PuffinBasicSymbolTable;
 import org.puffinbasic.error.PuffinBasicInternalError;
 import org.puffinbasic.error.PuffinBasicRuntimeError;
 import org.puffinbasic.parser.PuffinBasicIR.Instruction;
 
-import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.INT32;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.DIVISION_BY_ZERO;
-
 final class Operators {
 
     public static void unaryMinus(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var op1Entry = symbolTable.get(instruction.op1);
         var op1 = op1Entry.getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -39,8 +38,7 @@ final class Operators {
 
     public static void concat(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue().getString();
         var v2 = symbolTable.get(instruction.op2).getValue().getString();
         var result = symbolTable.get(instruction.result).getValue();
@@ -49,8 +47,7 @@ final class Operators {
 
     public static void leftShift(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1Entry = symbolTable.get(instruction.op1);
         var v1 = v1Entry.getValue();
         var v2Entry = symbolTable.get(instruction.op2);
@@ -65,8 +62,7 @@ final class Operators {
 
     public static void rightShift(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1Entry = symbolTable.get(instruction.op1);
         var v1 = v1Entry.getValue();
         var v2Entry = symbolTable.get(instruction.op2);
@@ -81,8 +77,7 @@ final class Operators {
 
     public static void mod(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1Entry = symbolTable.get(instruction.op1);
         var v1 = v1Entry.getValue();
         var v2Entry = symbolTable.get(instruction.op2);
@@ -97,8 +92,7 @@ final class Operators {
 
     public static void idiv(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1Entry = symbolTable.get(instruction.op1);
         var v1 = v1Entry.getValue();
         var v2Entry = symbolTable.get(instruction.op2);
@@ -125,8 +119,7 @@ final class Operators {
 
     public static void addInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -135,8 +128,7 @@ final class Operators {
 
     public static void addInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -145,8 +137,7 @@ final class Operators {
 
     public static void addFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -155,8 +146,7 @@ final class Operators {
 
     public static void addFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -165,8 +155,7 @@ final class Operators {
 
     public static void subInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -175,8 +164,7 @@ final class Operators {
 
     public static void subInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -185,8 +173,7 @@ final class Operators {
 
     public static void subFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -195,8 +182,7 @@ final class Operators {
 
     public static void subFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -205,8 +191,7 @@ final class Operators {
 
     public static void mulInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -215,8 +200,7 @@ final class Operators {
 
     public static void mulInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -225,8 +209,7 @@ final class Operators {
 
     public static void mulFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -235,8 +218,7 @@ final class Operators {
 
     public static void mulFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -260,8 +242,7 @@ final class Operators {
 
     public static void expInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -270,8 +251,7 @@ final class Operators {
 
     public static void expInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -280,8 +260,7 @@ final class Operators {
 
     public static void expFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -290,8 +269,7 @@ final class Operators {
 
     public static void expFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v1 = symbolTable.get(instruction.op1).getValue();
         var v2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -370,8 +348,7 @@ final class Operators {
 
     public static void ltInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -380,8 +357,7 @@ final class Operators {
 
     public static void ltInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -390,8 +366,7 @@ final class Operators {
 
     public static void ltFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -400,8 +375,7 @@ final class Operators {
 
     public static void ltFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -410,8 +384,7 @@ final class Operators {
 
     public static void ltStr(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -420,8 +393,7 @@ final class Operators {
 
     public static void leInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -430,8 +402,7 @@ final class Operators {
 
     public static void leInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -440,8 +411,7 @@ final class Operators {
 
     public static void leFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -450,8 +420,7 @@ final class Operators {
 
     public static void leFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -460,8 +429,7 @@ final class Operators {
 
     public static void leStr(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -470,8 +438,7 @@ final class Operators {
 
     public static void gtInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -480,20 +447,18 @@ final class Operators {
 
     public static void gtInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
         final long longResult;
-                longResult = e1.getInt64() > e2.getInt64() ? -1 : 0;
+        longResult = e1.getInt64() > e2.getInt64() ? -1 : 0;
         result.setInt64(longResult);
     }
 
     public static void gtFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -502,8 +467,7 @@ final class Operators {
 
     public static void gtFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -512,8 +476,7 @@ final class Operators {
 
     public static void gtStr(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -522,8 +485,7 @@ final class Operators {
 
     public static void geInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -532,8 +494,7 @@ final class Operators {
 
     public static void geInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -542,8 +503,7 @@ final class Operators {
 
     public static void geFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -552,8 +512,7 @@ final class Operators {
 
     public static void geFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -562,8 +521,7 @@ final class Operators {
 
     public static void geStr(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -572,8 +530,7 @@ final class Operators {
 
     public static void eqInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -582,8 +539,7 @@ final class Operators {
 
     public static void eqInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -592,8 +548,7 @@ final class Operators {
 
     public static void eqFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -602,8 +557,7 @@ final class Operators {
 
     public static void eqFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -612,8 +566,7 @@ final class Operators {
 
     public static void eqStr(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -622,8 +575,7 @@ final class Operators {
 
     public static void neInt32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -632,8 +584,7 @@ final class Operators {
 
     public static void neInt64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -642,8 +593,7 @@ final class Operators {
 
     public static void neFloat32(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -652,8 +602,7 @@ final class Operators {
 
     public static void neFloat64(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -662,8 +611,7 @@ final class Operators {
 
     public static void neStr(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var e1 = symbolTable.get(instruction.op1).getValue();
         var e2 = symbolTable.get(instruction.op2).getValue();
         var result = symbolTable.get(instruction.result).getValue();
@@ -672,8 +620,7 @@ final class Operators {
 
     public static void unaryNot(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var v = symbolTable.get(instruction.op1).getValue().getInt64();
         var result = symbolTable.get(instruction.result).getValue();
         if (v == -1) {

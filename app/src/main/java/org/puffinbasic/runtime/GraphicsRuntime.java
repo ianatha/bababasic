@@ -1,31 +1,10 @@
 package org.puffinbasic.runtime;
 
-import org.apache.commons.io.FilenameUtils;
 import org.puffinbasic.domain.PuffinBasicSymbolTable;
-import org.puffinbasic.error.PuffinBasicRuntimeError;
 import org.puffinbasic.parser.PuffinBasicIR.Instruction;
-//import org.puffinbasic.runtime.GraphicsUtil.BasicFrame;
 
-//import javax.imageio.ImageIO;
-//import javax.swing.SwingUtilities;
-//import java.awt.Color;
-//import java.awt.EventQueue;
-//import java.awt.Font;
-//import java.awt.Graphics2D;
-//import java.awt.Toolkit;
-//import java.awt.event.WindowEvent;
-//import java.awt.geom.GeneralPath;
-//import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import static org.puffinbasic.domain.PuffinBasicSymbolTable.NULL_ID;
-import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.INT32;
-import static org.puffinbasic.domain.STObjects.PuffinBasicTypeId.ARRAY;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.GRAPHICS_ERROR;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.IO_ERROR;
 //import static org.puffinbasic.runtime.GraphicsUtil.PUT_XOR;
 
 class GraphicsRuntime {
@@ -33,67 +12,9 @@ class GraphicsRuntime {
     private static final Pattern DRAW_ARG1 = Pattern.compile("([UDLREFGHA])([BN]+)?([0-9]+)");
     private static final Pattern DRAW_ARG2 = Pattern.compile("M([+\\-]?[0-9]+),([+\\-]?[0-9]+)");
 
-    static class GraphicsState {
-//        private BasicFrame frame;
-
-//        boolean isInitialized() {
-//            return frame != null;
-//        }
-
-//        BasicFrame getFrame() {
-//            assertScreenInitialized();
-//            return frame;
-//        }
-
-//        Graphics2D getGraphics2D() {
-//            return getFrame().getDrawingCanvas().getGraphics2D();
-//        }
-
-//        int getImageWidth() {
-//            return getFrame().getDrawingCanvas().getImageWidth();
-//        }
-
-//        int getImageHeight() {
-//            return getFrame().getDrawingCanvas().getImageHeight();
-//        }
-
-//        void setFrame(BasicFrame frame) {
-//            assertNewScreen();
-//            this.frame = frame;
-//        }
-
-//        private void assertNewScreen() {
-//            if (frame != null) {
-//                throw new PuffinBasicRuntimeError(
-//                        GRAPHICS_ERROR,
-//                        "Screen cannot be called again!"
-//                );
-//            }
-//        }
-
-//        private void assertScreenInitialized() {
-//            if (frame == null) {
-//                throw new PuffinBasicRuntimeError(
-//                        GRAPHICS_ERROR,
-//                        "Screen has already been created!"
-//                );
-//            }
-//        }
-//    }
-
-    public static void cls(GraphicsState graphicsState) {
-//        graphicsState.getFrame().getDrawingCanvas().clear();
-    }
-
-    public static void beep() {
-//            Toolkit.getDefaultToolkit().beep();
-    }
-    }
-
     public static void saveimg(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var path = symbolTable.get(instruction.op1).getValue().getString();
 //        var entry = symbolTable.getVariable(instruction.op2);
 //        var variableValue = entry.getValue();
@@ -123,8 +44,7 @@ class GraphicsRuntime {
 
     public static void loadimg(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var path = symbolTable.get(instruction.op1).getValue().getString();
 //        var entry = symbolTable.getVariable(instruction.op2);
 //        var variableValue = entry.getValue();
@@ -163,8 +83,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var i0 = instr0.get(0);
 //        var i1 = instr0.get(1);
 //        var i2 = instr0.get(2);
@@ -195,8 +114,7 @@ class GraphicsRuntime {
     public static void hsb2rgb(
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var h = symbolTable.get(instr0.op1).getValue().getFloat32();
 //        var s = symbolTable.get(instr0.op2).getValue().getFloat32();
 //        var b = symbolTable.get(instruction.op1).getValue().getFloat32();
@@ -223,8 +141,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var i0 = instr0.get(0);
 //        var i1 = instr0.get(1);
 //        var i2 = instr0.get(2);
@@ -262,8 +179,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var style = symbolTable.get(instr0.op1).getValue().getString().toLowerCase();
 //        var size = symbolTable.get(instr0.op2).getValue().getInt32();
 //        var name = symbolTable.get(instruction.op1).getValue().getString();
@@ -289,8 +205,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var x = symbolTable.get(instr0.op1).getValue().getInt32();
 //        var y = symbolTable.get(instr0.op2).getValue().getInt32();
 //        var text = symbolTable.get(instruction.op1).getValue().getString();
@@ -301,8 +216,7 @@ class GraphicsRuntime {
     public static void draw(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var str = symbolTable.get(instruction.op1).getValue().getString();
 //        if (str.isEmpty()) {
 //            throw new PuffinBasicRuntimeError(
@@ -403,8 +317,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var i0 = instr0.get(0);
 //        var i1 = instr0.get(1);
 //
@@ -438,8 +351,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var r = symbolTable.get(instr0.op1).getValue().getInt32();
 //        var g = symbolTable.get(instr0.op2).getValue().getInt32();
 //        var b = symbolTable.get(instruction.op1).getValue().getInt32();
@@ -459,8 +371,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var i0 = instr0.get(0);
 //        var i1 = instr0.get(1);
 //
@@ -488,8 +399,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var i0 = instr0.get(0);
 //        var i1 = instr0.get(1);
 //
@@ -513,13 +423,11 @@ class GraphicsRuntime {
 //        graphicsState.getFrame().getDrawingCanvas().point(x, y, r, g, b);
     }
 
-
     public static void bufferCopyHor(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var srcx = symbolTable.get(instr0.op1).getValue().getInt32();
 //        var dstx = symbolTable.get(instr0.op2).getValue().getInt32();
 //        var w = symbolTable.get(instruction.op1).getValue().getInt32();
@@ -542,8 +450,7 @@ class GraphicsRuntime {
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var i0 = instr0.get(0);
 //        var i1 = instr0.get(1);
 //
@@ -588,8 +495,7 @@ class GraphicsRuntime {
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
             Instruction instr1,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var x = symbolTable.get(instr0.op1).getValue().getInt32();
 //        var y = symbolTable.get(instr0.op2).getValue().getInt32();
 //        var action = instruction.op1 != NULL_ID
@@ -651,8 +557,7 @@ class GraphicsRuntime {
     public static void inkeydlr(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var key = graphicsState.getFrame().getDrawingCanvas().takeNextKey();
 //        symbolTable.get(instruction.result).getValue().setString(key);
     }
@@ -660,8 +565,7 @@ class GraphicsRuntime {
     public static void loadwav(
             SoundState soundState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var file = symbolTable.get(instruction.op1).getValue().getString();
 //        var variable = symbolTable.getVariable(instruction.op2).getValue();
 //        variable.setInt32(soundState.load(file));
@@ -670,8 +574,7 @@ class GraphicsRuntime {
     public static void playwav(
             SoundState soundState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var id = symbolTable.get(instruction.op1).getValue().getInt32();
 //        soundState.play(id);
     }
@@ -679,8 +582,7 @@ class GraphicsRuntime {
     public static void stopwav(
             SoundState soundState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var id = symbolTable.get(instruction.op1).getValue().getInt32();
 //        soundState.stop(id);
     }
@@ -688,8 +590,7 @@ class GraphicsRuntime {
     public static void loopwav(
             SoundState soundState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var id = symbolTable.get(instruction.op1).getValue().getInt32();
 //        soundState.loop(id);
     }
@@ -697,8 +598,7 @@ class GraphicsRuntime {
     public static void mouseMovedX(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        symbolTable.get(instruction.result).getValue().setInt32(
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getMovedX());
     }
@@ -706,8 +606,7 @@ class GraphicsRuntime {
     public static void mouseMovedY(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        symbolTable.get(instruction.result).getValue().setInt32(
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getMovedY());
     }
@@ -715,8 +614,7 @@ class GraphicsRuntime {
     public static void mouseDraggedX(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        symbolTable.get(instruction.result).getValue().setInt32(
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getDraggedX());
     }
@@ -724,8 +622,7 @@ class GraphicsRuntime {
     public static void mouseDraggedY(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        symbolTable.get(instruction.result).getValue().setInt32(
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getDraggedY());
     }
@@ -733,8 +630,7 @@ class GraphicsRuntime {
     public static void mouseButtonClicked(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        symbolTable.get(instruction.result).getValue().setInt32(
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getButtonClicked());
     }
@@ -742,8 +638,7 @@ class GraphicsRuntime {
     public static void mouseButtonPressed(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        symbolTable.get(instruction.result).getValue().setInt32(
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getButtonPressed());
     }
@@ -751,8 +646,7 @@ class GraphicsRuntime {
     public static void mouseButtonReleased(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        symbolTable.get(instruction.result).getValue().setInt32(
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getButtonReleased());
     }
@@ -760,10 +654,66 @@ class GraphicsRuntime {
     public static void isKeyPressed(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
 //        var key = symbolTable.get(instruction.op1).getValue().getString();
 //        symbolTable.get(instruction.result).getValue().setInt32(
 //                graphicsState.getFrame().getDrawingCanvas().isKeyPressed(key) ? -1 : 0);
+    }
+
+    static class GraphicsState {
+//        private BasicFrame frame;
+
+//        boolean isInitialized() {
+//            return frame != null;
+//        }
+
+//        BasicFrame getFrame() {
+//            assertScreenInitialized();
+//            return frame;
+//        }
+
+//        Graphics2D getGraphics2D() {
+//            return getFrame().getDrawingCanvas().getGraphics2D();
+//        }
+
+//        int getImageWidth() {
+//            return getFrame().getDrawingCanvas().getImageWidth();
+//        }
+
+//        int getImageHeight() {
+//            return getFrame().getDrawingCanvas().getImageHeight();
+//        }
+
+//        void setFrame(BasicFrame frame) {
+//            assertNewScreen();
+//            this.frame = frame;
+//        }
+
+//        private void assertNewScreen() {
+//            if (frame != null) {
+//                throw new PuffinBasicRuntimeError(
+//                        GRAPHICS_ERROR,
+//                        "Screen cannot be called again!"
+//                );
+//            }
+//        }
+
+//        private void assertScreenInitialized() {
+//            if (frame == null) {
+//                throw new PuffinBasicRuntimeError(
+//                        GRAPHICS_ERROR,
+//                        "Screen has already been created!"
+//                );
+//            }
+//        }
+//    }
+
+        public static void cls(GraphicsState graphicsState) {
+//        graphicsState.getFrame().getDrawingCanvas().clear();
+        }
+
+        public static void beep() {
+//            Toolkit.getDefaultToolkit().beep();
+        }
     }
 }

@@ -77,8 +77,6 @@ import io.github.rosemoe.sora.widget.schemes.SchemeEclipse
 import io.github.rosemoe.sora.widget.schemes.SchemeGitHub
 import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX
 import io.github.rosemoe.sora.widget.schemes.SchemeVS2019
-import io.github.rosemoe.sora.widget.style.LineInfoPanelPosition
-import io.github.rosemoe.sora.widget.style.LineInfoPanelPositionMode
 import io.github.rosemoe.sora.widget.subscribeEvent
 import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
@@ -88,8 +86,6 @@ import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
 import org.puffinbasic.runtime.Environment
 import java.io.BufferedReader
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.io.OutputStream
@@ -439,7 +435,7 @@ class MainActivity : AppCompatActivity() {
             if (idx == -1) {
                 text += "($matchText)"
             } else {
-                text += "(${idx+1} of $matchText)"
+                text += "(${idx + 1} of $matchText)"
             }
         }
     }
@@ -524,7 +520,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 0x87133 && resultCode == RESULT_OK) {
             val selectedfile = data!!.data!!
             // read contents of selectedfile
-            val inputStream = contentResolver.openInputStream(selectedfile!!)
+            val inputStream = contentResolver.openInputStream(selectedfile)
             val reader = BufferedReader(InputStreamReader(inputStream))
             val contents = reader.lines().collect(Collectors.joining("\n"))
             binding.editor.setText(contents)
@@ -577,7 +573,7 @@ class MainActivity : AppCompatActivity() {
             R.id.run_script -> {
                 var fileName = "editor.bas"
                 var sourceCode = editor.text.toString() + "\n"
-                Log.i("INFO", "Running script: " + sourceCode);
+                Log.i("INFO", "Running script: " + sourceCode)
                 val userOptions = PuffinBasicInterpreterMain.UserOptions(
                     false,
                     false,

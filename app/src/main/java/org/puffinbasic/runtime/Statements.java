@@ -1,6 +1,16 @@
 package org.puffinbasic.runtime;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
+import static org.puffinbasic.domain.PuffinBasicSymbolTable.NULL_ID;
+import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.DOUBLE;
+import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.FLOAT;
+import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.INT64;
+import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.STRING;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.DATA_OUT_OF_RANGE;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.DATA_TYPE_MISMATCH;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.INDEX_OUT_OF_BOUNDS;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.IO_ERROR;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.OUT_OF_DATA;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -28,23 +38,13 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
-import static org.puffinbasic.domain.PuffinBasicSymbolTable.NULL_ID;
-import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.DOUBLE;
-import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.FLOAT;
-import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.INT64;
-import static org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.STRING;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.DATA_OUT_OF_RANGE;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.DATA_TYPE_MISMATCH;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.INDEX_OUT_OF_BOUNDS;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.IO_ERROR;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.OUT_OF_DATA;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 
 public class Statements {
 
     public static void sleep(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         int millis = symbolTable.get(instruction.op1).getValue().getInt32();
         if (millis < 0) {
             throw new PuffinBasicRuntimeError(
@@ -56,43 +56,17 @@ public class Statements {
         LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(millis));
     }
 
-    public static final class ReadData {
-        private final List<STEntry> data;
-        private int cursor;
-
-        ReadData(List<STEntry> data) {
-            this.data = data;
-        }
-
-        public STEntry next() {
-            if (cursor < data.size()) {
-                return data.get(cursor++);
-            } else {
-                throw new PuffinBasicRuntimeError(
-                        OUT_OF_DATA,
-                        "Out of data!"
-                );
-            }
-        }
-
-        public void restore() {
-            cursor = 0;
-        }
-    }
-
     public static void print(
             PrintBuffer printBuffer,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         printBuffer.appendAtCursor(symbolTable.get(instruction.op1).getValue().printFormat());
     }
 
     public static void write(
             PrintBuffer printBuffer,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         printBuffer.appendAtCursor(symbolTable.get(instruction.op1).getValue().writeFormat());
     }
 
@@ -100,8 +74,7 @@ public class Statements {
             FormatterCache cache,
             PrintBuffer printBuffer,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var format = symbolTable.get(instruction.op1).getValue().getString();
         var formatter = cache.get(format);
         var entry = symbolTable.get(instruction.op2);
@@ -149,8 +122,7 @@ public class Statements {
             PuffinBasicFiles files,
             PrintBuffer printBuffer,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         if (instruction.op1 == NULL_ID) {
             printBuffer.flush(files.sys);
         } else {
@@ -250,8 +222,7 @@ public class Statements {
             PuffinBasicSymbolTable symbolTable,
             Instruction instr_fn_fn_0,
             Instruction instr_om_am_1,
-            Instruction instr_lm_rl_2)
-    {
+            Instruction instr_lm_rl_2) {
         var fileName = symbolTable.get(instr_fn_fn_0.op1).getValue().getString();
         var fileNumber = symbolTable.get(instr_fn_fn_0.op2).getValue().getInt32();
         var fileOpenMode = FileOpenMode.valueOf(
@@ -281,8 +252,7 @@ public class Statements {
     public static void close(
             PuffinBasicFiles files,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var fileNumber = symbolTable.get(instruction.op1).getValue().getInt32();
         files.get(fileNumber).close();
     }
@@ -291,8 +261,7 @@ public class Statements {
             PuffinBasicFiles files,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> fields,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var varList = new IntArrayList(fields.size());
         for (var instrI : fields) {
             var recordPartLen = symbolTable.get(instrI.op2).getValue().getInt32();
@@ -309,8 +278,7 @@ public class Statements {
     public static void putf(
             PuffinBasicFiles files,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var fileNumber = symbolTable.get(instruction.op1).getValue().getInt32();
         Integer recordNumber = instruction.op2 == NULL_ID
                 ? null
@@ -321,8 +289,7 @@ public class Statements {
     public static void getf(
             PuffinBasicFiles files,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var fileNumber = symbolTable.get(instruction.op1).getValue().getInt32();
         Integer recordNumber = instruction.op2 == NULL_ID
                 ? null
@@ -333,8 +300,7 @@ public class Statements {
     public static void randomize(
             Random random,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var seed = symbolTable.get(instruction.op1).getValue().getInt64();
         random.setSeed(seed);
     }
@@ -348,8 +314,7 @@ public class Statements {
             PuffinBasicFiles files,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instructions,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         boolean printPrompt = false;
         if (instruction.op1 != NULL_ID) {
             var prompt = symbolTable.get(instruction.op1).getValue().getString();
@@ -375,7 +340,7 @@ public class Statements {
                             IO_ERROR,
                             "Record mismatch: expected=" + instructions.size()
                                     + ", found in file=" + record.size()
-                                    +", record: " + record
+                                    + ", record: " + record
                     );
                 }
             }
@@ -421,8 +386,7 @@ public class Statements {
             PuffinBasicFiles files,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         if (instruction.op1 != NULL_ID) {
             var prompt = symbolTable.get(instruction.op1).getValue().getString();
             if (!prompt.isEmpty()) {
@@ -471,8 +435,7 @@ public class Statements {
     public static void read(
             ReadData readData,
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var variable = symbolTable.getVariable(instruction.op1);
         var data = readData.next();
         Types.assertBothStringOrNumeric(variable.getType().getAtomTypeId(),
@@ -486,8 +449,7 @@ public class Statements {
     }
 
     static void createInstance(
-            PuffinBasicSymbolTable symbolTable, Instruction instruction)
-    {
+            PuffinBasicSymbolTable symbolTable, Instruction instruction) {
         var entry = (STVariable) symbolTable.get(instruction.op1);
         entry.createAndSetInstance(symbolTable);
     }
@@ -495,8 +457,7 @@ public class Statements {
     static void structLValue(
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> params,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var root = (STObjects.STStruct) symbolTable.get(instruction.op1).getValue();
         for (int i = 0; i < params.size() - 1; i++) {
             var childId = symbolTable.get(params.get(i).op1).getValue().getInt32();
@@ -511,8 +472,7 @@ public class Statements {
     static void memberFuncCall(
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> params,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         STValue[] funcParams = new STValue[params.size()];
         var object = symbolTable.get(instruction.op1).getValue();
         var funcName = symbolTable.get(instruction.op2).getValue().getString();
@@ -528,10 +488,9 @@ public class Statements {
     static void structMemberRef(
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> params,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var root = (STObjects.STStruct) symbolTable.get(instruction.op1).getValue();
-        for (int i = 0; i < params.size() -1; i++) {
+        for (int i = 0; i < params.size() - 1; i++) {
             var childId = symbolTable.get(params.get(i).op1).getValue().getInt32();
             var valueId = root.getMember(childId);
             root = (STObjects.STStruct) symbolTable.get(valueId).getValue();
@@ -539,5 +498,29 @@ public class Statements {
         var childId = symbolTable.get(params.get(params.size() - 1).op1).getValue().getInt32();
         var valueId = root.getMember(childId);
         symbolTable.get(instruction.result).getValue().assign(symbolTable.get(valueId).getValue());
+    }
+
+    public static final class ReadData {
+        private final List<STEntry> data;
+        private int cursor;
+
+        ReadData(List<STEntry> data) {
+            this.data = data;
+        }
+
+        public STEntry next() {
+            if (cursor < data.size()) {
+                return data.get(cursor++);
+            } else {
+                throw new PuffinBasicRuntimeError(
+                        OUT_OF_DATA,
+                        "Out of data!"
+                );
+            }
+        }
+
+        public void restore() {
+            cursor = 0;
+        }
     }
 }

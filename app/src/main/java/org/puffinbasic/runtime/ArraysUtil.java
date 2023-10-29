@@ -1,11 +1,12 @@
 package org.puffinbasic.runtime;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.DATA_TYPE_MISMATCH;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.ILLEGAL_FUNCTION_PARAM;
+import static org.puffinbasic.runtime.Functions.throwUnsupportedType;
+
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.puffinbasic.domain.PuffinBasicSymbolTable;
-import org.puffinbasic.domain.STObjects;
 import org.puffinbasic.domain.STObjects.AbstractSTEntry;
 import org.puffinbasic.domain.STObjects.ArrayType;
 import org.puffinbasic.domain.STObjects.STEntry;
@@ -20,23 +21,10 @@ import org.puffinbasic.parser.PuffinBasicIR.Instruction;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.DATA_TYPE_MISMATCH;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.ILLEGAL_FUNCTION_PARAM;
-import static org.puffinbasic.runtime.Functions.throwUnsupportedType;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 final class ArraysUtil {
-
-    static final class ArrayState {
-        private int dimIndex;
-
-        int getAndIncrement() {
-            return dimIndex++;
-        }
-
-        void reset() {
-            dimIndex = 0;
-        }
-    }
 
     static void dim(PuffinBasicSymbolTable symbolTable, List<Instruction> params, Instruction instruction) {
         IntList dims = new IntArrayList(params.size());
@@ -135,35 +123,35 @@ final class ArraysUtil {
                 int[] value = ((STInt32ArrayValue) array1).getValue();
                 System.arraycopy(value, 0, ((STInt32ArrayValue) array2).getValue(), 0, value.length);
             }
-                break;
+            break;
             case INT64: {
                 long[] value = ((STInt64ArrayValue) array1).getValue();
                 System.arraycopy(
                         value, 0, ((STInt64ArrayValue) array2).getValue(), 0, value.length
                 );
             }
-                break;
+            break;
             case FLOAT: {
                 float[] value = ((STFloat32ArrayValue) array1).getValue();
                 System.arraycopy(
                         value, 0, ((STFloat32ArrayValue) array2).getValue(), 0, value.length
                 );
             }
-                break;
+            break;
             case DOUBLE: {
                 double[] value = ((STFloat64ArrayValue) array1).getValue();
                 System.arraycopy(
                         value, 0, ((STFloat64ArrayValue) array2).getValue(), 0, value.length
                 );
             }
-                break;
+            break;
             case STRING: {
                 String[] value = ((STStringArrayValue) array1).getValue();
                 System.arraycopy(
                         value, 0, ((STStringArrayValue) array2).getValue(), 0, value.length
                 );
             }
-                break;
+            break;
             default:
                 throwUnsupportedType(array1Entry.getType().getAtomTypeId());
         }
@@ -171,8 +159,7 @@ final class ArraysUtil {
 
     static void array2dShiftVertical(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var arrayEntry = symbolTable.get(instruction.op1);
         var array = arrayEntry.getValue();
         var shift = symbolTable.get(instruction.op2).getValue().getInt32();
@@ -231,8 +218,7 @@ final class ArraysUtil {
 
     static void array2dShiftHorizontal(
             PuffinBasicSymbolTable symbolTable,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var arrayEntry = symbolTable.get(instruction.op1);
         var array = arrayEntry.getValue();
         var shift = symbolTable.get(instruction.op2).getValue().getInt32();
@@ -383,8 +369,7 @@ final class ArraysUtil {
             PuffinBasicSymbolTable symbolTable,
             Instruction i0,
             Instruction i1,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var srcEntry = symbolTable.get(i0.op1);
         var src = srcEntry.getValue();
         var src0 = symbolTable.get(i0.op2).getValue().getInt32();
@@ -406,7 +391,7 @@ final class ArraysUtil {
                             + " and dst=" + dst.getNumArrayDimensions()
             );
         }
-        if (src0 < 0 || src0 >= src.getTotalLength()|| dst0 < 0 || len < 0 || dst0 + len > dst.getTotalLength()) {
+        if (src0 < 0 || src0 >= src.getTotalLength() || dst0 < 0 || len < 0 || dst0 + len > dst.getTotalLength()) {
             throw new PuffinBasicRuntimeError(
                     ILLEGAL_FUNCTION_PARAM,
                     "Bad params: srcOrigin=" + src0
@@ -524,7 +509,7 @@ final class ArraysUtil {
                 }
                 result.setInt32(min);
             }
-                break;
+            break;
             case INT64: {
                 long[] value = ((STInt64ArrayValue) array).getValue();
                 var min = Long.MAX_VALUE;
@@ -535,7 +520,7 @@ final class ArraysUtil {
                 }
                 result.setInt64(min);
             }
-                break;
+            break;
             case FLOAT: {
                 float[] value = ((STFloat32ArrayValue) array).getValue();
                 var min = Float.MAX_VALUE;
@@ -546,7 +531,7 @@ final class ArraysUtil {
                 }
                 result.setFloat32(min);
             }
-                break;
+            break;
             case DOUBLE: {
                 double[] value = ((STFloat64ArrayValue) array).getValue();
                 var min = Double.MAX_VALUE;
@@ -557,7 +542,7 @@ final class ArraysUtil {
                 }
                 result.setFloat64(min);
             }
-                break;
+            break;
             default:
                 throwUnsupportedType(arrayEntry.getType().getAtomTypeId());
         }
@@ -737,8 +722,7 @@ final class ArraysUtil {
     static void array2dFindRow(
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> params,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var i1 = params.get(0);
         var i2 = params.get(1);
 
@@ -762,7 +746,7 @@ final class ArraysUtil {
             throw new PuffinBasicRuntimeError(
                     PuffinBasicRuntimeError.ErrorCode.INDEX_OUT_OF_BOUNDS,
                     "x1=" + x1 + "/y1=" + y1 + "/x2=" + x2 + "/y2=" + y2
-                        + " is out of bounds, array length=" + n
+                            + " is out of bounds, array length=" + n
             );
         }
         switch (arrayEntry.getType().getAtomTypeId()) {
@@ -784,8 +768,7 @@ final class ArraysUtil {
     static void array2dFindColumn(
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> params,
-            Instruction instruction)
-    {
+            Instruction instruction) {
         var i1 = params.get(0);
         var i2 = params.get(1);
 
@@ -805,7 +788,7 @@ final class ArraysUtil {
         var x2 = Math.min(Math.max(0, symbolTable.get(i2.op1).getValue().getInt32()), numCols - 1);
         var y2 = Math.min(Math.max(0, symbolTable.get(i2.op2).getValue().getInt32()), numRows - 1);
 
-        if (y1 * numCols + x1 >= n || y2 * numCols + x2 >=n) {
+        if (y1 * numCols + x1 >= n || y2 * numCols + x2 >= n) {
             throw new PuffinBasicRuntimeError(
                     PuffinBasicRuntimeError.ErrorCode.INDEX_OUT_OF_BOUNDS,
                     "x1=" + x1 + "/y1=" + y1 + "/x2=" + x2 + "/y2=" + y2
@@ -941,5 +924,17 @@ final class ArraysUtil {
             }
         }
         return -1;
+    }
+
+    static final class ArrayState {
+        private int dimIndex;
+
+        int getAndIncrement() {
+            return dimIndex++;
+        }
+
+        void reset() {
+            dimIndex = 0;
+        }
     }
 }

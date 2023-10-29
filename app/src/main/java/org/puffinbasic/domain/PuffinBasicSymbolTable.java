@@ -50,6 +50,7 @@ public class PuffinBasicSymbolTable {
     private int lastLastId;
     private STEntry lastEntry;
     private STEntry lastLastEntry;
+
     public PuffinBasicSymbolTable() {
         this.defaultDataTypes = new Char2ObjectOpenHashMap<>();
         this.userDefinedTypes = new Object2ObjectOpenHashMap<>();
