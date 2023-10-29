@@ -84,6 +84,7 @@ import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
 import org.puffinbasic.PuffinBasicInterpreterMain
 import org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun
+import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
 import org.puffinbasic.runtime.Environment
 import java.io.BufferedReader
@@ -592,12 +593,18 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 try {
-                        interpretAndRun(userOptions, fileName, sourceCode, AndroidSystemInAndOut(binding.editor),
-                        Environment.SystemEnv()
+                    interpretAndRun(
+                        userOptions,
+                        fileName,
+                        sourceCode,
+                        AndroidSystemInAndOut(binding.editor),
+                        Environment.SystemEnv(),
                     )
-                    } catch (e: PuffinBasicSyntaxError) {
+                } catch (e: PuffinBasicRuntimeError) {
+                    editor.setText(editor.text.toString() + "REM !!! RUNTIME ERROR: " + e.message + "\n")
+                } catch (e: PuffinBasicSyntaxError) {
                     editor.setText(editor.text.toString() + "REM !!! SYNTAX ERROR: " + e.message + "\n")
-                    }
+                }
                 Log.i("qb", "DONE")
                 editor.setText(editor.text.toString() + "REM --- OUTPUT END\n")
             }
