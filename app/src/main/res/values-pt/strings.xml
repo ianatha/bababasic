@@ -22,11 +22,7 @@
       
   <string name="search_panel">Painel de pesquisa</string>
       
-  <string name="format">Formatar</string>
-      
   <string name="color_scheme">Esquema de cores</string>
-      
-  <string name="err_crash">Ocorreu uma exceção inesperada. O log de falhas é salvo em crash-journal.log no diretório de arquivos privados. </string>
       
   <string name="wordwrap">Quebra de linha</string>
       
@@ -34,14 +30,12 @@
       
   <string name="pin_line_number">Número da linha do pino</string>
       
-  <string name="feature_switches">Opções de recursos</string>
+  <string name="settings">Configurações</string>
       
   <string name="magnifier">Lupa</string>
       
   <string name="open_completion_window_animation">Animação da janela de conclusão</string>
-      
-  <string name="dialog_api_warning_msg">LSP funciona apenas no Android O ou superior</string>
-      
+
   <string name="layout_tv_search_options">Opções</string>
       
   <string name="search_option_regex">Regex</string>

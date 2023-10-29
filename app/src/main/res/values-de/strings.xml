@@ -22,11 +22,7 @@
       
   <string name="search_panel">Suchfeld</string>
 
-  <string name="format">Format</string>
-      
   <string name="color_scheme">Farbschema</string>
-      
-  <string name="err_crash">Es ist eine unerwartete Ausnahme aufgetreten. Das Absturzprotokoll wird unter crash-journal.log im privaten Dateiverzeichnis gespeichert. </string>
       
   <string name="wordwrap">Zeilenumbruch</string>
       
@@ -34,13 +30,11 @@
       
   <string name="pin_line_number">Pin-Liniennummer</string>
       
-  <string name="feature_switches">Funktionsschalter</string>
+  <string name="settings">Einstellungen</string>
       
   <string name="magnifier">Lupe</string>
       
   <string name="open_completion_window_animation">Animation des Abschlussfensters</string>
-      
-  <string name="dialog_api_warning_msg">LSP funktioniert nur auf Android O oder höher</string>
       
   <string name="layout_tv_search_options">Optionen</string>
       

@@ -22,11 +22,7 @@
       
   <string name="search_panel">検索パネル</string>
       
-  <string name="format">フォーマット</string>
-      
   <string name="color_scheme">カラースキーム</string>
-      
-  <string name="err_crash">予期しない例外が発生しました。クラッシュ ログは、プライベート ファイル ディレクトリの crash-journal.log に保存されます。</string>
       
   <string name="wordwrap">ワードラップ</string>
       
@@ -34,13 +30,11 @@
       
   <string name="pin_line_number">ピンの線番号</string>
       
-  <string name="feature_switches">機能スイッチ</string>
+  <string name="settings">設定</string>
       
   <string name="magnifier">拡大鏡</string>
       
   <string name="open_completion_window_animation">完了ウィンドウのアニメーション</string>
-      
-  <string name="dialog_api_warning_msg">LSP は Android O 以降でのみ動作します</string>
       
   <string name="layout_tv_search_options">オプション</string>
       
