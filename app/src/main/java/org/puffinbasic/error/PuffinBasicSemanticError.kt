@@ -1,0 +1,13 @@
+package org.puffinbasic.error
+
+class PuffinBasicSemanticError(
+    errorCode: ErrorCode, line: String, message: String
+) : RuntimeException(
+    "[" + errorCode + "] " + message + System.lineSeparator() +
+            "LINE:" + System.lineSeparator() +
+            line
+) {
+    enum class ErrorCode {
+        ARRAY_VARIABLE_CANNOT_STARTWITH_FN, SCALAR_VARIABLE_CANNOT_BE_INDEXED, BAD_NUMBER, BAD_ASSIGNMENT, DATA_TYPE_MISMATCH, INSUFFICIENT_UDF_ARGS, WEND_WITHOUT_WHILE, WHILE_WITHOUT_WEND, NEXT_WITHOUT_FOR, FOR_WITHOUT_NEXT, BAD_ARGUMENT, NOT_DEFINED, MISMATCHED_ENDIF, MISMATCHED_ELSEBEGIN, BAD_FUNCTION_DEF
+    }
+}
