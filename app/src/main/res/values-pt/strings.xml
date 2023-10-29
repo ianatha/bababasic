@@ -49,5 +49,6 @@
   <string name="copy_text">cópia de</string>
       
   <string name="text_selection_more">Mais…</string>
-  
+  <string name="about">Sobre</string>
+
 </resources>

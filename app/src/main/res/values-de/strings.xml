@@ -49,5 +49,6 @@
   <string name="copy_text">Kopieren</string>
       
   <string name="text_selection_more">Mehr…</string>
-  
+  <string name="about">Darüber</string>
+
 </resources>
