@@ -1,10 +1,21 @@
 package org.puffinbasic;
 
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.IMPORT_ERROR;
+import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.IO_ERROR;
+import static org.puffinbasic.parser.LinenumberListener.ThrowOnDuplicate.LOG;
+import static org.puffinbasic.parser.LinenumberListener.ThrowOnDuplicate.THROW;
+
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.common.base.Strings;
+
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
+
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -29,7 +40,6 @@ import org.puffinbasic.runtime.Environment.SystemEnv;
 import org.puffinbasic.runtime.PuffinBasicRuntime;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -38,23 +48,9 @@ import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.stream.Stream;
 
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.IMPORT_ERROR;
-import static org.puffinbasic.error.PuffinBasicRuntimeError.ErrorCode.IO_ERROR;
-import static org.puffinbasic.parser.LinenumberListener.ThrowOnDuplicate.LOG;
-import static org.puffinbasic.parser.LinenumberListener.ThrowOnDuplicate.THROW;
-
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 public final class PuffinBasicInterpreterMain {
 
     private static final String UNKNOWN_SOURCE_FILE = "<UNKNOWN>";
-
-    private enum SourceFileMode {
-        MAIN,
-        LIB
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void main(String... args) {
@@ -129,13 +125,13 @@ public final class PuffinBasicInterpreterMain {
         }
         return sb.toString();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     static void interpretAndRun(
             UserOptions userOptions,
             String sourceCode,
             PuffinBasicFile stdinout,
-            Environment env) throws PuffinBasicRuntimeError
-    {
+            Environment env) throws PuffinBasicRuntimeError {
         interpretAndRun(userOptions, UNKNOWN_SOURCE_FILE, sourceCode, stdinout, env);
     }
 
@@ -145,8 +141,7 @@ public final class PuffinBasicInterpreterMain {
             String sourceFilename,
             String sourceCode,
             PuffinBasicFile stdinout,
-            Environment env) throws PuffinBasicRuntimeError
-    {
+            Environment env) throws PuffinBasicRuntimeError {
         var importPath = new PuffinBasicImportPath(sourceFilename);
 
         Instant t1 = Instant.now();
@@ -191,7 +186,7 @@ public final class PuffinBasicInterpreterMain {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static void logTimeTaken(String tag, Instant t1, boolean log) {
-        var duration  = Duration.between(t1, Instant.now());
+        var duration = Duration.between(t1, Instant.now());
         var timeSec = duration.getSeconds() + duration.getNano() / 1000_000_000.0;
         log("[" + tag + "] time taken = " + timeSec + " s", log);
     }
@@ -233,8 +228,7 @@ public final class PuffinBasicInterpreterMain {
             String sourceFile,
             String input,
             ThrowOnDuplicate throwOnDuplicate,
-            SourceFileMode sourceFileMode)
-    {
+            SourceFileMode sourceFileMode) {
         var in = CharStreams.fromString(input);
         var syntaxErrorListener = new ThrowingErrorListener(input);
         var lexer = new PuffinBasicLexer(in);
@@ -283,6 +277,11 @@ public final class PuffinBasicInterpreterMain {
                 importSourceFiles);
     }
 
+    private enum SourceFileMode {
+        MAIN,
+        LIB
+    }
+
     private static final class ThrowingErrorListener extends BaseErrorListener {
 
         private final String input;
@@ -298,8 +297,7 @@ public final class PuffinBasicInterpreterMain {
                 int line,
                 int charPositionInLine,
                 String msg,
-                RecognitionException e)
-        {
+                RecognitionException e) {
             var lineIndex = line - 1;
             var lines = input.split(System.lineSeparator());
             String inputLine;
@@ -314,7 +312,7 @@ public final class PuffinBasicInterpreterMain {
             }
             throw new PuffinBasicSyntaxError(
                     "[" + line + ":" + charPositionInLine + "] " + msg + System.lineSeparator()
-                    + inputLine
+                            + inputLine
             );
         }
 
@@ -322,33 +320,31 @@ public final class PuffinBasicInterpreterMain {
 
     public static final class UserOptions {
 
-        static UserOptions ofTest() {
-            return new UserOptions(
-                    false, false, false, false, false, null
-            );
-        }
-
+        public final String filename;
         final boolean logOnDuplicate;
         final boolean listSourceCode;
         final boolean printIR;
         final boolean timing;
         final boolean graphics;
-        public final String filename;
-
         public UserOptions(
                 boolean logOnDuplicate,
                 boolean listSourceCode,
                 boolean printIR,
                 boolean timing,
                 boolean graphics,
-                String filename)
-        {
+                String filename) {
             this.logOnDuplicate = logOnDuplicate;
             this.listSourceCode = listSourceCode;
             this.printIR = printIR;
             this.timing = timing;
             this.graphics = graphics;
             this.filename = filename;
+        }
+
+        static UserOptions ofTest() {
+            return new UserOptions(
+                    false, false, false, false, false, null
+            );
         }
     }
 

@@ -85,6 +85,7 @@ public class PuffinBasicIRListener extends PuffinBasicBaseListener {
     private final ParseTreeProperty<IfState> nodeToIfState;
     private UDFState currentUdfState;
     private int currentLineNumber;
+
     public PuffinBasicIRListener(PuffinBasicSourceFile sourceFile, CharStream in, PuffinBasicIR ir, boolean graphics) {
         this.sourceFile = sourceFile;
         this.in = in;

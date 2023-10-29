@@ -1,8 +1,9 @@
 package org.puffinbasic.runtime;
 
+import org.puffinbasic.file.PuffinBasicFile;
+
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 import it.unimi.dsi.fastutil.bytes.ByteList;
-import org.puffinbasic.file.PuffinBasicFile;
 
 public class PrintBuffer {
 

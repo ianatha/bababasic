@@ -24,20 +24,15 @@
 
 package io.atha.quickbasic
 
-import android.R
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.LaunchedEffect
 import com.termux.terminal.TerminalOutput
-import com.termux.terminal.TerminalSession
-import com.termux.terminal.TerminalSession.SessionChangedCallback
 import io.atha.quickbasic.databinding.ActivityRunBinding
 
 
-class AndroidTerminal: TerminalOutput() {
+class AndroidTerminal : TerminalOutput() {
     override fun write(data: ByteArray?, offset: Int, count: Int) {
         Log.i("AndroidTerminal", "write")
     }
@@ -60,7 +55,7 @@ class AndroidTerminal: TerminalOutput() {
 }
 
 class RunActivity : AppCompatActivity() {
-//    private lateinit var editor: CodeEditor
+    //    private lateinit var editor: CodeEditor
     private lateinit var binding: ActivityRunBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,13 +94,4 @@ class RunActivity : AppCompatActivity() {
 //        assert(stringText == editor.text.toString()) { "Text check failed" }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-//        switchThemeIfRequired(this, editor)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        editor.release()
-    }
 }
