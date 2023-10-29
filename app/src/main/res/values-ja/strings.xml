@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+      
+  <string name="app_name">馬場 BASIC</string>
+      
+  <string name="open_debug_logs">デバッグログを開く</string>
+      
+  <string name="layout_tv_last">最後</string>
+      
+  <string name="layout_tv_next">次</string>
+      
+  <string name="layout_tv_replace">交換する</string>
+      
+  <string name="layout_tv_replaceAll">すべて置換</string>
+      
+  <string name="text_to_search">検索するテキスト</string>
+      
+  <string name="replacement">交換</string>
+      
+  <string name="cursor_actions">カーソルアクション</string>
+      
+  <string name="go_to_end">最後に移動</string>
+      
+  <string name="move_up">上に移動</string>
+      
+  <string name="move_down">下に移動</string>
+      
+  <string name="move_left">左に移動</string>
+      
+  <string name="move_right">右に動く</string>
+      
+  <string name="home">家</string>
+      
+  <string name="end">終わり</string>
+      
+  <string name="text_actions">テキストアクション</string>
+      
+  <string name="switch_color_scheme">カラースキームの切り替え</string>
+      
+  <string name="undo">元に戻す</string>
+      
+  <string name="redo">やり直し</string>
+      
+  <string name="search_text">検索テキスト</string>
+      
+  <string name="action_mode">アクションモード</string>
+      
+  <string name="search_panel">検索パネル</string>
+      
+  <string name="code_navigation">コードナビゲーション</string>
+      
+  <string name="format">フォーマット</string>
+      
+  <string name="code_navi">コードナビゲーション</string>
+      
+  <string name="navi_err_msg">コードナビゲーションが準備されていない、またはサポートされていません</string>
+      
+  <string name="color_scheme">カラースキーム</string>
+      
+  <string name="err_crash">予期しない例外が発生しました。クラッシュ ログは、プライベート ファイル ディレクトリの crash-journal.log に保存されます。</string>
+      
+  <string name="wordwrap">ワードラップ</string>
+      
+  <string name="show_crash_log">クラッシュログを開く</string>
+      
+  <string name="clear_crash_log">クラッシュログをクリアする</string>
+      
+  <string name="line_number_visibility">行番号を表示</string>
+      
+  <string name="pin_line_number">ピンの線番号</string>
+      
+  <string name="feature_switches">機能スイッチ</string>
+      
+  <string name="magnifier">拡大鏡</string>
+      
+  <string name="use_icu_library">ICU ライブラリを利用する</string>
+      
+  <string name="open_new_activity">新しいアクティビティを開く</string>
+      
+  <string name="open_completion_window_animation">完了ウィンドウのアニメーション</string>
+      
+  <string name="not_supported">サポートされていません</string>
+      
+  <string name="dialog_api_warning_msg">LSP は Android O 以降でのみ動作します</string>
+      
+  <string name="top">上</string>
+      
+  <string name="bottom">底</string>
+      
+  <string name="left">左</string>
+      
+  <string name="right">右</string>
+      
+  <string name="center">中心</string>
+      
+  <string name="top_left">左上</string>
+      
+  <string name="top_right">右上</string>
+      
+  <string name="bottom_left">左下</string>
+      
+  <string name="bottom_right">右下</string>
+      
+  <string name="open_debug_document">View.java を開く</string>
+      
+  <string name="debug">デバッグ</string>
+      
+  <string name="layout_tv_search_options">オプション</string>
+      
+  <string name="search_option_regex">正規表現</string>
+      
+  <string name="search_option_whole_word">単語全体</string>
+      
+  <string name="search_option_match_case">マッチケース</string>
+      
+  <string name="paste_text">ペースト</string>
+      
+  <string name="copy_text">コピー</string>
+      
+  <string name="text_selection_more">もっと…</string>
+  
+</resources>
