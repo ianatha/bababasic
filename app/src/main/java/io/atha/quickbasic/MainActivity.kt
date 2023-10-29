@@ -446,7 +446,6 @@ class MainActivity : AppCompatActivity() {
                 text += "(${idx+1} of $matchText)"
             }
         }
-        binding.positionDisplay.text = text
     }
 
     private fun escapeIfNecessary(c: Char): String {
@@ -577,17 +576,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.open_test_activity -> startActivity(Intent(this, RunActivity::class.java))
-            R.id.open_lsp_activity -> {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                    AlertDialog.Builder(this)
-                        .setTitle(getString(R.string.not_supported))
-                        .setMessage(getString(R.string.dialog_api_warning_msg))
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show()
-                } else {
-                    startActivity(Intent(this, LspTestActivity::class.java))
-                }
-            }
 
             R.id.text_undo -> editor.undo()
             R.id.text_redo -> editor.redo()
@@ -634,67 +622,6 @@ class MainActivity : AppCompatActivity() {
             R.id.useIcu -> {
                 item.isChecked = !item.isChecked
                 editor.props.useICULibToSelectWords = item.isChecked
-            }
-
-            R.id.ln_panel_fixed -> {
-                val themes = arrayOf(
-                    getString(R.string.top),
-                    getString(R.string.bottom),
-                    getString(R.string.left),
-                    getString(R.string.right),
-                    getString(R.string.center),
-                    getString(R.string.top_left),
-                    getString(R.string.top_right),
-                    getString(R.string.bottom_left),
-                    getString(R.string.bottom_right)
-                )
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.fixed)
-                    .setSingleChoiceItems(themes, -1) { dialog: DialogInterface, which: Int ->
-                        editor.lnPanelPositionMode = LineInfoPanelPositionMode.FIXED
-                        when (which) {
-                            0 -> editor.lnPanelPosition = LineInfoPanelPosition.TOP
-                            1 -> editor.lnPanelPosition = LineInfoPanelPosition.BOTTOM
-                            2 -> editor.lnPanelPosition = LineInfoPanelPosition.LEFT
-                            3 -> editor.lnPanelPosition = LineInfoPanelPosition.RIGHT
-                            4 -> editor.lnPanelPosition = LineInfoPanelPosition.CENTER
-                            5 -> editor.lnPanelPosition =
-                                LineInfoPanelPosition.TOP or LineInfoPanelPosition.LEFT
-
-                            6 -> editor.lnPanelPosition =
-                                LineInfoPanelPosition.TOP or LineInfoPanelPosition.RIGHT
-
-                            7 -> editor.lnPanelPosition =
-                                LineInfoPanelPosition.BOTTOM or LineInfoPanelPosition.LEFT
-
-                            8 -> editor.lnPanelPosition =
-                                LineInfoPanelPosition.BOTTOM or LineInfoPanelPosition.RIGHT
-                        }
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
-            }
-
-            R.id.ln_panel_follow -> {
-                val themes = arrayOf(
-                    getString(R.string.top),
-                    getString(R.string.center),
-                    getString(R.string.bottom)
-                )
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.fixed)
-                    .setSingleChoiceItems(themes, -1) { dialog: DialogInterface, which: Int ->
-                        editor.lnPanelPositionMode = LineInfoPanelPositionMode.FOLLOW
-                        when (which) {
-                            0 -> editor.lnPanelPosition = LineInfoPanelPosition.TOP
-                            1 -> editor.lnPanelPosition = LineInfoPanelPosition.CENTER
-                            2 -> editor.lnPanelPosition = LineInfoPanelPosition.BOTTOM
-                        }
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
             }
 
             R.id.code_format -> editor.formatCodeAsync()
