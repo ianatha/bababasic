@@ -67,7 +67,12 @@ public final class PuffinBasicInterpreterMain {
         logTimeTaken("LOAD", t0, userOptions.timing);
 
         var stdinout = new SystemInputOutputFile(System.in, System.out);
-        interpretAndRun(userOptions, mainSource, sourceCode, stdinout, new SystemEnv());
+        try {
+            interpretAndRun(userOptions, mainSource, sourceCode, stdinout, new SystemEnv());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     private static UserOptions parseCommandLineArgs(String... args) {
@@ -129,7 +134,7 @@ public final class PuffinBasicInterpreterMain {
             UserOptions userOptions,
             String sourceCode,
             PuffinBasicFile stdinout,
-            Environment env)
+            Environment env) throws PuffinBasicRuntimeError
     {
         interpretAndRun(userOptions, UNKNOWN_SOURCE_FILE, sourceCode, stdinout, env);
     }
@@ -140,7 +145,7 @@ public final class PuffinBasicInterpreterMain {
             String sourceFilename,
             String sourceCode,
             PuffinBasicFile stdinout,
-            Environment env)
+            Environment env) throws PuffinBasicRuntimeError
     {
         var importPath = new PuffinBasicImportPath(sourceFilename);
 
@@ -173,7 +178,8 @@ public final class PuffinBasicInterpreterMain {
 
         log("RUN", userOptions.timing);
         Instant t3 = Instant.now();
-        run(ir, stdinout, env);
+        PuffinBasicRuntime runtime = new PuffinBasicRuntime(ir, stdinout, env);
+        runtime.run();
         logTimeTaken("RUN", t3, userOptions.timing);
     }
 
@@ -192,7 +198,11 @@ public final class PuffinBasicInterpreterMain {
 
     private static void run(PuffinBasicIR ir, PuffinBasicFile out, Environment env) {
         var runtime = new PuffinBasicRuntime(ir, out, env);
-        runtime.run();
+        try {
+            runtime.run();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static PuffinBasicIR generateIR(PuffinBasicSourceFile sourceFile, boolean graphics) {
