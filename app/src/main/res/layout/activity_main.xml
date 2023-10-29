@@ -103,7 +103,7 @@
         android:id="@+id/editor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="40dp"
         android:scrollbarThumbHorizontal="@drawable/scrollbar_thumb"
         android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
         android:scrollbarTrackHorizontal="@drawable/scrollbar_track"
@@ -113,8 +113,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="-56dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-40dp"
         android:orientation="vertical">
 
         <HorizontalScrollView
@@ -128,12 +128,6 @@
 
         </HorizontalScrollView>
 
-        <TextView
-            android:id="@+id/position_display"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="13sp" />
 
     </LinearLayout>
 
