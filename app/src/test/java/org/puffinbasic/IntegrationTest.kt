@@ -2,6 +2,7 @@ package org.puffinbasic
 
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.puffinbasic.PuffinBasicInterpreterMain.UserOptions
 import org.puffinbasic.error.PuffinBasicRuntimeError
@@ -41,6 +42,8 @@ class IntegrationTest {
 
     @Test fun testExpr() = runTest("expr.bas", "expr.bas.output")
 
+    @Ignore /* Different Java VMs cause different length for arbitrary-precision numbers,
+    which causes the output of this test to vary slightly. */
     @Test fun testFunc() = runTest("func.bas", "func.bas.output")
 
     @Test fun testFunc2() = runTest("func2.bas", "func2.bas.output")
