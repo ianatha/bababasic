@@ -72,6 +72,9 @@ class LinenumberListener(
     override fun exitLine(ctx: LineContext) {
         val line = input.getText(Interval(ctx.start.startIndex, ctx.stop.stopIndex))
         val linenum: Int
+        if (line.isBlank()) {
+            return
+        }
         if (ctx.linenum() != null) {
             linenum = parseLinenum(ctx.linenum().DECIMAL().text)
             numLinenum++
