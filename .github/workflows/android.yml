@@ -18,12 +18,6 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Update versionCode
-      uses: chkfung/android-version-actions@v1.2.1
-      with:
-        gradlePath: app/build.gradle.kts
-        versionCode: ${{github.run_number}}
-
     - name: Build with Gradle
       run: ./gradlew build
 
