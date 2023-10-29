@@ -64,10 +64,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation(platform("io.github.Rosemoe.sora-editor:bom:0.22.1"))
     implementation("io.github.Rosemoe.sora-editor:editor")
-    implementation("io.github.Rosemoe.sora-editor:editor-lsp")
     implementation("io.github.Rosemoe.sora-editor:language-java")
     implementation("io.github.Rosemoe.sora-editor:language-textmate")
-    implementation("io.github.Rosemoe.sora-editor:language-treesitter")
 
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")

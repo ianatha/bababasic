@@ -68,7 +68,7 @@ class RunActivity : AppCompatActivity() {
 //        val renderer = TerminalRenderer(10, Typeface.defaultFromStyle(Typeface.MONOSPACE.style))
 //        val emulator = TerminalEmulator(AndroidTerminal(), 80, 24, 100)
 //        setContentView(editor)
-//        editor.typefaceText = Typeface.createFromAsset(assets, "Roboto-Regular.ttf")
+//        editor.typefaceText = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
 //        editor.setEditorLanguage(JavaLanguage())
 //        switchThemeIfRequired(this, editor)
 //        val text = StringBuilder("    private final PopupWindow mWindow;\r\n" +
