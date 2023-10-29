@@ -2,8 +2,6 @@
       
   <string name="app_name">BabaBASIC</string>
       
-  <string name="open_debug_logs">Öffnen Sie Debug-Protokolle</string>
-      
   <string name="layout_tv_last">Zuletzt</string>
       
   <string name="layout_tv_next">Nächste</string>
@@ -16,91 +14,27 @@
       
   <string name="replacement">Ersatz</string>
       
-  <string name="cursor_actions">Cursoraktionen</string>
-      
-  <string name="go_to_end">Gehe zum Ende</string>
-      
-  <string name="move_up">Nach oben bewegen</string>
-      
-  <string name="move_down">Sich abwärts bewegen</string>
-      
-  <string name="move_left">Geh nach links</string>
-      
-  <string name="move_right">Nach rechts bewegen</string>
-      
-  <string name="home">Heim</string>
-      
-  <string name="end">Ende</string>
-      
-  <string name="text_actions">Textaktionen</string>
-      
-  <string name="switch_color_scheme">Farbschema wechseln</string>
-      
   <string name="undo">Rückgängig machen</string>
       
   <string name="redo">Wiederholen</string>
       
   <string name="search_text">Suchtext</string>
       
-  <string name="action_mode">Aktionsmodus</string>
-      
   <string name="search_panel">Suchfeld</string>
-      
-  <string name="code_navigation">Code-Navigation</string>
-      
-  <string name="format">Format</string>
-      
-  <string name="code_navi">Code-Navigation</string>
-      
-  <string name="navi_err_msg">Code-Navigation nicht vorbereitet oder nicht unterstützt</string>
-      
+
   <string name="color_scheme">Farbschema</string>
       
-  <string name="err_crash">Es ist eine unerwartete Ausnahme aufgetreten. Das Absturzprotokoll wird unter crash-journal.log im privaten Dateiverzeichnis gespeichert. </string>
-      
   <string name="wordwrap">Zeilenumbruch</string>
-      
-  <string name="show_crash_log">Absturzprotokoll öffnen</string>
-      
-  <string name="clear_crash_log">Absturzprotokoll löschen</string>
       
   <string name="line_number_visibility">Zeilennummer anzeigen</string>
       
   <string name="pin_line_number">Pin-Liniennummer</string>
       
-  <string name="feature_switches">Funktionsschalter</string>
+  <string name="settings">Einstellungen</string>
       
   <string name="magnifier">Lupe</string>
       
-  <string name="use_icu_library">Nutzen Sie die Bibliothek der Intensivstation</string>
-      
   <string name="open_completion_window_animation">Animation des Abschlussfensters</string>
-      
-  <string name="not_supported">Nicht unterstützt</string>
-      
-  <string name="dialog_api_warning_msg">LSP funktioniert nur auf Android O oder höher</string>
-      
-  <string name="top">Spitze</string>
-      
-  <string name="bottom">Unten</string>
-      
-  <string name="left">Links</string>
-      
-  <string name="right">Rechts</string>
-      
-  <string name="center">Center</string>
-      
-  <string name="top_left">Oben links</string>
-      
-  <string name="top_right">Oben rechts</string>
-      
-  <string name="bottom_left">Unten links</string>
-      
-  <string name="bottom_right">Unten rechts</string>
-      
-  <string name="open_debug_document">Öffnen Sie View.java</string>
-      
-  <string name="debug">Debuggen</string>
       
   <string name="layout_tv_search_options">Optionen</string>
       
