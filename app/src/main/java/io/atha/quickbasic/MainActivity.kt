@@ -573,10 +573,6 @@ class MainActivity : AppCompatActivity() {
 
             R.id.text_undo -> editor.undo()
             R.id.text_redo -> editor.redo()
-            R.id.goto_end -> editor.setSelection(
-                editor.text.lineCount - 1,
-                editor.text.getColumnCount(editor.text.lineCount - 1)
-            )
 
             R.id.run_script -> {
                 var fileName = "editor.bas"
@@ -608,23 +604,10 @@ class MainActivity : AppCompatActivity() {
                 editor.setText(editor.text.toString() + "REM --- OUTPUT END\n")
             }
 
-            R.id.move_up -> editor.moveSelectionUp()
-            R.id.move_down -> editor.moveSelectionDown()
-            R.id.home -> editor.moveSelectionHome()
-            R.id.end -> editor.moveSelectionEnd()
-            R.id.move_left -> editor.moveSelectionLeft()
-            R.id.move_right -> editor.moveSelectionRight()
             R.id.magnifier -> {
                 item.isChecked = !item.isChecked
                 editor.getComponent(Magnifier::class.java).isEnabled = item.isChecked
             }
-
-            R.id.useIcu -> {
-                item.isChecked = !item.isChecked
-                editor.props.useICULibToSelectWords = item.isChecked
-            }
-
-            R.id.code_format -> editor.formatCodeAsync()
 
             R.id.search_panel_st -> {
                 if (binding.searchPanel.visibility == View.GONE) {
@@ -640,13 +623,6 @@ class MainActivity : AppCompatActivity() {
                     editor.searcher.stopSearch()
                     item.isChecked = false
                 }
-            }
-
-            R.id.search_am -> {
-                binding.replaceEditor.setText("")
-                binding.searchEditor.setText("")
-                editor.searcher.stopSearch()
-                editor.beginSearchMode()
             }
 
             R.id.switch_colors -> {

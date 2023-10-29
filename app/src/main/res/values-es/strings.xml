@@ -2,8 +2,6 @@
       
   <string name="app_name">BabaBÁSICO</string>
       
-  <string name="open_debug_logs">Abrir registros de depuración</string>
-      
   <string name="layout_tv_last">Último</string>
       
   <string name="layout_tv_next">Próximo</string>
@@ -16,53 +14,21 @@
       
   <string name="replacement">Reemplazo</string>
       
-  <string name="cursor_actions">Acciones del cursor</string>
-      
-  <string name="go_to_end">Ir al final</string>
-      
-  <string name="move_up">Ascender</string>
-      
-  <string name="move_down">Mover hacia abajo</string>
-      
-  <string name="move_left">Mover hacia la izquierda</string>
-      
-  <string name="move_right">Mover a la derecha</string>
-      
-  <string name="home">Hogar</string>
-      
-  <string name="end">Fin</string>
-      
-  <string name="text_actions">Acciones de texto</string>
-      
-  <string name="switch_color_scheme">Cambiar esquema de color</string>
-      
   <string name="undo">Deshacer</string>
       
   <string name="redo">Rehacer</string>
       
   <string name="search_text">Buscar texto</string>
       
-  <string name="action_mode">Modo de acción</string>
-      
   <string name="search_panel">Panel de búsqueda</string>
       
-  <string name="code_navigation">Navegación de código</string>
-      
   <string name="format">Formato</string>
-      
-  <string name="code_navi">Navegación de código</string>
-      
-  <string name="navi_err_msg">Navegación de código no preparada o no compatible</string>
       
   <string name="color_scheme">Esquema de colores</string>
       
   <string name="err_crash">Se produjo una excepción inesperada. El registro de fallos se guarda en crash-journal.log en el directorio de archivos privados. </string>
       
   <string name="wordwrap">Ajuste de línea</string>
-      
-  <string name="show_crash_log">Abrir registro de fallos</string>
-      
-  <string name="clear_crash_log">Borrar registro de fallos</string>
       
   <string name="line_number_visibility">Mostrar número de línea</string>
       
@@ -72,35 +38,9 @@
       
   <string name="magnifier">lupa</string>
       
-  <string name="use_icu_library">Usar la biblioteca de la UCI</string>
-      
   <string name="open_completion_window_animation">Animación de la ventana de finalización</string>
       
-  <string name="not_supported">No soportado</string>
-      
   <string name="dialog_api_warning_msg">LSP solo funciona en Android O o superior</string>
-      
-  <string name="top">Arriba</string>
-      
-  <string name="bottom">Abajo</string>
-      
-  <string name="left">Izquierda</string>
-      
-  <string name="right">Bien</string>
-      
-  <string name="center">Centro</string>
-      
-  <string name="top_left">Arriba a la izquierda</string>
-      
-  <string name="top_right">Parte superior derecha</string>
-      
-  <string name="bottom_left">Abajo a la izquierda</string>
-      
-  <string name="bottom_right">Abajo a la derecha</string>
-      
-  <string name="open_debug_document">Abrir Vista.java</string>
-      
-  <string name="debug">Depurar</string>
       
   <string name="layout_tv_search_options">Opciones</string>
       
