@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         inputView.addSymbols(
             arrayOf(
                 "->",
+                "=",
                 "$",
                 "%",
                 "(",
@@ -136,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                 "-",
                 "*",
                 "/"
-            ), arrayOf("\t", "$", "%", "(", ")", "\"", ",", ".", "+", "-", "*", "/")
+            ), arrayOf("\t", "=", "$", "%", "(", ")", "\"", ",", ".", "+", "-", "*", "/")
         )
         inputView.forEachButton {
             it.typeface = typeface
