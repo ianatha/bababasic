@@ -90,9 +90,6 @@
         android:title="@string/switch_color_scheme" />
 
     <item
-        android:id="@+id/open_test_activity"
-        android:title="@string/open_new_activity" />
-    <item
         android:id="@+id/text_undo"
         android:icon="@drawable/undo"
         android:title="@string/undo"
