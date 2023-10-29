@@ -199,12 +199,6 @@ class MainActivity : AppCompatActivity() {
                 if (event.eventType != EditorKeyEvent.Type.DOWN) {
                     return@subscribeEvent
                 }
-
-                Toast.makeText(
-                    context,
-                    "Keybinding event: " + generateKeybindingString(event),
-                    Toast.LENGTH_LONG
-                ).show()
             }
 
             getComponent<EditorAutoCompletion>()
