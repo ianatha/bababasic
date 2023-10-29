@@ -94,16 +94,6 @@ import java.util.stream.Collectors
 
 
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        init {
-            // Load tree-sitter libraries
-            System.loadLibrary("android-tree-sitter")
-//            System.loadLibrary("tree-sitter-java")
-        }
-
-    }
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var searchMenu: PopupMenu
     private var searchOptions = SearchOptions(false, false)
