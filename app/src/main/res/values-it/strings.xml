@@ -2,8 +2,6 @@
       
   <string name="app_name">BabaBASIC</string>
       
-  <string name="open_debug_logs">Apri registri di debug</string>
-      
   <string name="layout_tv_last">Scorso</string>
       
   <string name="layout_tv_next">Prossimo</string>
@@ -15,92 +13,28 @@
   <string name="text_to_search">Testo da cercare</string>
       
   <string name="replacement">Sostituzione</string>
-      
-  <string name="cursor_actions">Azioni del cursore</string>
-      
-  <string name="go_to_end">Vai alla fine</string>
-      
-  <string name="move_up">Andare avanti</string>
-      
-  <string name="move_down">Abbassati</string>
-      
-  <string name="move_left">Muovere a sinistra</string>
-      
-  <string name="move_right">Vai a destra</string>
-      
-  <string name="home">Casa</string>
-      
-  <string name="end">FINE</string>
-      
-  <string name="text_actions">Azioni di testo</string>
-      
-  <string name="switch_color_scheme">Cambia combinazione di colori</string>
-      
+
   <string name="undo">Disfare</string>
       
   <string name="redo">Rifare</string>
       
   <string name="search_text">Cerca testo</string>
       
-  <string name="action_mode">Modalità di azione</string>
-      
   <string name="search_panel">Pannello di ricerca</string>
-      
-  <string name="code_navigation">Navigazione del codice</string>
-      
-  <string name="format">Formato</string>
-      
-  <string name="code_navi">Navigazione del codice</string>
-      
-  <string name="navi_err_msg">Navigazione del codice non preparata o non supportata</string>
       
   <string name="color_scheme">Combinazione di colori</string>
       
-  <string name="err_crash">Si è verificata un\'eccezione imprevista. Il registro degli arresti anomali viene salvato in crash-journal.log nella directory dei file privati. </string>
-      
   <string name="wordwrap">Avvolgiparola</string>
-      
-  <string name="show_crash_log">Apri il registro degli arresti anomali</string>
-      
-  <string name="clear_crash_log">Cancella il registro degli arresti anomali</string>
-      
+
   <string name="line_number_visibility">Mostra il numero di riga</string>
       
   <string name="pin_line_number">Pin Numero di linea</string>
       
-  <string name="feature_switches">Interruttori di funzionalità</string>
+  <string name="settings">Impostazioni</string>
       
   <string name="magnifier">Lente d\'ingrandimento</string>
       
-  <string name="use_icu_library">Utilizza la libreria ICU</string>
-      
   <string name="open_completion_window_animation">Animazione della finestra di completamento</string>
-      
-  <string name="not_supported">Non supportato</string>
-      
-  <string name="dialog_api_warning_msg">LSP funziona solo su Android O o versioni successive</string>
-      
-  <string name="top">Superiore</string>
-      
-  <string name="bottom">Metter il fondo a</string>
-      
-  <string name="left">Sinistra</string>
-      
-  <string name="right">Giusto</string>
-      
-  <string name="center">Centro</string>
-      
-  <string name="top_left">A sinistra in alto</string>
-      
-  <string name="top_right">In alto a destra</string>
-      
-  <string name="bottom_left">In basso a sinistra</string>
-      
-  <string name="bottom_right">In basso a destra</string>
-      
-  <string name="open_debug_document">Apri View.java</string>
-      
-  <string name="debug">Debug</string>
       
   <string name="layout_tv_search_options">Opzioni</string>
       
