@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+      
+  <string name="app_name">BabaBASIC</string>
+      
+  <string name="open_debug_logs">Abrir logs de depuração</string>
+      
+  <string name="layout_tv_last">Durar</string>
+      
+  <string name="layout_tv_next">Próximo</string>
+      
+  <string name="layout_tv_replace">Substituir</string>
+      
+  <string name="layout_tv_replaceAll">Substitua tudo</string>
+      
+  <string name="text_to_search">Texto para pesquisar</string>
+      
+  <string name="replacement">Substituição</string>
+      
+  <string name="cursor_actions">Ações do cursor</string>
+      
+  <string name="go_to_end">Ir para o fim</string>
+      
+  <string name="move_up">Subir</string>
+      
+  <string name="move_down">Mover para baixo</string>
+      
+  <string name="move_left">Mova para a esquerda</string>
+      
+  <string name="move_right">Mover para a direita</string>
+      
+  <string name="home">Lar</string>
+      
+  <string name="end">Fim</string>
+      
+  <string name="text_actions">Ações de texto</string>
+      
+  <string name="switch_color_scheme">Mudar esquema de cores</string>
+      
+  <string name="undo">Desfazer</string>
+      
+  <string name="redo">Refazer</string>
+      
+  <string name="search_text">Texto de pesquisa</string>
+      
+  <string name="action_mode">Modo de ação</string>
+      
+  <string name="search_panel">Painel de pesquisa</string>
+      
+  <string name="code_navigation">Navegação de código</string>
+      
+  <string name="format">Formatar</string>
+      
+  <string name="code_navi">Navegação de código</string>
+      
+  <string name="navi_err_msg">Navegação de código não preparada ou sem suporte</string>
+      
+  <string name="color_scheme">Esquema de cores</string>
+      
+  <string name="err_crash">Ocorreu uma exceção inesperada. O log de falhas é salvo em crash-journal.log no diretório de arquivos privados. </string>
+      
+  <string name="wordwrap">Quebra de linha</string>
+      
+  <string name="show_crash_log">Abrir registro de falhas</string>
+      
+  <string name="clear_crash_log">Limpar registro de falhas</string>
+      
+  <string name="line_number_visibility">Mostrar número da linha</string>
+      
+  <string name="pin_line_number">Número da linha do pino</string>
+      
+  <string name="feature_switches">Opções de recursos</string>
+      
+  <string name="magnifier">Lupa</string>
+      
+  <string name="use_icu_library">Use a biblioteca da UTI</string>
+      
+  <string name="open_new_activity">Abrir nova atividade</string>
+      
+  <string name="open_completion_window_animation">Animação da janela de conclusão</string>
+      
+  <string name="not_supported">Não suportado</string>
+      
+  <string name="dialog_api_warning_msg">LSP funciona apenas no Android O ou superior</string>
+      
+  <string name="top">Principal</string>
+      
+  <string name="bottom">Fundo</string>
+      
+  <string name="left">Esquerda</string>
+      
+  <string name="right">Certo</string>
+      
+  <string name="center">Centro</string>
+      
+  <string name="top_left">Canto superior esquerdo</string>
+      
+  <string name="top_right">Canto superior direito</string>
+      
+  <string name="bottom_left">Inferior esquerdo</string>
+      
+  <string name="bottom_right">Canto inferior direito</string>
+      
+  <string name="open_debug_document">Abra View.java</string>
+      
+  <string name="debug">Depurar</string>
+      
+  <string name="layout_tv_search_options">Opções</string>
+      
+  <string name="search_option_regex">Regex</string>
+      
+  <string name="search_option_whole_word">Palavra inteira</string>
+      
+  <string name="search_option_match_case">Caso de compatibilidade</string>
+      
+  <string name="paste_text">Colar</string>
+      
+  <string name="copy_text">cópia de</string>
+      
+  <string name="text_selection_more">Mais…</string>
+  
+</resources>

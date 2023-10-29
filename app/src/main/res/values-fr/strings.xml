@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+      
+  <string name="app_name">BabaBASIC</string>
+      
+  <string name="open_debug_logs">Ouvrir les journaux de débogage</string>
+      
+  <string name="layout_tv_last">Dernier</string>
+      
+  <string name="layout_tv_next">Suivant</string>
+      
+  <string name="layout_tv_replace">Remplacer</string>
+      
+  <string name="layout_tv_replaceAll">Remplace tout</string>
+      
+  <string name="text_to_search">Texte à rechercher</string>
+      
+  <string name="replacement">Remplacement</string>
+      
+  <string name="cursor_actions">Actions du curseur</string>
+      
+  <string name="go_to_end">Aller à la fin</string>
+      
+  <string name="move_up">Déplacer vers le haut</string>
+      
+  <string name="move_down">Descendre</string>
+      
+  <string name="move_left">Se déplacer à gauche</string>
+      
+  <string name="move_right">Déplacer vers la droite</string>
+      
+  <string name="home">Maison</string>
+      
+  <string name="end">Fin</string>
+      
+  <string name="text_actions">Actions de texte</string>
+      
+  <string name="switch_color_scheme">Changer le schéma de couleurs</string>
+      
+  <string name="undo">annuler</string>
+      
+  <string name="redo">Refaire</string>
+      
+  <string name="search_text">Rechercher du texte</string>
+      
+  <string name="action_mode">Mode d\'action</string>
+      
+  <string name="search_panel">Panneau de recherche</string>
+      
+  <string name="code_navigation">Navigation dans les codes</string>
+      
+  <string name="format">Format</string>
+      
+  <string name="code_navi">Navigation dans les codes</string>
+      
+  <string name="navi_err_msg">Navigation dans le code non préparée ou non prise en charge</string>
+      
+  <string name="color_scheme">Schéma de couleur</string>
+      
+  <string name="err_crash">Une exception inattendue s\'est produite. Le journal des pannes est enregistré dans crash-journal.log dans le répertoire de fichiers privés. </string>
+      
+  <string name="wordwrap">Retour à la ligne</string>
+      
+  <string name="show_crash_log">Ouvrir le journal des incidents</string>
+      
+  <string name="clear_crash_log">Effacer le journal des accidents</string>
+      
+  <string name="line_number_visibility">Afficher le numéro de ligne</string>
+      
+  <string name="pin_line_number">Numéro de ligne de broche</string>
+      
+  <string name="feature_switches">Commutateurs de fonctionnalités</string>
+      
+  <string name="magnifier">Loupe</string>
+      
+  <string name="use_icu_library">Utiliser la bibliothèque ICU</string>
+      
+  <string name="open_new_activity">Ouvrir une nouvelle activité</string>
+      
+  <string name="open_completion_window_animation">Animation de la fenêtre d\'achèvement</string>
+      
+  <string name="not_supported">Non supporté</string>
+      
+  <string name="dialog_api_warning_msg">LSP fonctionne uniquement sur Android O ou supérieur</string>
+      
+  <string name="top">Haut</string>
+      
+  <string name="bottom">Bas</string>
+      
+  <string name="left">Gauche</string>
+      
+  <string name="right">Droite</string>
+      
+  <string name="center">Centre</string>
+      
+  <string name="top_left">En haut à gauche</string>
+      
+  <string name="top_right">En haut à droite</string>
+      
+  <string name="bottom_left">En bas à gauche</string>
+      
+  <string name="bottom_right">En bas à droite</string>
+      
+  <string name="open_debug_document">Ouvrir View.java</string>
+      
+  <string name="debug">Déboguer</string>
+      
+  <string name="layout_tv_search_options">Possibilités</string>
+      
+  <string name="search_option_regex">Expression régulière</string>
+      
+  <string name="search_option_whole_word">Mot entier</string>
+      
+  <string name="search_option_match_case">Cas de correspondance</string>
+      
+  <string name="paste_text">Pâte</string>
+      
+  <string name="copy_text">Copie</string>
+      
+  <string name="text_selection_more">Plus…</string>
+  
+</resources>
