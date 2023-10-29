@@ -1,8 +1,6 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -29,26 +27,12 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    - name: Assemble Release Bundle
+    - name: Assemble Debug APK
       run: |
-        ./gradlew bundleRelease
+        ./gradlew assembleDebug
 
-    - name: Sign Release
-      uses: r0adkll/sign-android-release@v1
+    - name: Upload APK
+      uses: actions/upload-artifact@v1
       with:
-        releaseDirectory: app/build/outputs/bundle/release
-        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-        alias: ${{ secrets.ALIAS }}
-        keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-        keyPassword: ${{ secrets.KEY_PASSWORD }}
-
-    - name: Create service_account.json
-      run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
-
-    - name: Deploy to Alpha
-      uses: r0adkll/upload-google-play@v1
-      with:
-        serviceAccountJson: service_account.json
-        packageName: io.atha.bababasic
-        releaseFiles: app/build/outputs/bundle/release/app-release.aab
-        track: internal
+        name: apk
+        path: app/build/outputs/apk/debug/app-debug.apk 
