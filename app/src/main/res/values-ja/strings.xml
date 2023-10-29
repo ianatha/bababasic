@@ -74,8 +74,6 @@
       
   <string name="use_icu_library">ICU ライブラリを利用する</string>
       
-  <string name="open_new_activity">新しいアクティビティを開く</string>
-      
   <string name="open_completion_window_animation">完了ウィンドウのアニメーション</string>
       
   <string name="not_supported">サポートされていません</string>
