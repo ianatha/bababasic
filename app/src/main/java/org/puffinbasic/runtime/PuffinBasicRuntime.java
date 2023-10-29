@@ -91,7 +91,7 @@ public class PuffinBasicRuntime {
         return instrNum;
     }
 
-    public void run() {
+    public void run() throws PuffinBasicRuntimeError {
         var instructions = ir.getInstructions();
         this.labelToInstrNum = computeLabelToInstructionNumber(instructions);
         this.lineNumToInstrNum = computeLineNumberToInstructionNumber(instructions);
@@ -119,8 +119,6 @@ public class PuffinBasicRuntime {
                     throw new PuffinBasicRuntimeError(e, instruction, ir.getCodeStreamFor(instruction));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
         } finally {
             GraphicsRuntime.end(graphicsState);
             soundState.close();
