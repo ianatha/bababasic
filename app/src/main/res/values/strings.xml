@@ -12,12 +12,10 @@
     <string name="color_scheme">Color Scheme</string>
     <string name="wordwrap">Wordwrap</string>
     <string name="line_number_visibility">Show line number</string>
-    <string name="pin_line_number">Pin LineNumber</string>
     <string name="settings">Settings</string>
     <string name="magnifier">Magnifier</string>
-    <string name="open_completion_window_animation">Completion Window Animation</string>
     <string name="layout_tv_search_options">Options</string>
-    <string name="search_option_regex">Regex</string>
+    <string name="search_option_regex">RegEx</string>
     <string name="search_option_whole_word">Whole Word</string>
     <string name="search_option_match_case">Match Case</string>
     <string name="paste_text">Paste</string>
