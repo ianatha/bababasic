@@ -14,7 +14,7 @@ import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.BAD_FUNCT
 import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.DATA_TYPE_MISMATCH;
 import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.FOR_WITHOUT_NEXT;
 import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.INSUFFICIENT_UDF_ARGS;
-import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.MISMATCHED_ELSEBEGIN;
+import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.MISMATCHED_ELSE_BEGIN;
 import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.MISMATCHED_ENDIF;
 import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.NEXT_WITHOUT_FOR;
 import static org.puffinbasic.error.PuffinBasicSemanticError.ErrorCode.WHILE_WITHOUT_WEND;
@@ -2956,7 +2956,7 @@ public class PuffinBasicIRListener extends PuffinBasicBaseListener {
     public void enterElsebeginstmt(PuffinBasicParser.ElsebeginstmtContext ctx) {
         if (ifStateList.isEmpty()) {
             throw new PuffinBasicSemanticError(
-                    MISMATCHED_ELSEBEGIN,
+                    MISMATCHED_ELSE_BEGIN,
                     getCtxString(ctx),
                     "ELSE BEGIN without IF THEN BEGIN"
             );
