@@ -6,6 +6,7 @@ import static org.puffinbasic.parser.PuffinBasicIR.OpCode.LABEL;
 
 import org.puffinbasic.error.PuffinBasicInternalError;
 import org.puffinbasic.error.PuffinBasicRuntimeError;
+import org.puffinbasic.error.PuffinBasicSyntaxError;
 import org.puffinbasic.file.PuffinBasicExtendedFile;
 import org.puffinbasic.file.PuffinBasicFile;
 import org.puffinbasic.file.PuffinBasicFiles;
@@ -113,8 +114,12 @@ public class PuffinBasicRuntime {
                 var instruction = instructions.get(programCounter);
                 try {
                     end = runInstruction(instruction);
-                } catch (PuffinBasicRuntimeError e) {
+                } catch (PuffinBasicInternalError e) {
                     throw new PuffinBasicRuntimeError(e, instruction, ir.getCodeStreamFor(instruction));
+                } catch (PuffinBasicSyntaxError e) {
+                    throw e;
+                } catch (PuffinBasicRuntimeError e) {
+                    throw e;
                 } catch (Exception e) {
                     throw new PuffinBasicRuntimeError(e, instruction, ir.getCodeStreamFor(instruction));
                 }
