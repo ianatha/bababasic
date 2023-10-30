@@ -3,6 +3,7 @@ package io.atha.quickbasic
 import android.app.Activity
 import android.app.AlertDialog
 import android.text.InputType
+import android.util.Log
 import android.widget.EditText
 import io.github.rosemoe.sora.widget.CodeEditor
 import kotlinx.coroutines.CoroutineScope
@@ -59,6 +60,7 @@ class AndroidSystemInAndOut(private val editor: CodeEditor, val context: Activit
     }
 
     fun outputText(s: String) {
+        Log.i("out", s)
         val lines = s.split("\n").joinToString("\n") { "'$it" }
 
         CoroutineScope(Dispatchers.Main).launch {
