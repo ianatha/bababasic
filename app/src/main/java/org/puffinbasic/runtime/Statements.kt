@@ -1,6 +1,5 @@
 package org.puffinbasic.runtime
 
-import it.unimi.dsi.fastutil.ints.IntArrayList
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.apache.commons.csv.CSVRecord
@@ -257,11 +256,10 @@ object Statements {
         fields: List<PuffinBasicIR.Instruction>,
         instruction: PuffinBasicIR.Instruction
     ) {
-        val varList = IntArrayList(fields.size)
-        for (instrI in fields) {
+        val varList = fields.map { instrI ->
             val recordPartLen = symbolTable[instrI.op2]!!.value!!.int32
             symbolTable[instrI.op1]!!.value!!.fieldLength = recordPartLen
-            varList.add(instrI.op1)
+            instrI.op1
         }
         val fileNumber = symbolTable[instruction.op1]!!.value!!.int32
         files[fileNumber].setFieldParams(

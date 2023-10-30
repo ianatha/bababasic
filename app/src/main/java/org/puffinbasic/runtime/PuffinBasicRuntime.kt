@@ -1,9 +1,5 @@
 package org.puffinbasic.runtime
 
-import it.unimi.dsi.fastutil.ints.Int2IntMap
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
-import it.unimi.dsi.fastutil.ints.IntArrayList
-import it.unimi.dsi.fastutil.ints.IntStack
 import org.puffinbasic.domain.PuffinBasicSymbolTable
 import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
@@ -184,7 +180,9 @@ import org.puffinbasic.runtime.Statements.write
 import org.puffinbasic.runtime.Types.copy
 import org.puffinbasic.runtime.Types.paramCopy
 import org.puffinbasic.runtime.Types.varref
+import java.util.ArrayDeque
 import java.util.Random
+import java.util.Stack
 import java.util.stream.Collectors
 
 class PuffinBasicRuntime(
@@ -194,23 +192,23 @@ class PuffinBasicRuntime(
 ) {
     private var printBuffer: PrintBuffer? = null
     private var arrayState: ArrayState? = null
-    private var gosubReturnLabelStack: IntStack? = null
+    private var gosubReturnLabelStack: Stack<Int>? = null
     private var programCounter = 0
     private var random: Random? = null
-    private var labelToInstrNum: Int2IntMap? = null
-    private var lineNumToInstrNum: Int2IntMap? = null
+    private var labelToInstrNum: Map<Int, Int>? = null
+    private var lineNumToInstrNum: Map<Int, Int>? = null
     private var params: MutableList<PuffinBasicIR.Instruction>? = null
     private var formatterCache: FormatterCache? = null
     private var files: PuffinBasicFiles? = null
     private var readData: ReadData? = null
     private var graphicsState: GraphicsRuntime.GraphicsState? = null
     private var soundState: SoundState? = null
-    private fun computeLabelToInstructionNumber(instructions: List<PuffinBasicIR.Instruction>): Int2IntMap {
-        val labelToInstrNum: Int2IntMap = Int2IntOpenHashMap()
+    private fun computeLabelToInstructionNumber(instructions: List<PuffinBasicIR.Instruction>): MutableMap<Int, Int> {
+        val labelToInstrNum: MutableMap<Int, Int> = mutableMapOf()
         for (i in instructions.indices) {
             val instr = instructions[i]
             if (instr.opCode === OpCode.LABEL) {
-                labelToInstrNum.put(instr.op1, i)
+                labelToInstrNum[instr.op1] = i
             }
         }
         return labelToInstrNum
@@ -224,8 +222,8 @@ class PuffinBasicRuntime(
         return instrNum
     }
 
-    private fun computeLineNumberToInstructionNumber(instructions: List<PuffinBasicIR.Instruction>): Int2IntMap {
-        val linenumToInstrNum = Int2IntOpenHashMap()
+    private fun computeLineNumberToInstructionNumber(instructions: List<PuffinBasicIR.Instruction>): MutableMap<Int, Int> {
+        val linenumToInstrNum: MutableMap<Int, Int> = mutableMapOf()
         for ((instrNum, instruction) in instructions.withIndex()) {
             val lineNumber = instruction.inputRef.lineNumber
             if (lineNumber >= 0) {
@@ -250,7 +248,7 @@ class PuffinBasicRuntime(
         lineNumToInstrNum = computeLineNumberToInstructionNumber(instructions)
         printBuffer = PrintBuffer()
         arrayState = ArrayState()
-        gosubReturnLabelStack = IntArrayList()
+        gosubReturnLabelStack = Stack<Int>()
         random = Random()
         formatterCache = FormatterCache()
         params = ArrayList(4)
@@ -377,10 +375,10 @@ class PuffinBasicRuntime(
             OpCode.PUSH_RETLABEL -> gosubReturnLabelStack!!.push(instruction.op1)
             OpCode.RETURN -> {
                 nextProgramCounter = if (instruction.op1 == PuffinBasicSymbolTable.NULL_ID) {
-                    getInstrNumForLabel(gosubReturnLabelStack!!.popInt())
+                    getInstrNumForLabel(gosubReturnLabelStack!!.pop())
                 } else {
                     // Ignore label because we need to return to the lineNumber
-                    gosubReturnLabelStack!!.popInt()
+                    gosubReturnLabelStack!!.pop()
                     val lineNumber = ir.symbolTable[instruction.op1]!!.value!!.int32
                     getInstrNumForLineNumber(lineNumber)
                 }

@@ -36,9 +36,9 @@ class PuffinBasicSymbolTable {
     private var lastLastEntry: STEntry? = null
 
     init {
-        defaultDataTypes = newHashMap()
-        userDefinedTypes = newHashMap()
-        labelNameToId = newHashMap()
+        defaultDataTypes = mutableMapOf()
+        userDefinedTypes = mutableMapOf()
+        labelNameToId = mutableMapOf()
         idmaker = AtomicInteger()
         currentScope = Scope.GlobalScope()
         lastLastId = -1
