@@ -82,9 +82,11 @@ import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
 import org.puffinbasic.PuffinBasicInterpreterMain
 import org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun
+import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
 import org.puffinbasic.runtime.Environment
+import org.puffinbasic.runtime.SystemEnv
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -579,7 +581,7 @@ class MainActivity : AppCompatActivity() {
                         fileName,
                         sourceCode,
                         AndroidSystemInAndOut(binding.editor, this),
-                        Environment.SystemEnv(),
+                        SystemEnv(),
                     )
                 } catch (e: PuffinBasicRuntimeError) {
                     Log.e("qb", "error", e)
