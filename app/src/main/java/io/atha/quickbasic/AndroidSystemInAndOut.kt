@@ -4,6 +4,9 @@ import android.app.AlertDialog
 import android.content.Context
 import io.github.rosemoe.sora.widget.CodeEditor
 import it.unimi.dsi.fastutil.ints.IntList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.puffinbasic.domain.PuffinBasicSymbolTable
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.file.PuffinBasicExtendedFile
@@ -27,7 +30,10 @@ class AndroidSystemInAndOut(private val editor: CodeEditor, val context: Context
 
     fun outputText(s: String) {
         val lines = s.split("\n").joinToString("\n") { "'$it" }
-        editor.setText("${editor.text}\n$lines")
+
+        CoroutineScope(Dispatchers.Main).launch {
+            editor.setText("${editor.text}\n$lines")
+        }
     }
 
     override fun setFieldParams(symbolTable: PuffinBasicSymbolTable, recordParts: IntList) {
