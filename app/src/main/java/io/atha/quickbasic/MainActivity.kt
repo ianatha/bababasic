@@ -46,6 +46,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import io.atha.quickbasic.databinding.ActivityMainBinding
 import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.event.EditorKeyEvent
@@ -78,6 +79,9 @@ import io.github.rosemoe.sora.widget.schemes.SchemeGitHub
 import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX
 import io.github.rosemoe.sora.widget.schemes.SchemeVS2019
 import io.github.rosemoe.sora.widget.subscribeEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
 import org.puffinbasic.PuffinBasicInterpreterMain
@@ -577,27 +581,30 @@ class MainActivity : AppCompatActivity() {
                     fileName,
                 )
 
-                val stdin = AndroidSystemInAndOut(binding.editor, this)
-                try {
-                    interpretAndRun(
-                        userOptions,
-                        fileName,
-                        sourceCode,
-                        stdin,
-                        SystemEnv(),
-                    )
-                } catch (e: PuffinBasicInternalError) {
-                    Log.e("qb", "error", e)
-                    stdin.outputText("!!! INTERNAL ERROR: ${e.message}")
-                } catch (e: PuffinBasicRuntimeError) {
-                    Log.e("qb", "error", e)
-                    stdin.outputText("!!! RUNTIME ERROR: ${e.message}")
-                } catch (e: PuffinBasicSyntaxError) {
-                    Log.e("qb", "error", e)
-                    stdin.outputText("!!! SYNTAX ERROR: ${e.message}")
+                val context = this
+                CoroutineScope(Dispatchers.IO).launch {
+                    val stdin = AndroidSystemInAndOut(binding.editor, context)
+                    try {
+                        interpretAndRun(
+                            userOptions,
+                            fileName,
+                            sourceCode,
+                            stdin,
+                            SystemEnv(),
+                        )
+                    } catch (e: PuffinBasicInternalError) {
+                        Log.e("qb", "error", e)
+                        stdin.outputText("!!! INTERNAL ERROR: ${e.message}")
+                    } catch (e: PuffinBasicRuntimeError) {
+                        Log.e("qb", "error", e)
+                        stdin.outputText("!!! RUNTIME ERROR: ${e.message}")
+                    } catch (e: PuffinBasicSyntaxError) {
+                        Log.e("qb", "error", e)
+                        stdin.outputText("!!! SYNTAX ERROR: ${e.message}")
+                    }
+                    Log.i("qb", "DONE")
+                    stdin.outputText("--- OUTPUT END")
                 }
-                Log.i("qb", "DONE")
-                stdin.outputText("--- OUTPUT END")
             }
 
             R.id.about -> {
