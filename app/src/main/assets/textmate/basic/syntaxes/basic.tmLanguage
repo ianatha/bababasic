@@ -55,7 +55,7 @@
 			<key>comment</key>
 			<string>Function</string>
 			<key>match</key>
-			<string>\b(CHR\$|CLS|COLOR|DATA|INPUT|INT|KEY|LEN|LINE|LOCATE|PALETTE|PLAY|PRINT|PSET|PUT|REDIM|RND|SCREEN|TAB|VIEW)\b</string>
+			<string>\b(CHR\$|CLS|DIM|LTRIM$|RTRIM$|COLOR|RANDOMIZE|TIMER|DATA|INPUT|INT|KEY|LEN|LINE|LOCATE|PALETTE|PLAY|PRINT|PSET|PUT|REDIM|RND|SCREEN|TAB|VIEW)\b</string>
 			<key>name</key>
 			<string>support.function.qbasic</string>
 		</dict>
