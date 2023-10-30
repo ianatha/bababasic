@@ -3,7 +3,7 @@ package org.puffinbasic.error
 import org.puffinbasic.parser.PuffinBasicIR
 
 class PuffinBasicRuntimeError : RuntimeException {
-    private val errorCode: ErrorCode
+    val errorCode: ErrorCode
 
     constructor(errorCode: ErrorCode, message: String) : super(
         "[$errorCode] $message"
