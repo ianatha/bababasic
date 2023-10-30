@@ -578,12 +578,14 @@ class MainActivity : AppCompatActivity() {
                         userOptions,
                         fileName,
                         sourceCode,
-                        AndroidSystemInAndOut(binding.editor),
+                        AndroidSystemInAndOut(binding.editor, this),
                         Environment.SystemEnv(),
                     )
                 } catch (e: PuffinBasicRuntimeError) {
+                    Log.e("qb", "error", e)
                     editor.setText(editor.text.toString() + "REM !!! RUNTIME ERROR: " + e.message + "\n")
                 } catch (e: PuffinBasicSyntaxError) {
+                    Log.e("qb", "error", e)
                     editor.setText(editor.text.toString() + "REM !!! SYNTAX ERROR: " + e.message + "\n")
                 }
                 Log.i("qb", "DONE")

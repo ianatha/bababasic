@@ -27,6 +27,7 @@ import org.puffinbasic.antlr4.PuffinBasicParser;
 import org.puffinbasic.domain.PuffinBasicSymbolTable;
 import org.puffinbasic.error.PuffinBasicRuntimeError;
 import org.puffinbasic.error.PuffinBasicSyntaxError;
+import org.puffinbasic.file.PuffinBasicExtendedFile;
 import org.puffinbasic.file.PuffinBasicFile;
 import org.puffinbasic.file.SystemInputOutputFile;
 import org.puffinbasic.parser.LinenumberListener;
@@ -130,7 +131,7 @@ public final class PuffinBasicInterpreterMain {
     static void interpretAndRun(
             UserOptions userOptions,
             String sourceCode,
-            PuffinBasicFile stdinout,
+            PuffinBasicExtendedFile stdinout,
             Environment env) throws PuffinBasicRuntimeError {
         interpretAndRun(userOptions, UNKNOWN_SOURCE_FILE, sourceCode, stdinout, env);
     }
@@ -140,7 +141,7 @@ public final class PuffinBasicInterpreterMain {
             UserOptions userOptions,
             String sourceFilename,
             String sourceCode,
-            PuffinBasicFile stdinout,
+            PuffinBasicExtendedFile stdinout,
             Environment env) throws PuffinBasicRuntimeError {
         var importPath = new PuffinBasicImportPath(sourceFilename);
 
@@ -191,7 +192,7 @@ public final class PuffinBasicInterpreterMain {
         log("[" + tag + "] time taken = " + timeSec + " s", log);
     }
 
-    private static void run(PuffinBasicIR ir, PuffinBasicFile out, Environment env) {
+    private static void run(PuffinBasicIR ir, PuffinBasicExtendedFile out, Environment env) {
         var runtime = new PuffinBasicRuntime(ir, out, env);
         try {
             runtime.run();
