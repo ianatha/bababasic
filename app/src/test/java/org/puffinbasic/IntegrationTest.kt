@@ -10,7 +10,7 @@ import org.puffinbasic.PuffinBasicInterpreterMain.UserOptions
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.file.SystemInputOutputFile
 import org.puffinbasic.runtime.Environment
-import org.puffinbasic.runtime.Environment.SystemEnv
+import org.puffinbasic.runtime.SystemEnv
 import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException

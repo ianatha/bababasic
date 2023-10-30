@@ -37,7 +37,7 @@ import org.puffinbasic.parser.PuffinBasicIRListener;
 import org.puffinbasic.parser.PuffinBasicImportPath;
 import org.puffinbasic.parser.PuffinBasicSourceFile;
 import org.puffinbasic.runtime.Environment;
-import org.puffinbasic.runtime.Environment.SystemEnv;
+import org.puffinbasic.runtime.SystemEnv;
 import org.puffinbasic.runtime.PuffinBasicRuntime;
 
 import java.io.IOException;
