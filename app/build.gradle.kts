@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.play:app-update-ktx:2.0.1")
+
     implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics")
