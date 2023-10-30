@@ -6,6 +6,7 @@ import static org.puffinbasic.parser.PuffinBasicIR.OpCode.LABEL;
 
 import org.puffinbasic.error.PuffinBasicInternalError;
 import org.puffinbasic.error.PuffinBasicRuntimeError;
+import org.puffinbasic.file.PuffinBasicExtendedFile;
 import org.puffinbasic.file.PuffinBasicFile;
 import org.puffinbasic.file.PuffinBasicFiles;
 import org.puffinbasic.parser.PuffinBasicIR;
@@ -28,7 +29,7 @@ import it.unimi.dsi.fastutil.ints.IntStack;
 public class PuffinBasicRuntime {
 
     private final PuffinBasicIR ir;
-    private final PuffinBasicFile stdinout;
+    private final PuffinBasicExtendedFile stdinout;
     private final Environment env;
     private PrintBuffer printBuffer;
     private ArrayState arrayState;
@@ -44,7 +45,7 @@ public class PuffinBasicRuntime {
     private GraphicsState graphicsState;
     private SoundState soundState;
 
-    public PuffinBasicRuntime(PuffinBasicIR ir, PuffinBasicFile stdinout, Environment env) {
+    public PuffinBasicRuntime(PuffinBasicIR ir, PuffinBasicExtendedFile stdinout, Environment env) {
         this.ir = ir;
         this.stdinout = stdinout;
         this.env = env;

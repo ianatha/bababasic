@@ -11,10 +11,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class PuffinBasicFiles {
 
-    public final PuffinBasicFile sys;
+    public final PuffinBasicExtendedFile sys;
     private final Int2ObjectMap<PuffinBasicFile> files;
 
-    public PuffinBasicFiles(PuffinBasicFile sys) {
+    public PuffinBasicFiles(PuffinBasicExtendedFile sys) {
         this.files = new Int2ObjectOpenHashMap<>();
         this.sys = sys;
     }
