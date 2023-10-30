@@ -583,6 +583,9 @@ class MainActivity : AppCompatActivity() {
                         AndroidSystemInAndOut(binding.editor, this),
                         SystemEnv(),
                     )
+                } catch (e: PuffinBasicInternalError) {
+                    Log.e("qb", "error", e)
+                    editor.setText(editor.text.toString() + "REM !!! INTERNAL ERROR: " + e.message + "\n")
                 } catch (e: PuffinBasicRuntimeError) {
                     Log.e("qb", "error", e)
                     editor.setText(editor.text.toString() + "REM !!! RUNTIME ERROR: " + e.message + "\n")
