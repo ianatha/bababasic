@@ -28,7 +28,6 @@ import org.puffinbasic.domain.PuffinBasicSymbolTable;
 import org.puffinbasic.error.PuffinBasicRuntimeError;
 import org.puffinbasic.error.PuffinBasicSyntaxError;
 import org.puffinbasic.file.PuffinBasicExtendedFile;
-import org.puffinbasic.file.PuffinBasicFile;
 import org.puffinbasic.file.SystemInputOutputFile;
 import org.puffinbasic.parser.LinenumberListener;
 import org.puffinbasic.parser.LinenumberListener.ThrowOnDuplicate;
@@ -327,6 +326,7 @@ public final class PuffinBasicInterpreterMain {
         final boolean printIR;
         final boolean timing;
         final boolean graphics;
+
         public UserOptions(
                 boolean logOnDuplicate,
                 boolean listSourceCode,
