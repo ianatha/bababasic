@@ -238,6 +238,8 @@ func
     | ISKEYPRESSED LPAREN expr RPAREN                       # FuncIsKeyPressed
     | SPLITDLR LPAREN str=expr COMMA regex=expr RPAREN      # FuncSplitDlr
     | ALLOCARRAY varsuffix LPAREN expr (COMMA expr)? RPAREN # FuncAllocArray
+    | LTRIMDLR LPAREN str=expr RPAREN                       # FuncLTrimDlr
+    | RTRIMDLR LPAREN str=expr RPAREN                       # FuncRTrimDlr
     ;
 
 funcname
@@ -782,6 +784,14 @@ ALLOCARRAY
 
 REALLOCARRAY
     : R E A L L O C A R R A Y
+    ;
+
+LTRIMDLR
+    : L T R I M DOLLAR
+    ;
+
+RTRIMDLR
+    : R T R I M DOLLAR
     ;
 
 GOSUB
