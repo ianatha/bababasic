@@ -207,6 +207,8 @@ class MainActivity : AppCompatActivity() {
         )
 
         editor.setEditorLanguage(language)
+        editor.isLineNumberEnabled = true
+        editor.setPinLineNumber(true)
 
         openAssetsFile("samples/sample.txt")
         updatePositionText()
@@ -696,20 +698,9 @@ class MainActivity : AppCompatActivity() {
                 editor.isWordwrap = item.isChecked
             }
 
-            R.id.completionAnim -> {
-                item.isChecked = !item.isChecked
-                editor.getComponent<EditorAutoCompletion>()
-                    .setEnabledAnimation(item.isChecked)
-            }
-
             R.id.editor_line_number -> {
                 editor.isLineNumberEnabled = !editor.isLineNumberEnabled
                 item.isChecked = editor.isLineNumberEnabled
-            }
-
-            R.id.pin_line_number -> {
-                editor.setPinLineNumber(!editor.isLineNumberPinned)
-                item.isChecked = editor.isLineNumberPinned
             }
         }
         return super.onOptionsItemSelected(item)

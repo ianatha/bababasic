@@ -51,19 +51,10 @@
                 android:checked="true"
                 android:title="@string/line_number_visibility" />
             <item
-                android:id="@+id/pin_line_number"
-                android:checkable="true"
-                android:title="@string/pin_line_number" />
-            <item
                 android:id="@+id/magnifier"
                 android:checkable="true"
                 android:checked="true"
                 android:title="@string/magnifier" />
-            <item
-                android:id="@+id/completionAnim"
-                android:checkable="true"
-                android:checked="true"
-                android:title="@string/open_completion_window_animation" />
             <item
                 android:id="@+id/switch_colors"
                 android:title="@string/color_scheme" />
