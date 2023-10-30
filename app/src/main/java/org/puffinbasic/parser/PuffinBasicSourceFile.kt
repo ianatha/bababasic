@@ -13,6 +13,7 @@ class PuffinBasicSourceFile(
 ) {
     @JvmField
     val sourceCodeStream: CharStream
+
     @JvmField
     val importFiles: LinkedHashSet<PuffinBasicSourceFile>
 
