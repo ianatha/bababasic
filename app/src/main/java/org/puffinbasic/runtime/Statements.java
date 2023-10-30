@@ -22,6 +22,7 @@ import org.puffinbasic.domain.STObjects.STValue;
 import org.puffinbasic.domain.STObjects.STVariable;
 import org.puffinbasic.error.PuffinBasicInternalError;
 import org.puffinbasic.error.PuffinBasicRuntimeError;
+import org.puffinbasic.file.PuffinBasicExtendedFile;
 import org.puffinbasic.file.PuffinBasicFile;
 import org.puffinbasic.file.PuffinBasicFile.FileAccessMode;
 import org.puffinbasic.file.PuffinBasicFile.FileOpenMode;
@@ -316,10 +317,12 @@ public class Statements {
             List<Instruction> instructions,
             Instruction instruction) {
         boolean printPrompt = false;
+        String prompt = null;
         if (instruction.op1 != NULL_ID) {
-            var prompt = symbolTable.get(instruction.op1).getValue().getString();
-            files.sys.print(prompt);
+            prompt = symbolTable.get(instruction.op1).getValue().getString();
             printPrompt = true;
+            // TODO: do not print prompt when reading from file
+            files.sys.print(prompt);
         }
         final PuffinBasicFile file;
         if (instruction.op2 != NULL_ID) {
@@ -346,7 +349,11 @@ public class Statements {
             }
             CSVParser parser;
             try {
-                parser = CSVParser.parse(file.readLine(), CSVFormat.DEFAULT);
+                if (file instanceof PuffinBasicExtendedFile) {
+                    parser = CSVParser.parse(((PuffinBasicExtendedFile) file).inputDialog(prompt), CSVFormat.DEFAULT);
+                } else {
+                    parser = CSVParser.parse(file.readLine(), CSVFormat.DEFAULT);
+                }
             } catch (IOException e) {
                 throw new PuffinBasicRuntimeError(
                         IO_ERROR,

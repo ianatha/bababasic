@@ -19,6 +19,11 @@ class SystemInputOutputFile(
         this.`in` = BufferedReader(InputStreamReader(`in`))
     }
 
+    override fun inputDialog(prompt: String): String? {
+        // TODO: print prompt
+        return readLine()
+    }
+
     override fun setFieldParams(symbolTable: PuffinBasicSymbolTable, recordParts: List<Int>) {
         throw PuffinBasicRuntimeError(
             PuffinBasicRuntimeError.ErrorCode.ILLEGAL_FILE_ACCESS,
