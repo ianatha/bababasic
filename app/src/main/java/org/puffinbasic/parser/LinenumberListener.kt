@@ -2,7 +2,6 @@ package org.puffinbasic.parser
 
 import com.google.common.base.Preconditions
 import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap
-import it.unimi.dsi.fastutil.ints.Int2ObjectSortedMap
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.misc.Interval
 import org.puffinbasic.antlr4.PuffinBasicBaseListener
@@ -16,6 +15,7 @@ import org.puffinbasic.antlr4.PuffinBasicParser.ThenContext
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
 import org.puffinbasic.runtime.Types
+import java.util.SortedMap
 import java.util.concurrent.atomic.AtomicInteger
 
 class LinenumberListener(
@@ -25,7 +25,7 @@ class LinenumberListener(
     private val linenumGenerator: AtomicInteger = AtomicInteger()
     private val input: CharStream
     private val throwOnDuplicate: ThrowOnDuplicate
-    private val sortedLines: Int2ObjectSortedMap<String>
+    private val sortedLines: SortedMap<Int, String>
     private val importFiles: MutableSet<String>
     private var numLinenum = 0
     private var numNoLinenum = 0

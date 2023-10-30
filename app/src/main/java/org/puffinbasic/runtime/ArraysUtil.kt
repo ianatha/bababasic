@@ -1,7 +1,5 @@
 package org.puffinbasic.runtime
 
-import it.unimi.dsi.fastutil.ints.IntArrayList
-import it.unimi.dsi.fastutil.ints.IntList
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
 import org.puffinbasic.domain.PuffinBasicSymbolTable
@@ -71,9 +69,8 @@ internal class ArraysUtil {
             params: List<PuffinBasicIR.Instruction>,
             instruction: PuffinBasicIR.Instruction
         ) {
-            val dims: IntList = IntArrayList(params.size)
-            for (param in params) {
-                dims.add(symbolTable[param.op1]!!.value!!.int32)
+            val dims = params.map { param ->
+                symbolTable[param.op1]!!.value!!.int32
             }
             symbolTable[instruction.op1]!!.value!!.arrayDimensions = dims
         }
@@ -94,9 +91,8 @@ internal class ArraysUtil {
             params: List<PuffinBasicIR.Instruction>,
             instruction: PuffinBasicIR.Instruction
         ) {
-            val dims: IntList = IntArrayList(params.size)
-            for (param in params) {
-                dims.add(symbolTable[param.op1]!!.value!!.int32)
+            val dims = params.map { param ->
+                symbolTable[param.op1]!!.value!!.int32
             }
             val arrayEntry = symbolTable[instruction.result]
             val arrayType = arrayEntry!!.type as STObjects.ArrayType?
@@ -110,9 +106,8 @@ internal class ArraysUtil {
             params: List<PuffinBasicIR.Instruction>,
             instruction: PuffinBasicIR.Instruction
         ) {
-            val dims: IntList = IntArrayList(params.size)
-            for (param in params) {
-                dims.add(symbolTable[param.op1]!!.value!!.int32)
+            val dims = params.map { param ->
+                symbolTable[param.op1]!!.value!!.int32
             }
             val arrayEntry = symbolTable[instruction.op1]
             val arrayType = arrayEntry!!.type as STObjects.ArrayType?

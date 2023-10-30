@@ -1,16 +1,10 @@
 package org.puffinbasic.runtime
 
-import it.unimi.dsi.fastutil.bytes.ByteArrayList
-import it.unimi.dsi.fastutil.bytes.ByteList
 import org.puffinbasic.file.PuffinBasicFile
 
 class PrintBuffer {
-    private val buffer: ByteList
+    private val buffer: MutableList<Byte> = mutableListOf()
     private var cursor = 0
-
-    init {
-        buffer = ByteArrayList()
-    }
 
     fun appendAtCursor(value: String) {
         for (i in buffer.size until cursor + value.length) {
@@ -23,7 +17,7 @@ class PrintBuffer {
 
     fun flush(file: PuffinBasicFile) {
         for (i in buffer.indices) {
-            file.writeByte(buffer.getByte(i))
+            file.writeByte(buffer[i])
         }
         for (i in buffer.indices) {
             buffer[i] = SPACE

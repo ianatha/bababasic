@@ -1,7 +1,6 @@
 package org.puffinbasic.runtime
 
 import com.google.common.base.Strings
-import it.unimi.dsi.fastutil.doubles.Double2DoubleFunction
 import org.puffinbasic.domain.PuffinBasicSymbolTable
 import org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId
 import org.puffinbasic.domain.STObjects.PuffinBasicTypeId
@@ -214,11 +213,11 @@ object Functions {
     private fun applyDoubleFunction(
         symbolTable: PuffinBasicSymbolTable,
         instruction: PuffinBasicIR.Instruction,
-        function: Double2DoubleFunction
+        function: (Double) -> Double
     ) {
         val value = symbolTable[instruction.op1]!!.value!!.float64
         val result = symbolTable[instruction.result]!!.value
-        result!!.float64 = function.applyAsDouble(value)
+        result!!.float64 = function(value)
     }
 
     @JvmStatic

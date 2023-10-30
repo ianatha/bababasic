@@ -3,15 +3,6 @@ package org.puffinbasic.domain
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.Maps.newHashMap
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import it.unimi.dsi.fastutil.ints.IntArrayList
-import it.unimi.dsi.fastutil.ints.IntList
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
-import it.unimi.dsi.fastutil.objects.ObjectSet
 import org.puffinbasic.domain.Variable.VariableName
 import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
@@ -66,9 +57,7 @@ class STObjects {
             }
 
             override fun copyArray(src: Collection<*>, dst: STValue) {
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STInt32ArrayValue).int32Array1D
                 var i = 0
                 for (o in src) {
@@ -78,9 +67,7 @@ class STObjects {
 
             override fun copyArray(src: Array<Any>, dst: STValue) {
                 val srcList = src as Array<Int>
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STInt32ArrayValue).int32Array1D
                 var i = 0
                 for (o in srcList) {
@@ -126,9 +113,7 @@ class STObjects {
             }
 
             override fun copyArray(src: Collection<*>, dst: STValue) {
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STInt64ArrayValue).value
                 var i = 0
                 for (o in src) {
@@ -138,9 +123,7 @@ class STObjects {
 
             override fun copyArray(src: Array<Any>, dst: STValue) {
                 val srcList = src as Array<Long>
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STInt64ArrayValue).value
                 var i = 0
                 for (o in srcList) {
@@ -186,9 +169,7 @@ class STObjects {
             }
 
             override fun copyArray(src: Collection<*>, dst: STValue) {
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STFloat32ArrayValue).value
                 var i = 0
                 for (o in src) {
@@ -198,9 +179,7 @@ class STObjects {
 
             override fun copyArray(src: Array<Any>, dst: STValue) {
                 val srcList = src as Array<Float>
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STFloat32ArrayValue).value
                 var i = 0
                 for (o in srcList) {
@@ -246,9 +225,7 @@ class STObjects {
             }
 
             override fun copyArray(src: Collection<*>, dst: STValue) {
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STFloat64ArrayValue).value
                 var i = 0
                 for (o in src) {
@@ -258,9 +235,7 @@ class STObjects {
 
             override fun copyArray(src: Array<Any>, dst: STValue) {
                 val srcList = src as Array<Double>
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STFloat64ArrayValue).value
                 var i = 0
                 for (o in srcList) {
@@ -313,9 +288,7 @@ class STObjects {
             }
 
             override fun copyArray(src: Collection<*>, dst: STValue) {
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STStringArrayValue).value
                 var i = 0
                 for (o in src) {
@@ -325,9 +298,7 @@ class STObjects {
 
             override fun copyArray(src: Array<Any>, dst: STValue) {
                 val srcList = src as Array<String>
-                val dims = IntArrayList(1)
-                dims.add(src.size)
-                dst.arrayDimensions = dims
+                dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STStringArrayValue).value
                 var i = 0
                 for (o in srcList) {
@@ -391,7 +362,7 @@ class STObjects {
         }
 
         companion object {
-            private val mapping: MutableMap<Int, PuffinBasicAtomTypeId> = newHashMap()
+            private val mapping: MutableMap<Int, PuffinBasicAtomTypeId> = mutableMapOf()
 
             init {
                 for (value in values()) {
@@ -571,22 +542,22 @@ class STObjects {
 
     class ArrayType : PuffinBasicType {
         override val atomTypeId: PuffinBasicAtomTypeId
-        private val dims: IntList?
+        private val dims: MutableList<Int>
         private val canBeLValue: Boolean
 
         constructor(atomType: PuffinBasicAtomTypeId) {
             atomTypeId = atomType
-            dims = IntArrayList()
             canBeLValue = false
+            dims = mutableListOf<Int>()
         }
 
-        constructor(atomType: PuffinBasicAtomTypeId, dims: IntList?, canBeLValue: Boolean) {
+        constructor(atomType: PuffinBasicAtomTypeId, dims: MutableList<Int>, canBeLValue: Boolean) {
             atomTypeId = atomType
             this.dims = dims
             this.canBeLValue = canBeLValue
         }
 
-        fun setArrayDimensions(dims: IntList?) {
+        fun setArrayDimensions(dims: List<Int>) {
             this.dims!!.clear()
             this.dims.addAll(dims)
         }
@@ -670,8 +641,8 @@ class STObjects {
         private var counter = 0
 
         init {
-            refIdToTypeMap = Int2ObjectOpenHashMap()
-            nameToRefIdMap = Object2IntOpenHashMap()
+            refIdToTypeMap = mutableMapOf()
+            nameToRefIdMap = mutableMapOf()
         }
 
         fun getMemberType(memberName: VariableName): PuffinBasicType? {
@@ -1132,11 +1103,7 @@ class STObjects {
     class STTmp(value: STValue?, type: PuffinBasicType?) : AbstractSTEntry(value, type)
     class STUDF internal constructor(value: STValue?, variable: Variable) :
         STVariable(value, variable) {
-        private val paramIds: IntList
-
-        init {
-            paramIds = IntArrayList()
-        }
+        private val paramIds = mutableListOf<Int>()
 
         fun declareParam(paramId: Int) {
             paramIds.add(paramId)
@@ -1146,7 +1113,7 @@ class STObjects {
             get() = paramIds.size
 
         fun getDeclaredParam(i: Int): Int {
-            return paramIds.getInt(i)
+            return paramIds.get(i)
         }
     }
 
@@ -2246,11 +2213,7 @@ class STObjects {
 
     internal class STSet(type: PuffinBasicType, private val memberFunctions: MemberFunctions) :
         STCompositeValue(PuffinBasicTypeId.SET, type.atomTypeId) {
-        private val set: ObjectSet<Any>
-
-        init {
-            set = ObjectOpenHashSet()
-        }
+        private val set = mutableSetOf<Any>()
 
         override fun call(funcName: String, params: Array<STValue>, result: STValue) {
             memberFunctions[funcName].callHandler(set, params, result)
@@ -2269,10 +2232,10 @@ class STObjects {
         valueType: PuffinBasicType,
         private val memberFunctions: MemberFunctions
     ) : STCompositeValue(PuffinBasicTypeId.DICT, valueType.atomTypeId) {
-        private val dict: Object2ObjectMap<Any, Any>
+        private val dict: MutableMap<Any, Any>
 
         init {
-            dict = Object2ObjectOpenHashMap()
+            dict = mutableMapOf()
         }
 
         override fun call(funcName: String, params: Array<STValue>, result: STValue) {
