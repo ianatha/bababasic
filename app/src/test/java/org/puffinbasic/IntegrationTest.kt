@@ -1,6 +1,8 @@
 package org.puffinbasic
 
 import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -127,6 +129,29 @@ class IntegrationTest {
         runTest("dict.bas", "dict.bas.output")
     }
 
+    @Test
+    fun testStringFunctions() {
+        runTest("string_functions.bas", "string_functions.bas.output")
+    }
+
+    @Test
+    fun testJim01() {
+        val e = assertThrows(PuffinBasicRuntimeError::class.java) {
+            runTest("jim_01.bas", "")
+        }
+        assertEquals(PuffinBasicRuntimeError.ErrorCode.ARRAY_INDEX_OUT_OF_BOUNDS, e.errorCode)
+    }
+
+    @Test
+    fun testJim02() {
+        runTest("jim_02.bas", "jim_02.bas.output")
+    }
+
+    @Test
+    fun testJim03() {
+        runTest("jim_03.bas", "jim_03.bas.output")
+    }
+
     private fun runTest(source: String, output: String) {
         val bos = ByteArrayOutputStream()
         val out = PrintStream(bos)
@@ -137,7 +162,7 @@ class IntegrationTest {
             env
         )
         out.close()
-        Assert.assertEquals(
+        assertEquals(
             loadOutputFromResource(output),
             String(bos.toByteArray())
         )

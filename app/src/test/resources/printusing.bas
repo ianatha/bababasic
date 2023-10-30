@@ -8,3 +8,4 @@
 80 PRINT using "+###.##+"; -2.3
 90 PRINT using "###.##^^^^"; 2.3
 100 PRINT USING "###,###.##"; 123456.789
+110 PRINT 10
