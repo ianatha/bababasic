@@ -639,14 +639,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.about -> {
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.about)
-                    .setMessage(R.string.about_contents)
-                    .setPositiveButton(
-                        android.R.string.ok
-                    ) { dialog, _ -> dialog.dismiss() }
-                    .setIcon(android.R.drawable.ic_dialog_info)
-                    .show()
+                // Trigger the AboutActivity
+                startActivity(Intent(this, AboutActivity::class.java))
             }
 
             R.id.magnifier -> {

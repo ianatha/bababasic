@@ -20,7 +20,7 @@
             tools:targetApi="q" />
 
         <activity
-            android:name=".RunActivity"
+            android:name=".AboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
