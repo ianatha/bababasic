@@ -575,26 +575,27 @@ class MainActivity : AppCompatActivity() {
                     fileName,
                 )
 
+                val stdin = AndroidSystemInAndOut(binding.editor, this)
                 try {
                     interpretAndRun(
                         userOptions,
                         fileName,
                         sourceCode,
-                        AndroidSystemInAndOut(binding.editor, this),
+                        stdin,
                         SystemEnv(),
                     )
                 } catch (e: PuffinBasicInternalError) {
                     Log.e("qb", "error", e)
-                    editor.setText(editor.text.toString() + "REM !!! INTERNAL ERROR: " + e.message + "\n")
+                    stdin.outputText("!!! INTERNAL ERROR: ${e.message}")
                 } catch (e: PuffinBasicRuntimeError) {
                     Log.e("qb", "error", e)
-                    editor.setText(editor.text.toString() + "REM !!! RUNTIME ERROR: " + e.message + "\n")
+                    stdin.outputText("!!! RUNTIME ERROR: ${e.message}")
                 } catch (e: PuffinBasicSyntaxError) {
                     Log.e("qb", "error", e)
-                    editor.setText(editor.text.toString() + "REM !!! SYNTAX ERROR: " + e.message + "\n")
+                    stdin.outputText("!!! SYNTAX ERROR: ${e.message}")
                 }
                 Log.i("qb", "DONE")
-                editor.setText(editor.text.toString() + "REM --- OUTPUT END\n")
+                stdin.outputText("--- OUTPUT END")
             }
 
             R.id.about -> {
