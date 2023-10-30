@@ -25,17 +25,13 @@
 
   <string name="line_number_visibility">Mostra il numero di riga</string>
       
-  <string name="pin_line_number">Pin Numero di linea</string>
-      
   <string name="settings">Impostazioni</string>
       
   <string name="magnifier">Lente d\'ingrandimento</string>
       
-  <string name="open_completion_window_animation">Animazione della finestra di completamento</string>
-      
   <string name="layout_tv_search_options">Opzioni</string>
       
-  <string name="search_option_regex">Regex</string>
+  <string name="search_option_regex">RegEx</string>
       
   <string name="search_option_whole_word">Parola intera</string>
       

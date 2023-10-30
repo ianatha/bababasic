@@ -25,17 +25,13 @@
 
   <string name="line_number_visibility">Afficher le numéro de ligne</string>
       
-  <string name="pin_line_number">Numéro de ligne de broche</string>
-      
   <string name="settings">Paramètres</string>
       
   <string name="magnifier">Loupe</string>
       
-  <string name="open_completion_window_animation">Animation de la fenêtre d\'achèvement</string>
-      
   <string name="layout_tv_search_options">Possibilités</string>
       
-  <string name="search_option_regex">Expression régulière</string>
+  <string name="search_option_regex">RegEx</string>
       
   <string name="search_option_whole_word">Mot entier</string>
       
