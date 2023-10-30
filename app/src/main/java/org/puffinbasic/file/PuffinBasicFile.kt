@@ -40,4 +40,6 @@ interface PuffinBasicFile {
     }
 }
 
-interface PuffinBasicExtendedFile : PuffinBasicFile
+interface PuffinBasicExtendedFile : PuffinBasicFile {
+    fun inputDialog(prompt: String): String?
+}

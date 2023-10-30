@@ -1,7 +1,10 @@
 package io.atha.quickbasic
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.text.InputType
+import android.widget.EditText
 import io.github.rosemoe.sora.widget.CodeEditor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,8 +17,10 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.io.PrintStream
 import java.nio.charset.StandardCharsets
+import java.util.concurrent.CountDownLatch
 
-class AndroidSystemInAndOut(private val editor: CodeEditor, val context: Context) :
+
+class AndroidSystemInAndOut(private val editor: CodeEditor, val context: Activity) :
     PuffinBasicExtendedFile {
     private val `in`: BufferedReader
     private val out: PrintStream
@@ -25,6 +30,33 @@ class AndroidSystemInAndOut(private val editor: CodeEditor, val context: Context
         this.out = System.out
 
         outputText("--- OUTPUT START")
+    }
+
+    override fun inputDialog(prompt: String): String? {
+        var result: String? = null
+        val latch = CountDownLatch(1)
+        context.runOnUiThread {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle(prompt)
+            val input = EditText(context)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+            builder.setView(input)
+            builder.setPositiveButton(
+                "OK"
+            ) { dialog, which ->
+                result = input.text.toString()
+                latch.countDown()
+            }
+            builder.setNegativeButton(
+                "Cancel"
+            ) { dialog, which ->
+                dialog.cancel()
+                latch.countDown()
+            }
+            builder.show()
+        }
+        latch.await()
+        return result
     }
 
     fun outputText(s: String) {
