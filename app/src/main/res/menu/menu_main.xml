@@ -4,19 +4,19 @@
     <item
         android:id="@+id/open_file"
         android:icon="@drawable/open"
-        android:title="Open File"
+        android:title="@string/open_file"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/save_file"
         android:icon="@drawable/save"
-        android:title="Save File"
+        android:title="@string/save_file"
         app:showAsAction="always" />
     
     <item
         android:id="@+id/run_script"
         android:icon="@drawable/play"
-        android:title="Run"
+        android:title="@string/run"
         app:showAsAction="always" />
 
     <item

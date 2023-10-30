@@ -43,5 +43,8 @@
       
   <string name="text_selection_more">Más…</string>
   <string name="about">Acerca</string>
+  <string name="save_file">Save File</string>
+  <string name="run">Run</string>
+  <string name="open_file">Open File</string>
 
 </resources>
