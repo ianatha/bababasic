@@ -2,7 +2,6 @@ package io.atha.quickbasic
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.text.InputType
 import android.widget.EditText
 import io.github.rosemoe.sora.widget.CodeEditor
