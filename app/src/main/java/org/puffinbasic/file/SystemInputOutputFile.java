@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 import it.unimi.dsi.fastutil.ints.IntList;
 
-public class SystemInputOutputFile implements PuffinBasicFile {
+public class SystemInputOutputFile implements PuffinBasicExtendedFile {
 
     private final BufferedReader in;
     private final PrintStream out;
