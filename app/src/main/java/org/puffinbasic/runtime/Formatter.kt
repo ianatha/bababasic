@@ -1,7 +1,5 @@
 package org.puffinbasic.runtime
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import java.text.DecimalFormat
@@ -82,11 +80,7 @@ object Formatter {
     }
 
     class FormatterCache {
-        private val cache: Object2ObjectMap<String, IFormatter>
-
-        init {
-            cache = Object2ObjectOpenHashMap()
-        }
+        private val cache: MutableMap<String, IFormatter> = mutableMapOf()
 
         operator fun get(format: String): IFormatter {
             return cache.computeIfAbsent(format) { obj: String -> getFormatter(obj) }

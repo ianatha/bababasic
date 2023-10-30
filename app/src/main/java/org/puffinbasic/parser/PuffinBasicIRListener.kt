@@ -1,9 +1,5 @@
 package org.puffinbasic.parser
 
-import it.unimi.dsi.fastutil.ints.IntArrayList
-import it.unimi.dsi.fastutil.ints.IntList
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.misc.Interval
@@ -254,7 +250,7 @@ class PuffinBasicIRListener(
 ) : PuffinBasicBaseListener() {
     private val linenumGenerator: AtomicInteger = AtomicInteger()
     private val nodeToInstruction: ParseTreeProperty<PuffinBasicIR.Instruction>
-    private val udfStateMap: Object2ObjectMap<Variable, UDFState>
+    private val udfStateMap: MutableMap<Variable, UDFState>
     private val whileLoopStateList: LinkedList<WhileLoopState>
     private val forLoopStateList: LinkedList<ForLoopState>
     private val ifStateList: LinkedList<IfState>
@@ -264,7 +260,7 @@ class PuffinBasicIRListener(
 
     init {
         nodeToInstruction = ParseTreeProperty()
-        udfStateMap = Object2ObjectOpenHashMap()
+        udfStateMap = mutableMapOf()
         whileLoopStateList = LinkedList()
         forLoopStateList = LinkedList()
         ifStateList = LinkedList()
@@ -2104,13 +2100,12 @@ class PuffinBasicIRListener(
                     arrayName,
                     if (compCtx.elemsuffix != null) compCtx.elemsuffix.text else null
                 )
-                val dims: IntList = IntArrayList(compCtx.DECIMAL().size)
-                for (dimStrNode in compCtx.DECIMAL()) {
-                    dims.add(parseInt32(dimStrNode.text) { getCtxString(ctx) })
+                val dims = compCtx.DECIMAL().map { dimStrNode ->
+                    parseInt32(dimStrNode.text) { getCtxString(ctx) }
                 }
                 struct.declareField(
                     VariableName(arrayName, arrayAtomType.getRepr(), arrayAtomType),
-                    STObjects.ArrayType(arrayAtomType, dims, true)
+                    STObjects.ArrayType(arrayAtomType, dims.toMutableList(), true)
                 )
             } else if (compCtx.LIST() != null) {
                 // list
@@ -2360,16 +2355,13 @@ class PuffinBasicIRListener(
     }
 
     override fun exitDimstmt(ctx: DimstmtContext) {
-        val dims: IntList = IntArrayList(ctx.expr().size)
-        for (i in ctx.expr().indices) {
-            dims.add(0)
-        }
+        val dims = ctx.expr().indices.map { 0 }
         val variableName = getVariableNameFromCtx(ctx.varname(), ctx.varsuffix())
         val varId = ir.symbolTable.addVariableOrUDF(
             variableName,
             { variableName1: VariableName? ->
                 Variable(
-                    variableName1!!, STObjects.ArrayType(variableName1.dataType, dims, true)
+                    variableName1!!, STObjects.ArrayType(variableName1.dataType, dims.toMutableList(), true)
                 )
             },
             variableConsumer { id: Int, entry: STVariable, v1: Variable? ->
@@ -2398,16 +2390,13 @@ class PuffinBasicIRListener(
     }
 
     override fun exitReallocstmt(ctx: ReallocstmtContext) {
-        val dims: IntList = IntArrayList(ctx.expr().size)
-        for (i in ctx.expr().indices) {
-            dims.add(0)
-        }
+        val dims = ctx.expr().indices.map { 0 }
         val variableName = getVariableNameFromCtx(ctx.varname(), ctx.varsuffix())
         val varId = ir.symbolTable.addVariableOrUDF(
             variableName,
             { variableName1: VariableName? ->
                 Variable(
-                    variableName1!!, STObjects.ArrayType(variableName1.dataType, dims, true)
+                    variableName1!!, STObjects.ArrayType(variableName1.dataType, dims.toMutableList(), true)
                 )
             },
             variableConsumer { id: Int, entry: STVariable, v1: Variable? ->
@@ -2451,7 +2440,7 @@ class PuffinBasicIRListener(
             },
             variableConsumer { varId: Int, varEntry: STVariable, variable: Variable ->
                 val udfState = UDFState(variableName, varEntry as STUDF)
-                udfStateMap[variable] = udfState
+                udfStateMap.set(variable, udfState)
 
                 // GOTO postFuncDecl
                 udfState.gotoPostFuncDecl = ir.addInstruction(
@@ -2556,7 +2545,7 @@ class PuffinBasicIRListener(
                     )
                 }
                 currentUdfState = UDFState(variableName, varEntry as STUDF)
-                udfStateMap[variable] = currentUdfState
+                udfStateMap[variable] = currentUdfState!!
 
                 // GOTO postFuncDecl
                 currentUdfState!!.gotoPostFuncDecl = ir.addInstruction(
@@ -2651,12 +2640,11 @@ class PuffinBasicIRListener(
                     arrayName,
                     if (compCtx.elemsuffix != null) compCtx.elemsuffix.text else null
                 )
-                val dims: IntList = IntArrayList(compCtx.DECIMAL().size)
-                for (dimStrNode in compCtx.DECIMAL()) {
-                    dims.add(parseInt32(dimStrNode.text) { getCtxString(ctx) })
+                val dims = compCtx.DECIMAL().map { dimStrNode ->
+                    parseInt32(dimStrNode.text) { getCtxString(ctx) }
                 }
                 paramName = VariableName(arrayName, arrayAtomType.getRepr(), arrayAtomType)
-                paramType = STObjects.ArrayType(arrayAtomType, dims, true)
+                paramType = STObjects.ArrayType(arrayAtomType, dims.toMutableList(), true)
             } else {
                 // throw
                 throw PuffinBasicSemanticError(
