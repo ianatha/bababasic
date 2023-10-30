@@ -382,7 +382,7 @@ object Statements {
 
                 PuffinBasicAtomTypeId.STRING -> value!!.string = record[i].trim { it <= ' ' }
 
-                else -> { }
+                else -> {}
             }
         }
     }
@@ -435,7 +435,7 @@ object Statements {
                 m = replacement!!.length
             }
             result = (varValue.substring(0, n - 1)
-                    + replacement!!.substring(0, Math.min(m, varlen - n + 1))
+                    + replacement.substring(0, Math.min(m, varlen - n + 1))
                     + varValue.substring(Math.min(n + m - 1, varlen - 1)))
         }
         dest.string = result
@@ -499,7 +499,7 @@ object Statements {
         for (i in params.indices) {
             funcParams[i] = symbolTable[params[i].op1]!!.value
         }
-        `object`!!.call(funcName!!, funcParams.map { it!! }.toTypedArray() , result!!)
+        `object`!!.call(funcName!!, funcParams.map { it!! }.toTypedArray(), result!!)
     }
 
     @JvmStatic

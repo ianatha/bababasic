@@ -566,7 +566,12 @@ class MainActivity : AppCompatActivity() {
                     .putExtra(EXTRA_LOCAL_ONLY, true)
                     .setAction(Intent.ACTION_GET_CONTENT)
 
-                startActivityForResult(Intent.createChooser(intent, resources.getString(R.string.open_file)), OPEN_DOCUMENT_REQUEST_ID)
+                startActivityForResult(
+                    Intent.createChooser(
+                        intent,
+                        resources.getString(R.string.open_file)
+                    ), OPEN_DOCUMENT_REQUEST_ID
+                )
             }
 
             R.id.save_file -> {
@@ -577,7 +582,12 @@ class MainActivity : AppCompatActivity() {
                     .setAction(Intent.ACTION_CREATE_DOCUMENT)
                     .addCategory(Intent.CATEGORY_OPENABLE)
 
-                startActivityForResult(Intent.createChooser(intent,  resources.getString(R.string.save_file)), CREATE_DOCUMENT_REQUEST_ID)
+                startActivityForResult(
+                    Intent.createChooser(
+                        intent,
+                        resources.getString(R.string.save_file)
+                    ), CREATE_DOCUMENT_REQUEST_ID
+                )
             }
 
             R.id.text_undo -> editor.undo()

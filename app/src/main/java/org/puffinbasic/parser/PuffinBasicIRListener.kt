@@ -212,7 +212,6 @@ import org.puffinbasic.antlr4.PuffinBasicParser.WhilestmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.WritehashstmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.WritestmtContext
 import org.puffinbasic.domain.PuffinBasicSymbolTable
-import org.puffinbasic.domain.PuffinBasicSymbolTable.VariableConsumer
 import org.puffinbasic.domain.STObjects
 import org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId
 import org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId.Companion.lookup
@@ -4111,8 +4110,8 @@ class PuffinBasicIRListener(
         exprs: List<ExprContext>,
         fileNumber: PuffinBasicIR.Instruction?
     ) {
-        val rangeStart =  if (fileNumber == null) 0 else 1
-        for (i in rangeStart..(exprs.size-1)) {
+        val rangeStart = if (fileNumber == null) 0 else 1
+        for (i in rangeStart..(exprs.size - 1)) {
             val exprCtx = exprs[i]
             val exprInstr = lookupInstruction(exprCtx)
             ir.addInstruction(
