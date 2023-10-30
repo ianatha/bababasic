@@ -1,0 +1,5 @@
+A$ = "     LOTS OF SPACES         "
+PRINT "x";A$;"x"
+PRINT "x";LTRIM$(A$);"x"
+PRINT "x";RTRIM$(A$);"x"
+PRINT "x";LTRIM$(RTRIM$(A$));"x"
