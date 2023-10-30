@@ -42,13 +42,13 @@ class AndroidSystemInAndOut(private val editor: CodeEditor, val context: Activit
             builder.setView(input)
             builder.setPositiveButton(
                 "OK"
-            ) { dialog, which ->
+            ) { _, _ ->
                 result = input.text.toString()
                 latch.countDown()
             }
             builder.setNegativeButton(
                 "Cancel"
-            ) { dialog, which ->
+            ) { dialog, _ ->
                 dialog.cancel()
                 latch.countDown()
             }

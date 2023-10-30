@@ -33,10 +33,10 @@ class Variable(
         return variableName.toString() + ":" + type.typeId
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val variable = o as Variable
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val variable = other as Variable
         return variableName == variable.variableName && type == variable.type
     }
 
@@ -67,10 +67,10 @@ class Variable(
             return "$varname:$suffix:$dataType"
         }
 
-        override fun equals(o: Any?): Boolean {
-            if (this === o) return true
-            if (o == null || javaClass != o.javaClass) return false
-            val variable = o as VariableName
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other == null || javaClass != other.javaClass) return false
+            val variable = other as VariableName
             return varname == variable.varname && suffix == variable.suffix
         }
 

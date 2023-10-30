@@ -22,6 +22,8 @@ import java.time.format.DateTimeFormatter
 import java.util.Arrays
 import java.util.Objects
 import java.util.function.Consumer
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 class STObjects {
@@ -445,10 +447,6 @@ class STObjects {
         }
     }
 
-    interface MemberCallHandler {
-        fun call(o: Any, params: Array<STValue>, result: STValue)
-    }
-
     interface STEntry {
         val isLValue: Boolean
             get() = false
@@ -542,14 +540,14 @@ class STObjects {
             return atomTypeId.createValue()
         }
 
-        override fun equals(obj: Any?): Boolean {
-            if (this === obj) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
                 return true
             }
-            if (obj == null || obj.javaClass != ScalarType::class.java) {
+            if (other == null || other.javaClass != ScalarType::class.java) {
                 return false
             }
-            val o = obj as ScalarType
+            val o = other as ScalarType
             return (typeId == o.typeId
                     && atomTypeId === o.atomTypeId)
         }
@@ -613,14 +611,14 @@ class STObjects {
             return value
         }
 
-        override fun equals(obj: Any?): Boolean {
-            if (this === obj) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
                 return true
             }
-            if (obj == null || obj.javaClass != ArrayType::class.java) {
+            if (other == null || other.javaClass != ArrayType::class.java) {
                 return false
             }
-            val o = obj as ArrayType
+            val o = other as ArrayType
             return (typeId == o.typeId
                     && atomTypeId === o.atomTypeId)
         }
@@ -644,14 +642,14 @@ class STObjects {
             throw PuffinBasicInternalError("Not implemented!")
         }
 
-        override fun equals(obj: Any?): Boolean {
-            if (this === obj) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
                 return true
             }
-            if (obj == null || obj.javaClass != ArrayType::class.java) {
+            if (other == null || other.javaClass != ArrayType::class.java) {
                 return false
             }
-            val o = obj as ArrayType
+            val o = other as ArrayType
             return (typeId == o.typeId
                     && atomTypeId === o.atomTypeId)
         }
@@ -697,8 +695,8 @@ class STObjects {
 
         fun declareField(memberName: VariableName, type: PuffinBasicType) {
             val refId = counter++
-            refIdToTypeMap.put(refId, type)
-            nameToRefIdMap.put(memberName, refId)
+            refIdToTypeMap[refId] = type
+            nameToRefIdMap[memberName] = refId
         }
 
         override val typeId: PuffinBasicTypeId
@@ -710,14 +708,14 @@ class STObjects {
             return STStruct(symbolTable, this)
         }
 
-        override fun equals(obj: Any?): Boolean {
-            if (this === obj) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
                 return true
             }
-            if (obj == null || obj.javaClass != StructType::class.java) {
+            if (other == null || other.javaClass != StructType::class.java) {
                 return false
             }
-            val o = obj as StructType
+            val o = other as StructType
             return typeId == o.typeId && atomTypeId === o.atomTypeId && typeName == o.typeName
         }
 
@@ -783,7 +781,7 @@ class STObjects {
                 ImmutableList.builder<MemberFunction>()
                     .add(
                         MemberFunction(
-                            "append", arrayOf<PuffinBasicType>(type), ScalarType.INT32
+                            "append", arrayOf(type), ScalarType.INT32
                         ) { obj: Any, params: Array<STValue>, result: STValue ->
                             val list = obj as MutableList<Any?>
                             if (type.typeId == PuffinBasicTypeId.SCALAR) {
@@ -797,7 +795,7 @@ class STObjects {
                     .add(
                         MemberFunction(
                             "insert",
-                            arrayOf<PuffinBasicType>(ScalarType.INT32, type),
+                            arrayOf(ScalarType.INT32, type),
                             ScalarType.INT32
                         ) { obj: Any, params: Array<STValue>, result: STValue ->
                             val list = obj as MutableList<Any?>
@@ -813,7 +811,7 @@ class STObjects {
                     )
                     .add(
                         MemberFunction(
-                            "get", arrayOf<PuffinBasicType>(ScalarType.INT32), type
+                            "get", arrayOf(ScalarType.INT32), type
                         ) { obj: Any, params: Array<STValue>, result: STValue ->
                             val list = obj as MutableList<Any>
                             val index = params[0].int32
@@ -834,7 +832,7 @@ class STObjects {
                     )
                     .add(
                         MemberFunction(
-                            "values", arrayOf<PuffinBasicType>(), valuesType
+                            "values", arrayOf(), valuesType
                         ) { obj: Any?, params: Array<STValue>, result: STValue ->
                             val list = obj as Array<Any>
                             if (type.typeId == PuffinBasicTypeId.SCALAR) {
@@ -849,7 +847,7 @@ class STObjects {
                     )
                     .add(
                         MemberFunction(
-                            "clear", arrayOf<PuffinBasicType>(), ScalarType.INT32
+                            "clear", arrayOf(), ScalarType.INT32
                         ) { obj: Any, params: Array<STValue>, result: STValue ->
                             val list = obj as MutableList<Any>
                             list.clear()
@@ -970,14 +968,14 @@ class STObjects {
             memberFunctions.checkFuncCallArguments(funcName, paramTypes)
         }
 
-        override fun equals(obj: Any?): Boolean {
-            if (this === obj) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
                 return true
             }
-            if (obj == null || obj.javaClass != SetType::class.java) {
+            if (other == null || other.javaClass != SetType::class.java) {
                 return false
             }
-            val o = obj as SetType
+            val o = other as SetType
             return (typeId == o.typeId
                     && atomTypeId === o.atomTypeId)
         }
@@ -1076,14 +1074,14 @@ class STObjects {
             memberFunctions.checkFuncCallArguments(funcName, paramTypes)
         }
 
-        override fun equals(obj: Any?): Boolean {
-            if (this === obj) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
                 return true
             }
-            if (obj == null || obj.javaClass != DictType::class.java) {
+            if (other == null || other.javaClass != DictType::class.java) {
                 return false
             }
-            val o = obj as DictType
+            val o = other as DictType
             return typeId == o.typeId && keyType === o.keyType && valueType === o.valueType
         }
 
@@ -1377,12 +1375,12 @@ class STObjects {
         override val roundedInt32: Int
             get() {
                 checkInitialized()
-                return Math.round(value)
+                return value.roundToInt()
             }
         override val roundedInt64: Long
             get() {
                 checkInitialized()
-                return Math.round(value).toLong()
+                return value.roundToLong().toLong()
             }
         override var string: String?
             get() {
@@ -1455,12 +1453,12 @@ class STObjects {
         override val roundedInt32: Int
             get() {
                 checkInitialized()
-                return Math.round(value).toInt()
+                return value.roundToInt()
             }
         override val roundedInt64: Long
             get() {
                 checkInitialized()
-                return Math.round(value)
+                return value.roundToLong()
             }
         override var string: String?
             get() {
@@ -1575,21 +1573,21 @@ class STObjects {
             get() {
                 throw PuffinBasicInternalError("Can't cast String to int64")
             }
-            set(value) {
+            set(_) {
                 throw PuffinBasicInternalError("Can't cast int64 to String")
             }
         override var float32: Float
             get() {
                 throw PuffinBasicInternalError("Can't cast String to float32")
             }
-            set(value) {
+            set(_) {
                 throw PuffinBasicInternalError("Can't cast float32 to String")
             }
         override var float64: Double
             get() {
                 throw PuffinBasicInternalError("Can't cast String to float64")
             }
-            set(value) {
+            set(_) {
                 throw PuffinBasicInternalError("Can't cast float64 to String")
             }
         override val roundedInt32: Int
@@ -1643,7 +1641,7 @@ class STObjects {
             get() {
                 throw PuffinBasicInternalError("Can't cast String to int32")
             }
-            set(value) {
+            set(_) {
                 throw PuffinBasicInternalError("Can't cast int32 to String")
             }
         override var int64: Long
@@ -1820,7 +1818,7 @@ class STObjects {
                 numArrayDimensions = dimensions.size
                 var totalLen = 1
                 for (i in 0 until numArrayDimensions) {
-                    totalLen *= dimensions.get(i)
+                    totalLen *= dimensions[i]
                 }
                 totalLength = totalLen
             }
@@ -1836,14 +1834,14 @@ class STObjects {
                     "Dimension index " + dim + " is out of range, #dims=" + dimensions.size
                 )
             }
-            if (index < 0 || index >= dimensions.get(dim)) {
+            if (index < 0 || index >= dimensions[dim]) {
                 throw PuffinBasicRuntimeError(
                     PuffinBasicRuntimeError.ErrorCode.ARRAY_INDEX_OUT_OF_BOUNDS,
                     "Index " + index + " is out of range for dimension["
-                            + dim + "]=" + dimensions.get(dim)
+                            + dim + "]=" + dimensions[dim]
                 )
             }
-            val dIplus1 = if (dim + 1 < numArrayDimensions) dimensions.get(dim + 1) else 1
+            val dIplus1 = if (dim + 1 < numArrayDimensions) dimensions[dim + 1] else 1
             arrayIndex1D = (arrayIndex1D + index) * dIplus1
         }
 
@@ -2023,9 +2021,9 @@ class STObjects {
                 this.value[arrayIndex1D] = value.toInt().toFloat()
             }
         override val roundedInt32: Int
-            get() = Math.round(value[arrayIndex1D])
+            get() = value[arrayIndex1D].roundToInt()
         override val roundedInt64: Long
-            get() = Math.round(value[arrayIndex1D]).toLong()
+            get() = value[arrayIndex1D].roundToLong().toLong()
         override var string: String?
             get() {
                 throw PuffinBasicInternalError("Can't cast int32 to String")
@@ -2082,9 +2080,9 @@ class STObjects {
                 this.value[arrayIndex1D] = value.toInt().toDouble()
             }
         override val roundedInt32: Int
-            get() = Math.round(value[arrayIndex1D]).toInt()
+            get() = value[arrayIndex1D].roundToInt()
         override val roundedInt64: Long
-            get() = Math.round(value[arrayIndex1D])
+            get() = value[arrayIndex1D].roundToLong()
         override var string: String?
             get() {
                 throw PuffinBasicInternalError("Can't cast int32 to String")
@@ -2198,7 +2196,7 @@ class STObjects {
             get() {
                 throw PuffinBasicInternalError("Not implemented")
             }
-            set(value) {
+            set(_) {
                 throw PuffinBasicInternalError("Not implemented")
             }
         override var float64: Double
@@ -2220,7 +2218,7 @@ class STObjects {
             get() {
                 throw PuffinBasicInternalError("Not implemented")
             }
-            set(value) {
+            set(_) {
                 throw PuffinBasicInternalError("Not implemented")
             }
     }
@@ -2320,11 +2318,10 @@ class STObjects {
                     "Expected STStruct but found: " + entry.javaClass
                 )
             }
-            val other = entry
-            if (structType != other.structType) {
+            if (structType != entry.structType) {
                 throw PuffinBasicRuntimeError(
                     PuffinBasicRuntimeError.ErrorCode.DATA_TYPE_MISMATCH,
-                    "Expected struct " + structType + ", but found " + other.structType
+                    "Expected struct " + structType + ", but found " + entry.structType
                 )
             }
             memberRefIdToValueId.clear()
