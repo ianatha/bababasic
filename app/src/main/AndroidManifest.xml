@@ -29,6 +29,20 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="*/*" />
+
+                <data android:host="*" />
+
+                <data android:pathPattern=".*\\.txt" />
+                <data android:pathPattern=".*\\.bas" />
+                <data android:pathPattern=".*\\.qb" />
+            </intent-filter>
+
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.ACTION_VIEW" />
 

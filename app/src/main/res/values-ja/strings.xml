@@ -44,5 +44,8 @@
       
   <string name="text_selection_more">もっと…</string>
   <string name="about">情報</string>
+  <string name="save_file">Save File</string>
+  <string name="run">Run</string>
+  <string name="open_file">Open File</string>
 
 </resources>

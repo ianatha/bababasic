@@ -46,7 +46,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import io.atha.quickbasic.databinding.ActivityMainBinding
 import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.event.EditorKeyEvent
@@ -89,7 +88,6 @@ import org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun
 import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
-import org.puffinbasic.runtime.Environment
 import org.puffinbasic.runtime.SystemEnv
 import java.io.BufferedReader
 import java.io.IOException
@@ -215,6 +213,9 @@ class MainActivity : AppCompatActivity() {
         editor.setPinLineNumber(true)
 
         openAssetsFile("samples/sample.txt")
+        intent.data?.let { data ->
+            openAssetsUri(data)
+        }
         updatePositionText()
         updateBtnState()
 
@@ -344,6 +345,19 @@ class MainActivity : AppCompatActivity() {
 
         sb.append(KeyEvent.keyCodeToString(event.keyCode))
         return sb.toString()
+    }
+
+    private fun openAssetsUri(uri: Uri) {
+        Thread {
+            val inputStream = contentResolver.openInputStream(uri)
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            val contents = reader.lines().collect(Collectors.joining("\n"))
+            runOnUiThread {
+                binding.editor.setText(contents, null)
+            }
+        }.start()
+        updatePositionText()
+        updateBtnState()
     }
 
     private fun openAssetsFile(name: String) {
@@ -515,15 +529,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0x87133 && resultCode == RESULT_OK) {
+        if (requestCode == OPEN_DOCUMENT_REQUEST_ID && resultCode == RESULT_OK) {
             val selectedfile = data!!.data!!
-            // read contents of selectedfile
             val inputStream = contentResolver.openInputStream(selectedfile)
             val reader = BufferedReader(InputStreamReader(inputStream))
             val contents = reader.lines().collect(Collectors.joining("\n"))
             binding.editor.setText(contents)
-        } else if (requestCode == 0x87134 && resultCode == RESULT_OK) {
-            val uri: Uri = data!!.data!!
+        } else if (requestCode == CREATE_DOCUMENT_REQUEST_ID && resultCode == RESULT_OK) {
+            var uri: Uri = data!!.data!!
             try {
                 val output: OutputStream = contentResolver.openOutputStream(uri)!!
                 output.write(binding.editor.text.toString().toByteArray(Charsets.UTF_8))
@@ -535,6 +548,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val OPEN_DOCUMENT_REQUEST_ID = 0x87133
+    private val CREATE_DOCUMENT_REQUEST_ID = 0x87134
     override fun onDestroy() {
         super.onDestroy()
         binding.editor.release()
@@ -551,18 +566,18 @@ class MainActivity : AppCompatActivity() {
                     .putExtra(EXTRA_LOCAL_ONLY, true)
                     .setAction(Intent.ACTION_GET_CONTENT)
 
-                startActivityForResult(Intent.createChooser(intent, "Open a .BAS file"), 0x87133)
+                startActivityForResult(Intent.createChooser(intent, resources.getString(R.string.open_file)), OPEN_DOCUMENT_REQUEST_ID)
             }
 
             R.id.save_file -> {
                 val intent = Intent()
                     .setType("text/plain")
                     .putExtra(EXTRA_LOCAL_ONLY, true)
-                    .putExtra(Intent.EXTRA_TITLE, "YOUR FILENAME")
+                    .putExtra(Intent.EXTRA_TITLE, "untitled.bas")
                     .setAction(Intent.ACTION_CREATE_DOCUMENT)
                     .addCategory(Intent.CATEGORY_OPENABLE)
 
-                startActivityForResult(Intent.createChooser(intent, "Save a .BAS file"), 0x87134)
+                startActivityForResult(Intent.createChooser(intent,  resources.getString(R.string.save_file)), CREATE_DOCUMENT_REQUEST_ID)
             }
 
             R.id.text_undo -> editor.undo()
