@@ -283,10 +283,18 @@ class PuffinBasicSymbolTable {
     }
 
     interface VariableConsumer {
-        fun consume(id: Int, entry: STVariable?, variable: Variable?)
+        fun consume(id: Int, entry: STVariable, variable: Variable)
     }
 
     companion object {
         const val NULL_ID = -1
+    }
+}
+
+fun variableConsumer(consumer: (id: Int, entry: STVariable, variable: Variable) -> Unit): PuffinBasicSymbolTable.VariableConsumer {
+    return object : PuffinBasicSymbolTable.VariableConsumer {
+        override fun consume(id: Int, entry: STVariable, variable: Variable) {
+            consumer(id, entry, variable)
+        }
     }
 }

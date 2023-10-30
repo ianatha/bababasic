@@ -151,14 +151,14 @@ public final class PuffinBasicInterpreterMain {
                 sourceCode,
                 userOptions.logOnDuplicate ? LOG : THROW,
                 SourceFileMode.MAIN);
-        if (sourceFile.getSourceCode().isEmpty()) {
+        if (sourceFile.sourceCode.isEmpty()) {
             throw new PuffinBasicSyntaxError(
                     "Failed to parse source code! Check if a linenumber is missing");
         }
         logTimeTaken("SORT", t1, userOptions.timing);
 
         log("LIST", userOptions.listSourceCode);
-        log(sourceFile.getSourceCode(), userOptions.listSourceCode);
+        log(sourceFile.sourceCode, userOptions.listSourceCode);
 
         Instant t2 = Instant.now();
         var ir = generateIR(sourceFile, userOptions.graphics);
@@ -203,7 +203,7 @@ public final class PuffinBasicInterpreterMain {
     private static PuffinBasicIR generateIR(PuffinBasicSourceFile sourceFile, boolean graphics) {
         var symbolTable = new PuffinBasicSymbolTable();
         var ir = new PuffinBasicIR(symbolTable);
-        for (var importFile : sourceFile.getImportFiles()) {
+        for (var importFile : sourceFile.importFiles) {
             generateIR(importFile, ir, graphics);
         }
         generateIR(sourceFile, ir, graphics);
@@ -211,7 +211,7 @@ public final class PuffinBasicInterpreterMain {
     }
 
     private static void generateIR(PuffinBasicSourceFile sourceFile, PuffinBasicIR ir, boolean graphics) {
-        var in = sourceFile.getSourceCodeStream();
+        var in = sourceFile.sourceCodeStream;
         var lexer = new PuffinBasicLexer(in);
         var tokens = new CommonTokenStream(lexer);
         var parser = new PuffinBasicParser(tokens);
@@ -265,7 +265,7 @@ public final class PuffinBasicInterpreterMain {
                     importPath, importFilename, importedInput,
                     throwOnDuplicate, SourceFileMode.LIB);
             importSourceFiles.add(importSourceFile);
-            importSourceFiles.addAll(importSourceFile.getImportFiles());
+            importSourceFiles.addAll(importSourceFile.importFiles);
         }
 
         String sortedCode = linenumListener.getSortedCode();
