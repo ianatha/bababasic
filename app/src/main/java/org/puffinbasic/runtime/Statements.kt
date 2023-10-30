@@ -73,8 +73,7 @@ object Statements {
         val formatter = cache[format!!]
         val entry = symbolTable[instruction.op2]
         val value = entry!!.value
-        val result: String
-        result = when (entry.type!!.atomTypeId) {
+        val result: String = when (entry.type!!.atomTypeId) {
             PuffinBasicAtomTypeId.INT32, PuffinBasicAtomTypeId.INT64 -> {
                 if (!formatter.supportsNumeric()) {
                     throw PuffinBasicRuntimeError(
@@ -170,8 +169,7 @@ object Statements {
             destLen = destEntry.string!!.length
             destEntry.fieldLength = destLen
         }
-        val result: String?
-        result = if (valLen > destLen) {
+        val result: String = if (valLen > destLen) {
             value.substring(0, destLen)
         } else if (valLen == destLen) {
             value
@@ -194,8 +192,7 @@ object Statements {
             destLen = destEntry.string!!.length
             destEntry.fieldLength = destLen
         }
-        val result: String?
-        result = if (valLen > destLen) {
+        val result: String = if (valLen > destLen) {
             value.substring(0, destLen)
         } else if (valLen == destLen) {
             value
@@ -328,8 +325,7 @@ object Statements {
             // TODO: do not print prompt when reading from file
             files.sys.print(prompt!!)
         }
-        val file: PuffinBasicFile
-        file = if (instruction.op2 != PuffinBasicSymbolTable.NULL_ID) {
+        val file: PuffinBasicFile = if (instruction.op2 != PuffinBasicSymbolTable.NULL_ID) {
             val fileNumber = symbolTable[instruction.op2]!!.value!!.int32
             files[fileNumber]
         } else {
@@ -350,8 +346,7 @@ object Statements {
                     )
                 }
             }
-            var parser: CSVParser
-            parser = try {
+            val parser: CSVParser = try {
                 if (file is PuffinBasicExtendedFile) {
                     CSVParser.parse(file.inputDialog(prompt!!), CSVFormat.DEFAULT)
                 } else {
@@ -396,12 +391,11 @@ object Statements {
     ) {
         if (instruction.op1 != PuffinBasicSymbolTable.NULL_ID) {
             val prompt = symbolTable[instruction.op1]!!.value!!.string
-            if (!prompt!!.isEmpty()) {
+            if (prompt!!.isNotEmpty()) {
                 files.sys.print(prompt)
             }
         }
-        val file: PuffinBasicFile
-        file = if (instruction.op2 != PuffinBasicSymbolTable.NULL_ID) {
+        val file: PuffinBasicFile = if (instruction.op2 != PuffinBasicSymbolTable.NULL_ID) {
             val fileNumber = symbolTable[instruction.op2]!!.value!!.int32
             files[fileNumber]
         } else {

@@ -252,7 +252,7 @@ class PuffinBasicIRListener(
     private val ir: PuffinBasicIR,
     private val graphics: Boolean
 ) : PuffinBasicBaseListener() {
-    private val linenumGenerator: AtomicInteger
+    private val linenumGenerator: AtomicInteger = AtomicInteger()
     private val nodeToInstruction: ParseTreeProperty<PuffinBasicIR.Instruction>
     private val udfStateMap: Object2ObjectMap<Variable, UDFState>
     private val whileLoopStateList: LinkedList<WhileLoopState>
@@ -263,7 +263,6 @@ class PuffinBasicIRListener(
     private var currentLineNumber = 0
 
     init {
-        linenumGenerator = AtomicInteger()
         nodeToInstruction = ParseTreeProperty()
         udfStateMap = Object2ObjectOpenHashMap()
         whileLoopStateList = LinkedList()
@@ -397,7 +396,7 @@ class PuffinBasicIRListener(
                 idHolder.set(varId)
                 if (variable.isScalar) {
                     // Scalar
-                    if (!ctx.expr().isEmpty()) {
+                    if (ctx.expr().isNotEmpty()) {
                         throw PuffinBasicSemanticError(
                             PuffinBasicSemanticError.ErrorCode.SCALAR_VARIABLE_CANNOT_BE_INDEXED,
                             getCtxString(ctx),
@@ -405,7 +404,7 @@ class PuffinBasicIRListener(
                         )
                     }
                 } else if (variable.isArray) {
-                    if (!ctx.expr().isEmpty()) {
+                    if (ctx.expr().isNotEmpty()) {
                         // Array
                         ir.addInstruction(
                             sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
@@ -456,10 +455,9 @@ class PuffinBasicIRListener(
                                     + ctx.expr().size
                         )
                     }
-                    var i = 0
-                    for (exprCtx in ctx.expr()) {
+                    for ((i, exprCtx) in ctx.expr().withIndex()) {
                         val exprInstr = lookupInstruction(exprCtx)
-                        val declParamId = udfEntry.getDeclaredParam(i++)
+                        val declParamId = udfEntry.getDeclaredParam(i)
                         ir.addInstruction(
                             sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
                             OpCode.PARAM_COPY,
@@ -565,7 +563,7 @@ class PuffinBasicIRListener(
             rootId, PuffinBasicSymbolTable.NULL_ID,
             ir.symbolTable.addRef(leafType)
         )
-        if (!ctx.expr().isEmpty()) {
+        if (ctx.expr().isNotEmpty()) {
             ir.addInstruction(
                 sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
                 OpCode.RESET_ARRAY_IDX,
@@ -679,9 +677,8 @@ class PuffinBasicIRListener(
         val dt2 = ir.symbolTable[instr2res]!!.type!!.atomTypeId
         Types.assertNumeric(dt1, dt2) { getCtxString(ctx) }
         val upcast = Types.upcast(dt1, dt2) { getCtxString(ctx) }
-        val result = ir.symbolTable.addTmp(upcast) { e: STEntry? -> }
-        val opCode: OpCode
-        opCode = when (upcast) {
+        val result = ir.symbolTable.addTmp(upcast) { _: STEntry? -> }
+        val opCode: OpCode = when (upcast) {
             PuffinBasicAtomTypeId.INT32 -> OpCode.EXPI32
             PuffinBasicAtomTypeId.INT64 -> OpCode.EXPI64
             PuffinBasicAtomTypeId.FLOAT -> OpCode.EXPF32

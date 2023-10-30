@@ -16,8 +16,8 @@ class PrintBuffer {
         for (i in buffer.size until cursor + value.length) {
             buffer.add(SPACE)
         }
-        for (i in 0 until value.length) {
-            buffer[cursor++] = value[i].code.toByte()
+        for (element in value) {
+            buffer[cursor++] = element.code.toByte()
         }
     }
 
