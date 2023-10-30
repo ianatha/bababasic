@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "458627144363",
+    "project_id": "bababasic-c2bc3",
+    "storage_bucket": "bababasic-c2bc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458627144363:android:5ff36b4b952a95e80df5ee",
+        "android_client_info": {
+          "package_name": "io.atha.quickbasic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Tr1knhq1PLNE3NPoPxiBKydmCdjlHRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -46,6 +46,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import io.atha.quickbasic.databinding.ActivityMainBinding
 import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.event.EditorKeyEvent
@@ -98,6 +102,7 @@ import java.util.stream.Collectors
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var binding: ActivityMainBinding
     private lateinit var searchMenu: PopupMenu
     private var searchOptions = SearchOptions(false, false)
@@ -106,6 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
         CrashHandler.INSTANCE.init(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
