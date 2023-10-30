@@ -118,7 +118,7 @@ class LinenumberListener(
     }
 
     override fun exitImportstmt(ctx: ImportstmtContext) {
-        val filename = Types.unquote(ctx.filename.STRING().text)
+        val filename = Types.unquote(ctx.filename.STRING().text)!!
         importFiles.add(filename)
     }
 
