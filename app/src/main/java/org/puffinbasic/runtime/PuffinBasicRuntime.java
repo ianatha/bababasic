@@ -8,7 +8,6 @@ import org.puffinbasic.error.PuffinBasicInternalError;
 import org.puffinbasic.error.PuffinBasicRuntimeError;
 import org.puffinbasic.error.PuffinBasicSyntaxError;
 import org.puffinbasic.file.PuffinBasicExtendedFile;
-import org.puffinbasic.file.PuffinBasicFile;
 import org.puffinbasic.file.PuffinBasicFiles;
 import org.puffinbasic.parser.PuffinBasicIR;
 import org.puffinbasic.parser.PuffinBasicIR.Instruction;
