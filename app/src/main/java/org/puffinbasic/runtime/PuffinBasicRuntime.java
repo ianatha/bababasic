@@ -917,6 +917,12 @@ public class PuffinBasicRuntime {
             case ISKEYPRESSED:
                 GraphicsRuntime.isKeyPressed(graphicsState, ir.getSymbolTable(), instruction);
                 break;
+            case LTRIMDLR:
+                Functions.ltrimdlr(ir.getSymbolTable(), instruction);
+                break;
+            case RTRIMDLR:
+                Functions.rtrimdlr(ir.getSymbolTable(), instruction);
+                break;
         }
 
         this.programCounter = nextProgramCounter;

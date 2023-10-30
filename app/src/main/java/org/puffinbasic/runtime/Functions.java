@@ -685,6 +685,26 @@ public class Functions {
         STRING.copyArray(tokens, symbolTable.get(instruction.result).getValue());
     }
 
+    static void ltrimdlr(PuffinBasicSymbolTable symbolTable, Instruction instruction) {
+        var s = symbolTable.get(instruction.op1).getValue().getString();
+        int i = 0;
+        while (i < s.length() && Character.isWhitespace(s.charAt(i))) {
+            i++;
+        }
+        String ltrim = s.substring(i);
+        symbolTable.get(instruction.result).getValue().setString(ltrim);
+    }
+
+    static void rtrimdlr(PuffinBasicSymbolTable symbolTable, Instruction instruction) {
+        var s = symbolTable.get(instruction.op1).getValue().getString();
+        int i = s.length()-1;
+        while (i >= 0 && Character.isWhitespace(s.charAt(i))) {
+            i--;
+        }
+        String rtrim = s.substring(0,i+1);
+        symbolTable.get(instruction.result).getValue().setString(rtrim);
+    }
+
     static void throwUnsupportedType(PuffinBasicAtomTypeId type) {
         throw new PuffinBasicInternalError(
                 "Data type " + type + " is not supported"
