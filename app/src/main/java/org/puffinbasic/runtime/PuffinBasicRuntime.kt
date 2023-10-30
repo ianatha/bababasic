@@ -226,13 +226,11 @@ class PuffinBasicRuntime(
 
     private fun computeLineNumberToInstructionNumber(instructions: List<PuffinBasicIR.Instruction>): Int2IntMap {
         val linenumToInstrNum = Int2IntOpenHashMap()
-        var instrNum = 0
-        for (instruction in instructions) {
+        for ((instrNum, instruction) in instructions.withIndex()) {
             val lineNumber = instruction.inputRef.lineNumber
             if (lineNumber >= 0) {
                 linenumToInstrNum.putIfAbsent(lineNumber, instrNum)
             }
-            ++instrNum
         }
         return linenumToInstrNum
     }

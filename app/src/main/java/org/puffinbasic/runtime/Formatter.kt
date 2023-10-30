@@ -201,12 +201,10 @@ object Formatter {
         }
 
         override fun format(o: Any): String {
-            return if (o is Long) {
-                format(o)
-            } else if (o is Double) {
-                format(o)
-            } else {
-                throw PuffinBasicInternalError(
+            return when (o) {
+                is Long -> format(o)
+                is Double -> format(o)
+                else -> throw PuffinBasicInternalError(
                     NumberFormatter::class.java.simpleName
                             + ": data type mismatch: " + o.javaClass
                 )
@@ -253,9 +251,9 @@ object Formatter {
             val dest = ByteArray(result.length)
             var checkForLeadingZero = true
             var fillToLoc = -1
-            for (i in 0 until result.length) {
+            for (i in result.indices) {
                 var c = result[i]
-                if (c >= '1' && c <= '9') {
+                if (c in '1'..'9') {
                     checkForLeadingZero = false
                 }
                 if (checkForLeadingZero) {
@@ -288,7 +286,7 @@ object Formatter {
             }
             // Add sign suffix
             if (signSuffix) {
-                result = result + if (isNegative) '-' else '+'
+                result += if (isNegative) '-' else '+'
             }
             // Add minus suffix
             if (isNegative && minusSuffix) {
@@ -301,8 +299,7 @@ object Formatter {
     class FirstCharFormatter : IFormatter {
         override fun format(o: Any): String {
             return if (o is String) {
-                val str = o
-                if (str.isEmpty()) "" else str.substring(0, 1)
+                if (o.isEmpty()) "" else o.substring(0, 1)
             } else {
                 throw PuffinBasicInternalError(
                     FirstCharFormatter::class.java.simpleName
@@ -327,7 +324,7 @@ object Formatter {
             if (format.length >= 2) {
                 length = format.length
                 val spaces = format.substring(1, format.length - 1)
-                for (i in 0 until spaces.length) {
+                for (i in spaces.indices) {
                     if (spaces[i] != ' ') {
                         throw PuffinBasicRuntimeError(
                             PuffinBasicRuntimeError.ErrorCode.ILLEGAL_FUNCTION_PARAM,
@@ -345,14 +342,13 @@ object Formatter {
 
         override fun format(o: Any): String {
             return if (o is String) {
-                val str = o
-                val strlen = str.length
+                val strlen = o.length
                 if (strlen > length) {
-                    str.substring(0, length)
+                    o.substring(0, length)
                 } else {
                     val bytes = ByteArray(length)
-                    System.arraycopy(str.toByteArray(), 0, bytes, 0, str.length)
-                    Arrays.fill(bytes, str.length, length, ' '.code.toByte())
+                    System.arraycopy(o.toByteArray(), 0, bytes, 0, o.length)
+                    Arrays.fill(bytes, o.length, length, ' '.code.toByte())
                     String(bytes)
                 }
             } else {
