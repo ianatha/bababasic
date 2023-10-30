@@ -25,10 +25,19 @@
 package io.atha.quickbasic
 
 import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
+import com.termux.terminal.TerminalEmulator
 import com.termux.terminal.TerminalOutput
+import com.termux.terminal.TerminalSession
+import com.termux.terminal.TerminalSession.SessionChangedCallback
+import com.termux.view.TerminalRenderer
+import com.termux.view.TerminalViewClient
 import io.atha.quickbasic.databinding.ActivityRunBinding
 
 
@@ -62,9 +71,88 @@ class RunActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRunBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val s = "Hello, world!\n"
+        val s = "#"
 
-//        binding.terminal.currentSession.emulator.append(s.toByteArray(), s.length)
+        val session = TerminalSession("/bin/sh", "/", arrayOf(""), arrayOf(), object : SessionChangedCallback {
+            override fun onTextChanged(changedSession: TerminalSession?) {
+                Log.i("qb", "onTextChanged")
+            }
+
+            override fun onTitleChanged(changedSession: TerminalSession?) {
+                Log.i("qb", "onTitleChanged")
+            }
+
+            override fun onSessionFinished(finishedSession: TerminalSession?) {
+                Log.i("qb", "onSessionFinished")
+            }
+
+            override fun onClipboardText(session: TerminalSession?, text: String?) {
+                Log.i("qb", "onClipboardText")
+            }
+
+            override fun onBell(session: TerminalSession?) {
+                Log.i("qb", "onBell")
+            }
+
+            override fun onColorsChanged(session: TerminalSession?) {
+                Log.i("qb", "onColorsChanged")
+            }
+        })
+        binding.terminal.setOnKeyListener(object : TerminalViewClient {
+            override fun onScale(scale: Float): Float {
+                return 1.0f
+            }
+
+            override fun onSingleTapUp(e: MotionEvent?) {
+            }
+
+            override fun shouldBackButtonBeMappedToEscape(): Boolean {
+                TODO("Not yet implemented")
+            }
+
+            override fun copyModeChanged(copyMode: Boolean) {
+            }
+
+            override fun onKeyDown(keyCode: Int, e: KeyEvent?, session: TerminalSession?): Boolean {
+                Log.i("qb", "keydown")
+                session!!.emulator.append(keyCode.toChar().toString().toByteArray() , 1)
+                return true
+            }
+
+            override fun onKeyUp(keyCode: Int, e: KeyEvent?): Boolean {
+                Log.i("qb", "keyup")
+                TODO("Not yet implemented")
+            }
+
+            override fun readControlKey(): Boolean {
+                TODO("Not yet implemented")
+            }
+
+            override fun readAltKey(): Boolean {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCodePoint(
+                codePoint: Int,
+                ctrlDown: Boolean,
+                session: TerminalSession?
+            ): Boolean {
+                Log.i("qb", "onCodePoint")
+                TODO("Not yet implemented")
+            }
+
+            override fun onLongPress(event: MotionEvent?): Boolean {
+                Log.i("qb", "onLongPres")
+                TODO("Not yet implemented")
+            }
+
+        })
+        binding.terminal.setBackgroundColor(Color.BLACK)
+        binding.terminal.setTextSize(30)
+        binding.terminal.setTypeface(Typeface.MONOSPACE)
+        binding.terminal.attachSession(session)
+        session.initializeEmulator(30, 10)
+        binding.terminal.currentSession.emulator.append(s.toByteArray(), s.length)
 //        val renderer = TerminalRenderer(10, Typeface.defaultFromStyle(Typeface.MONOSPACE.style))
 //        val emulator = TerminalEmulator(AndroidTerminal(), 80, 24, 100)
 //        setContentView(editor)
