@@ -13,7 +13,7 @@ import java.io.InputStreamReader
 import java.io.PrintStream
 import java.nio.charset.StandardCharsets
 
-class AndroidSystemInAndOut(val editor: CodeEditor, val context: Context) :
+class AndroidSystemInAndOut(private val editor: CodeEditor, val context: Context) :
     PuffinBasicExtendedFile {
     private val `in`: BufferedReader
     private val out: PrintStream
@@ -22,7 +22,12 @@ class AndroidSystemInAndOut(val editor: CodeEditor, val context: Context) :
         this.`in` = BufferedReader(InputStreamReader(System.`in`))
         this.out = System.out
 
-        editor.setText(editor.text.toString() + "\n\nREM --- OUTPUT START\n")
+        outputText("--- OUTPUT START")
+    }
+
+    fun outputText(s: String) {
+        val lines = s.split("\n").joinToString("\n") { "'$it" }
+        editor.setText("${editor.text}\n$lines")
     }
 
     override fun setFieldParams(symbolTable: PuffinBasicSymbolTable, recordParts: IntList) {
@@ -63,7 +68,7 @@ class AndroidSystemInAndOut(val editor: CodeEditor, val context: Context) :
     }
 
     override fun print(s: String) {
-        editor.setText("${editor.text}REM $s\n")
+        outputText(s)
         out.print(s)
     }
 
