@@ -118,7 +118,7 @@ object Formatter {
      *
     </pre> *
      */
-    class NumberFormatter(format: String) : IFormatter {
+    class NumberFormatter(var format: String) : IFormatter {
         private val decimalFormat: DecimalFormat
         private var scientific = false
         private var signPrefix = false
@@ -129,7 +129,6 @@ object Formatter {
 
         init {
             // Handle prefix '+' or '-'
-            var format = format
             if (format.startsWith("+")) {
                 signPrefix = true
                 format = format.substring(1)
@@ -213,8 +212,8 @@ object Formatter {
             return false
         }
 
-        fun format(value: Long): String {
-            var value = value
+        fun format(input: Long): String {
+            var value = input
             val isNegative = value < 0
             if (isNegative) {
                 value = -value
@@ -222,8 +221,8 @@ object Formatter {
             return format(decimalFormat.format(value), isNegative)
         }
 
-        fun format(value: Double): String {
-            var value = value
+        fun format(input: Double): String {
+            var value = input
             val isNegative = value < 0
             if (isNegative) {
                 value = -value
@@ -231,9 +230,8 @@ object Formatter {
             return format(decimalFormat.format(value), isNegative)
         }
 
-        private fun format(result: String, isNegative: Boolean): String {
-            // Handle scientific
-            var result = result
+        private fun format(input: String, isNegative: Boolean): String {
+            var result = input
             if (scientific) {
                 if (!result.contains("E-")) {
                     result = result.replace("E", "E+")

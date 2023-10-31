@@ -760,7 +760,6 @@ internal class ArraysUtil {
             instruction: PuffinBasicIR.Instruction
         ) {
             val arrayEntry = symbolTable[instruction.op1]
-            val array = arrayEntry!!.value
             val result = symbolTable[instruction.result]!!.value
             val stats = array1dSummaryStats(arrayEntry)
             result!!.float64 = sqrt(stats.variance)
@@ -810,12 +809,9 @@ internal class ArraysUtil {
         private fun array1dSummaryStats(array: STEntry?): SummaryStatistics {
             val stats = SummaryStatistics()
             when (array!!.type!!.atomTypeId) {
-                PuffinBasicAtomTypeId.INT32 -> {
-                    val value: IntArray = (array.value as STInt32ArrayValue?)!!.value
-                    for (v in value) {
-                        stats.addValue(v.toDouble())
-                    }
-                }
+                PuffinBasicAtomTypeId.INT32 -> (array.value as STInt32ArrayValue?)!!.value
+                    .map { it.toDouble() }
+                    .forEach { stats.addValue(it) }
 
                 PuffinBasicAtomTypeId.INT64 -> {
                     val value: LongArray = (array.value as STInt64ArrayValue?)!!.value
