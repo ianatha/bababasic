@@ -22,7 +22,7 @@
     <string name="copy_text">Αντιγραφή</string>
     <string name="text_selection_more">Περισσότερα…</string>
     <string name="about">Περί</string>
-    <string name="about_contents">Το BabaBASIC είναι ένα λογισμικό ανοιχτού κώδικα που δημιουργήθηκε από τον Θεοχάρη Αθανασάκης. Ξεκίνησα να το φτιάχνω επειδή ο 65-χρονος πατέρας μου, ο οποίος ήταν προγραμματιστής στη δεκαετία του 80, μου ζήτησε να του βρω μια BASIC για Android για να δείχνει τι είναι ο προγραμματισμός στους φίλους του. Για οτιδήποτε χρειαστείτε, στείλτε email στο theo@atha.gr.</string>
+    <string name="about_contents">Το BabaBASIC είναι λογισμικό ανοιχτού κώδικα που δημιουργήθηκε από τον Θεοχάρη Αθανασάκη. Ξεκίνησα να το φτιάχνω επειδή ο 65-χρονος πατέρας μου, ο οποίος ήταν προγραμματιστής στη δεκαετία του 80, μου ζήτησε να του βρω μια BASIC για Android για να δείχνει τι είναι ο προγραμματισμός στους φίλους του. Για οτιδήποτε χρειαστείτε, στείλτε email στο ian@atha.io.</string>
     <string name="save_file">Save File</string>
     <string name="run">Run</string>
     <string name="open_file">Open File</string>
