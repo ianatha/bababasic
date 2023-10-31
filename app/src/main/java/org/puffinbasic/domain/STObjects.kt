@@ -65,7 +65,7 @@ class STObjects {
                 }
             }
 
-            override fun copyArray(src: Array<Any>, dst: STValue) {
+            override fun copyArray(src: Array<*>, dst: STValue) {
                 val srcList = src as Array<Int>
                 dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STInt32ArrayValue).int32Array1D
@@ -121,7 +121,7 @@ class STObjects {
                 }
             }
 
-            override fun copyArray(src: Array<Any>, dst: STValue) {
+            override fun copyArray(src: Array<*>, dst: STValue) {
                 val srcList = src as Array<Long>
                 dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STInt64ArrayValue).value
@@ -177,7 +177,7 @@ class STObjects {
                 }
             }
 
-            override fun copyArray(src: Array<Any>, dst: STValue) {
+            override fun copyArray(src: Array<*>, dst: STValue) {
                 val srcList = src as Array<Float>
                 dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STFloat32ArrayValue).value
@@ -233,7 +233,7 @@ class STObjects {
                 }
             }
 
-            override fun copyArray(src: Array<Any>, dst: STValue) {
+            override fun copyArray(src: Array<*>, dst: STValue) {
                 val srcList = src as Array<Double>
                 dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STFloat64ArrayValue).value
@@ -296,7 +296,7 @@ class STObjects {
                 }
             }
 
-            override fun copyArray(src: Array<Any>, dst: STValue) {
+            override fun copyArray(src: Array<*>, dst: STValue) {
                 val srcList = src as Array<String>
                 dst.arrayDimensions = mutableListOf(src.size)
                 val array = (dst as STStringArrayValue).value
@@ -339,7 +339,7 @@ class STObjects {
                 throw PuffinBasicInternalError("Not implemented")
             }
 
-            override fun copyArray(src: Array<Any>, dst: STValue) {
+            override fun copyArray(src: Array<*>, dst: STValue) {
                 throw PuffinBasicInternalError("Not implemented")
             }
 
@@ -356,7 +356,7 @@ class STObjects {
         abstract fun getValueFrom(src: STValue): Any?
         abstract fun setValueIn(value: Any, dst: STValue)
         abstract fun copyArray(src: Collection<*>, dst: STValue)
-        abstract fun copyArray(src: Array<Any>, dst: STValue)
+        abstract fun copyArray(src: Array<*>, dst: STValue)
         fun getRepr(): String? {
             return _repr?.toString()
         }

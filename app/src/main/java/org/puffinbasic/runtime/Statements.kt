@@ -224,6 +224,7 @@ object Statements {
         val fileLockMode = PuffinBasicFile.LockMode.valueOf(
             symbolTable[instr_lm_rl_2.op1]!!.value!!.string!!
         )
+        // TODO: handle fileLockMode
         val recordLen = symbolTable[instr_lm_rl_2.op2]!!.value!!.int32
         files.open(
             fileNumber,

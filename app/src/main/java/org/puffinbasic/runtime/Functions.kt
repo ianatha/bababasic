@@ -753,8 +753,7 @@ object Functions {
     fun splitdlr(symbolTable: PuffinBasicSymbolTable, instruction: PuffinBasicIR.Instruction) {
         val str = symbolTable[instruction.op1]!!.value!!.string
         val regex = symbolTable[instruction.op2]!!.value!!.string
-        val tokens = str!!.split(regex!!.toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray() as Array<Any>
+        val tokens = str!!.split(regex!!.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         PuffinBasicAtomTypeId.STRING.copyArray(tokens, symbolTable[instruction.result]!!.value!!)
     }
 

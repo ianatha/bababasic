@@ -154,19 +154,32 @@ class IntegrationTest {
         runTest("jim_03.bas", "jim_03.bas.output")
     }
 
-    private fun runTest(source: String, output: String) {
+    @Test
+    @Ignore("TODO: STDDEV broken")
+    fun testSTDDEV() {
+        runTestString("DIM A(4): FOR I = 0 TO 3: A(I) = I: NEXT I: PRINT STDDEV(A)\n", " 1.2910 \n")
+    }
+
+    private fun runTestString(source: String, output: String) {
         val bos = ByteArrayOutputStream()
         val out = PrintStream(bos)
         PuffinBasicInterpreterMain.interpretAndRun(
             UserOptions.ofTest(),
-            loadSourceCodeFromResource(source),
+            source,
             SystemInputOutputFile(System.`in`, out),
             env
         )
         out.close()
         assertEquals(
-            loadOutputFromResource(output),
+            output,
             String(bos.toByteArray())
+        )
+    }
+
+    private fun runTest(sourcePath: String, outputPath: String) {
+        runTestString(
+            loadSourceCodeFromResource(sourcePath),
+            loadOutputFromResource(outputPath)
         )
     }
 
