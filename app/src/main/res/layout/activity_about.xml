@@ -37,7 +37,7 @@
     <ImageView
         android:id="@+id/logo2"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="256dp"
         android:contentDescription="BabaBASIC Logo"
         app:srcCompat="@drawable/ic_launcher_foreground" />
 
