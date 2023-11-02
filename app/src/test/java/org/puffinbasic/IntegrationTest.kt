@@ -9,6 +9,7 @@ import org.junit.Test
 import org.puffinbasic.PuffinBasicInterpreterMain.UserOptions
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.file.SystemInputOutputFile
+import org.puffinbasic.runtime.BabaSystem
 import org.puffinbasic.runtime.Environment
 import org.puffinbasic.runtime.SystemEnv
 import java.io.BufferedInputStream
@@ -171,7 +172,7 @@ class IntegrationTest {
         )
         out.close()
         assertEquals(
-            output,
+            output.replace(Regex("\n"), BabaSystem.lineSeparator()),
             String(bos.toByteArray())
         )
     }

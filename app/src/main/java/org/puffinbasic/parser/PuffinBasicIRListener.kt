@@ -231,6 +231,7 @@ import org.puffinbasic.file.PuffinBasicFile.FileAccessMode
 import org.puffinbasic.file.PuffinBasicFile.FileOpenMode
 import org.puffinbasic.parser.LinenumberListener.Companion.parseLinenum
 import org.puffinbasic.parser.PuffinBasicIR.OpCode
+import org.puffinbasic.runtime.BabaSystem
 import org.puffinbasic.runtime.Numbers.parseFloat32
 import org.puffinbasic.runtime.Numbers.parseFloat64
 import org.puffinbasic.runtime.Numbers.parseInt32
@@ -2250,7 +2251,7 @@ class PuffinBasicIRListener(
         if (endsWithNewline || fileNumber != null) {
             val newlineId = ir.symbolTable.addTmp(
                 PuffinBasicAtomTypeId.STRING
-            ) { entry: STEntry? -> entry!!.value!!.string = System.lineSeparator() }
+            ) { entry: STEntry? -> entry!!.value!!.string = BabaSystem.lineSeparator() }
             ir.addInstruction(
                 sourceFile,
                 currentLineNumber,
@@ -2321,7 +2322,7 @@ class PuffinBasicIRListener(
         if (endsWithNewline || fileNumber != null) {
             val newlineId = ir.symbolTable.addTmp(
                 PuffinBasicAtomTypeId.STRING
-            ) { entry: STEntry? -> entry!!.value!!.string = System.lineSeparator() }
+            ) { entry: STEntry? -> entry!!.value!!.string = BabaSystem.lineSeparator() }
             ir.addInstruction(
                 sourceFile,
                 currentLineNumber,
@@ -4127,7 +4128,7 @@ class PuffinBasicIRListener(
         }
         val newlineId = ir.symbolTable.addTmp(
             PuffinBasicAtomTypeId.STRING
-        ) { entry: STEntry? -> entry!!.value!!.string = System.lineSeparator() }
+        ) { entry: STEntry? -> entry!!.value!!.string = BabaSystem.lineSeparator() }
         ir.addInstruction(
             sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
             OpCode.PRINT, newlineId, PuffinBasicSymbolTable.NULL_ID, PuffinBasicSymbolTable.NULL_ID
