@@ -1,8 +1,17 @@
 package org.puffinbasic.error
 
 import org.puffinbasic.parser.PuffinBasicIR
+import org.puffinbasic.runtime.BabaSystem
 
-class PuffinBasicRuntimeError : RuntimeException {
+abstract class PuffinError(
+    message: String?,
+    cause: Throwable? = null,
+    enableSuppression: Boolean = false,
+    writableStackTrace: Boolean = true,
+) : RuntimeException(message, cause, enableSuppression, writableStackTrace) {
+}
+
+class PuffinBasicRuntimeError : PuffinError {
     val errorCode: ErrorCode
 
     constructor(errorCode: ErrorCode, message: String) : super(
@@ -16,8 +25,8 @@ class PuffinBasicRuntimeError : RuntimeException {
         instruction: PuffinBasicIR.Instruction,
         line: String
     ) : super(
-        cause.message + System.lineSeparator()
-                + "Line: " + instruction.inputRef + System.lineSeparator()
+        cause.message + BabaSystem.lineSeparator()
+                + "Line: " + instruction.inputRef + BabaSystem.lineSeparator()
                 + line, cause
     ) {
         errorCode = cause.errorCode
@@ -28,8 +37,8 @@ class PuffinBasicRuntimeError : RuntimeException {
         instruction: PuffinBasicIR.Instruction,
         line: String
     ) : super(
-        cause.message + System.lineSeparator()
-                + "Line: " + instruction.inputRef + System.lineSeparator()
+        cause.message + BabaSystem.lineSeparator()
+                + "Line: " + instruction.inputRef + BabaSystem.lineSeparator()
                 + line, cause
     ) {
         errorCode = ErrorCode.UNKNOWN
