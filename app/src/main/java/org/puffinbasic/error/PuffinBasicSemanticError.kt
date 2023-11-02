@@ -1,10 +1,12 @@
 package org.puffinbasic.error
 
+import org.puffinbasic.runtime.BabaSystem
+
 class PuffinBasicSemanticError(
     errorCode: ErrorCode, line: String, message: String
-) : RuntimeException(
-    "[" + errorCode + "] " + message + System.lineSeparator() +
-            "LINE:" + System.lineSeparator() +
+) : PuffinError(
+    "[" + errorCode + "] " + message + BabaSystem.lineSeparator() +
+            "LINE:" + BabaSystem.lineSeparator() +
             line
 ) {
     enum class ErrorCode {
