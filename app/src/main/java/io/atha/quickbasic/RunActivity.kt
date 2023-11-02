@@ -2,162 +2,62 @@ package io.atha.quickbasic
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
-import android.view.MotionEvent
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.termux.terminal.TerminalOutput
+import com.termux.shared.termux.terminal.TermuxTerminalSessionClientBase
 import com.termux.terminal.TerminalSession
-import com.termux.terminal.TerminalSession.SessionChangedCallback
-import com.termux.view.TerminalViewClient
+import com.termux.view.TerminalView
 import io.atha.quickbasic.databinding.ActivityRunBinding
+import java.io.Serializable
 
-
-class AndroidTerminal : TerminalOutput() {
-    override fun write(data: ByteArray?, offset: Int, count: Int) {
-        Log.i("AndroidTerminal", "write")
-    }
-
-    override fun titleChanged(oldTitle: String?, newTitle: String?) {
-        Log.i("AndroidTerminal", "title")
-    }
-
-    override fun clipboardText(text: String?) {
-        Log.i("AndroidTerminal", "clipboard")
-    }
-
-    override fun onBell() {
-        Log.i("AndroidTerminal", "bell")
-    }
-
-    override fun onColorsChanged() {
-        Log.i("AndroidTerminal", "colors")
-    }
-}
+data class RunDatum(
+    val src: String,
+) : Serializable
 
 class RunActivity : AppCompatActivity() {
-    //    private lateinit var editor: CodeEditor
-    private lateinit var binding: ActivityRunBinding
+    lateinit var binding: ActivityRunBinding
+    lateinit var datum: RunDatum
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        datum = intent.getSerializableExtra("datum", RunDatum::class.java)!!
         binding = ActivityRunBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val s = "#"
 
-        val session = TerminalSession(
-            "/bin/sh",
-            "/",
-            arrayOf(""),
-            arrayOf(),
-            object : SessionChangedCallback {
-                override fun onTextChanged(changedSession: TerminalSession?) {
-                    Log.i("qb", "onTextChanged")
-                }
+        binding.goBack.setOnClickListener {
+            finish()
+        }
 
-                override fun onTitleChanged(changedSession: TerminalSession?) {
-                    Log.i("qb", "onTitleChanged")
-                }
-
-                override fun onSessionFinished(finishedSession: TerminalSession?) {
-                    Log.i("qb", "onSessionFinished")
-                }
-
-                override fun onClipboardText(session: TerminalSession?, text: String?) {
-                    Log.i("qb", "onClipboardText")
-                }
-
-                override fun onBell(session: TerminalSession?) {
-                    Log.i("qb", "onBell")
-                }
-
-                override fun onColorsChanged(session: TerminalSession?) {
-                    Log.i("qb", "onColorsChanged")
-                }
-            })
-        binding.terminal.setOnKeyListener(object : TerminalViewClient {
-            override fun onScale(scale: Float): Float {
-                return 1.0f
+        val client1 = object : TermuxTerminalSessionClientBase() {
+            override fun onTextChanged(changedSession: TerminalSession) {
+                super.onTextChanged(changedSession)
+                binding.terminal.onScreenUpdated()
             }
+        }
+        val client2 = TermuxTerminalViewClient(this)
 
-            override fun onSingleTapUp(e: MotionEvent?) {
-            }
+        val session = BabaTerminalSession(
+            client1,
+            this,
+            datum,
+        )
 
-            override fun shouldBackButtonBeMappedToEscape(): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun copyModeChanged(copyMode: Boolean) {
-            }
-
-            override fun onKeyDown(keyCode: Int, e: KeyEvent?, session: TerminalSession?): Boolean {
-                Log.i("qb", "keydown")
-                session!!.emulator.append(keyCode.toChar().toString().toByteArray(), 1)
-                return true
-            }
-
-            override fun onKeyUp(keyCode: Int, e: KeyEvent?): Boolean {
-                Log.i("qb", "keyup")
-                TODO("Not yet implemented")
-            }
-
-            override fun readControlKey(): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun readAltKey(): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun onCodePoint(
-                codePoint: Int,
-                ctrlDown: Boolean,
-                session: TerminalSession?
-            ): Boolean {
-                Log.i("qb", "onCodePoint")
-                TODO("Not yet implemented")
-            }
-
-            override fun onLongPress(event: MotionEvent?): Boolean {
-                Log.i("qb", "onLongPres")
-                TODO("Not yet implemented")
-            }
-
-        })
         binding.terminal.setBackgroundColor(Color.BLACK)
         binding.terminal.setTextSize(30)
         binding.terminal.setTypeface(Typeface.MONOSPACE)
         binding.terminal.attachSession(session)
+        binding.terminal.setTerminalViewClient(client2)
         session.initializeEmulator(30, 10)
-        binding.terminal.currentSession.emulator.append(s.toByteArray(), s.length)
-//        val renderer = TerminalRenderer(10, Typeface.defaultFromStyle(Typeface.MONOSPACE.style))
-//        val emulator = TerminalEmulator(AndroidTerminal(), 80, 24, 100)
-//        setContentView(editor)
-//        editor.typefaceText = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
-//        editor.setEditorLanguage(JavaLanguage())
-//        switchThemeIfRequired(this, editor)
-//        val text = StringBuilder("    private final PopupWindow mWindow;\r\n" +
-//                "    private final CodeEditor mEditor;\r\n" +
-//                "    private final int mFeatures;\n\r" +
-//                "    private final int[] mLocationBuffer = new int[2];\r" +
-//                "    private final EventReceiver<ScrollEvent> mScrollListener;\r\n" +
-//                "    private boolean mShowState;\r" +
-//                "    private boolean mRegisterFlag;\n" +
-//                "    private boolean mRegistered;\n" +
-//                "    private int mOffsetX, mOffsetY, mX, mY, mWidth, mHeight;")
-//        for (i in 0..31) {
-//            text.append(i.toChar())
-//        }
-//        text.append(127.toChar())
-//        editor.setText(text)
-//        editor.diagnostics = DiagnosticsContainer().also {
-//            it.addDiagnostic(DiagnosticRegion(37, 50, DiagnosticRegion.SEVERITY_ERROR, 0L, DiagnosticDetail("TestMessage", "This is a test error message\nYou can add your content here\ntest scroll\ntest\ntest\ntest\ntest", listOf(
-//                Quickfix("Fix Quick", 0L, {}), Quickfix("Test", 0L, {})
-//            ))))
-//        }
-//        val stringText = text.toString()
-//        assert(stringText == editor.text.toString()) { "Text check failed" }
+        setContentView(binding.root)
     }
 
+    fun getTerminalView(): TerminalView = binding.terminal
+    fun getCurrentSession(): TerminalSession? = binding.terminal.currentSession
+    fun toggleTerminalToolbar() {
+        TODO("Not yet implemented")
+    }
 }

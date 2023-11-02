@@ -23,7 +23,14 @@
             android:name=".AboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity
+            android:name=".RunActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
