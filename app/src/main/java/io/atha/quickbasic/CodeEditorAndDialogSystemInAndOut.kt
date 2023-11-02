@@ -2,31 +2,36 @@ package io.atha.quickbasic
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.text.InputType
 import android.util.Log
 import android.widget.EditText
+import io.github.rosemoe.sora.widget.CodeEditor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.puffinbasic.domain.PuffinBasicSymbolTable
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.file.PuffinBasicExtendedFile
 import org.puffinbasic.runtime.BabaSystem
 import java.io.BufferedReader
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.io.PipedInputStream
-import java.io.PipedOutputStream
-import java.io.PipedReader
-import java.io.PipedWriter
 import java.io.PrintStream
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.CountDownLatch
 
+class CodeEditorAndDialogSystemInAndOut(private val editor: CodeEditor, val context: Activity) :
+    PuffinBasicExtendedFile {
+    private val `in`: BufferedReader
+    private val out: PrintStream
 
-class AndroidSystemInAndOut(val context: Activity) : PuffinBasicExtendedFile {
-    val buf = CircularByteBuffer(4096)
+    init {
+        this.`in` = BufferedReader(InputStreamReader(System.`in`))
+        this.out = System.out
+
+        outputText("--- OUTPUT START" + BabaSystem.lineSeparator())
+    }
 
     override fun inputDialog(prompt: String): String? {
         var result: String? = null
@@ -52,12 +57,16 @@ class AndroidSystemInAndOut(val context: Activity) : PuffinBasicExtendedFile {
             builder.show()
         }
         latch.await()
-        outputText(" " + result!! + BabaSystem.lineSeparator())
         return result
     }
 
     fun outputText(s: String) {
-        buf.outputStream.write(s.toByteArray(Charsets.UTF_8))
+        Log.i("out", s)
+        val lines = s.split("\n").joinToString("\n") { "'$it" }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            editor.setText("${editor.text}\n$lines")
+        }
     }
 
     override fun setFieldParams(symbolTable: PuffinBasicSymbolTable, recordParts: List<Int>) {
@@ -68,15 +77,14 @@ class AndroidSystemInAndOut(val context: Activity) : PuffinBasicExtendedFile {
     }
 
     override fun readBytes(n: Int): ByteArray {
-        TODO("Not supported")
-//        val line = readLine().toByteArray(StandardCharsets.US_ASCII)
-//        return if (n >= line.size) {
-//            line
-//        } else {
-//            val copy = ByteArray(Math.min(n, line.size))
-//            System.arraycopy(line, 0, copy, 0, n)
-//            copy
-//        }
+        val line = readLine().toByteArray(StandardCharsets.US_ASCII)
+        return if (n >= line.size) {
+            line
+        } else {
+            val copy = ByteArray(Math.min(n, line.size))
+            System.arraycopy(line, 0, copy, 0, n)
+            copy
+        }
     }
 
     override val currentRecordNumber: Int
@@ -86,26 +94,39 @@ class AndroidSystemInAndOut(val context: Activity) : PuffinBasicExtendedFile {
         get() = 0
 
     override fun readLine(): String {
-        TODO("Not supported")
-//        return try {
-//            `in`.readLine().stripTrailing()
-//        } catch (e: IOException) {
-//            throw PuffinBasicRuntimeError(
-//                PuffinBasicRuntimeError.ErrorCode.IO_ERROR,
-//                "Failed to read line!"
-//            )
-//        }
+        return try {
+            `in`.readLine().stripTrailing()
+        } catch (e: IOException) {
+            throw PuffinBasicRuntimeError(
+                PuffinBasicRuntimeError.ErrorCode.IO_ERROR,
+                "Failed to read line!"
+            )
+        }
     }
 
     override fun print(s: String) {
         outputText(s)
-//        out.print(s)
+        out.print(s)
     }
 
-//    private val buf = StringBuilder()
+    private val buf = StringBuilder()
 
     override fun writeByte(b: Byte) {
-        buf.outputStream.write(b.toInt())
+        buf.append(Char(b.toUShort()))
+        var index: Int
+        while (buf.indexOf('\n').also { index = it } >= 0) {
+            val line = buf.substring(0, index + 1).trim() // Including the newline
+            this.print(line)
+            buf.delete(0, index + 1) // Remove the printed data from the buffer
+        }
+//        try {
+//            out.write(Char(b.toUShort()).code)
+//        } catch (e: Exception) {
+//            throw PuffinBasicRuntimeError(
+//                PuffinBasicRuntimeError.ErrorCode.IO_ERROR,
+//                "Failed to write buffer to output, error: " + e.message
+//            )
+//        }
     }
 
     override fun eof(): Boolean {
@@ -135,10 +156,5 @@ class AndroidSystemInAndOut(val context: Activity) : PuffinBasicExtendedFile {
             PuffinBasicRuntimeError.ErrorCode.ILLEGAL_FILE_ACCESS,
             "Not supported for System IN/OUT!"
         )
-    }
-
-
-    fun getStdout(): InputStream {
-        return buf.inputStream
     }
 }

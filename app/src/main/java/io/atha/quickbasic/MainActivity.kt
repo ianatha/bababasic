@@ -98,6 +98,7 @@ import org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun
 import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
+import org.puffinbasic.runtime.Functions
 import org.puffinbasic.runtime.SystemEnv
 import java.io.BufferedReader
 import java.io.IOException
@@ -105,6 +106,7 @@ import java.io.InputStreamReader
 import java.io.OutputStream
 import java.util.regex.PatternSyntaxException
 import java.util.stream.Collectors
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -309,28 +311,6 @@ class MainActivity : AppCompatActivity() {
 
     private /*suspend*/ fun loadDefaultLanguages() /*= withContext(Dispatchers.Main)*/ {
         GrammarRegistry.getInstance().loadGrammars("textmate/languages.json")
-    }
-
-    private fun loadDefaultLanguagesWithDSL() {
-        GrammarRegistry.getInstance().loadGrammars(
-            languages {
-                language("java") {
-                    grammar = "textmate/java/syntaxes/java.tmLanguage.json"
-                    defaultScopeName()
-                    languageConfiguration = "textmate/java/language-configuration.json"
-                }
-                language("kotlin") {
-                    grammar = "textmate/kotlin/syntaxes/Kotlin.tmLanguage"
-                    defaultScopeName()
-                    languageConfiguration = "textmate/kotlin/language-configuration.json"
-                }
-                language("python") {
-                    grammar = "textmate/python/syntaxes/python.tmLanguage.json"
-                    defaultScopeName()
-                    languageConfiguration = "textmate/python/language-configuration.json"
-                }
-            }
-        )
     }
 
     private fun resetColorScheme() {
@@ -632,42 +612,12 @@ class MainActivity : AppCompatActivity() {
             R.id.text_redo -> editor.redo()
 
             R.id.run_script -> {
-                var fileName = "editor.bas"
-                var sourceCode = editor.text.toString() + "\n"
-                Log.i("INFO", "Running script: " + sourceCode)
-                val userOptions = PuffinBasicInterpreterMain.UserOptions(
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    fileName,
-                )
-
-                val context = this
-                CoroutineScope(Dispatchers.IO).launch {
-                    val stdin = AndroidSystemInAndOut(binding.editor, context)
-                    try {
-                        interpretAndRun(
-                            userOptions,
-                            fileName,
-                            sourceCode,
-                            stdin,
-                            SystemEnv(),
-                        )
-                    } catch (e: PuffinBasicInternalError) {
-                        Log.e("qb", "error", e)
-                        stdin.outputText("!!! INTERNAL ERROR: ${e.message}")
-                    } catch (e: PuffinBasicRuntimeError) {
-                        Log.e("qb", "error", e)
-                        stdin.outputText("!!! RUNTIME ERROR: ${e.message}")
-                    } catch (e: PuffinBasicSyntaxError) {
-                        Log.e("qb", "error", e)
-                        stdin.outputText("!!! SYNTAX ERROR: ${e.message}")
-                    }
-                    Log.i("qb", "DONE")
-                    stdin.outputText("--- OUTPUT END")
-                }
+                // run the RunActivity intent
+                val intent = Intent(this, RunActivity::class.java)
+                intent.putExtra("datum", RunDatum(
+                    editor.text.toString()
+                ))
+                startActivity(intent)
             }
 
             R.id.about -> {

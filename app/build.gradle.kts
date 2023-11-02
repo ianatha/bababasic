@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+
     implementation("com.google.android.play:app-update-ktx:2.0.1")
 
     implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
@@ -69,7 +71,7 @@ dependencies {
     implementation("org.apache.commons:commons-math3:3.6.1")
     implementation("commons-io:commons-io:2.7")
 
-    implementation("com.termux:terminal-view:0.106")
+    implementation("com.github.ianatha:termux:feat-non-proc-terms-SNAPSHOT")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation(platform("io.github.Rosemoe.sora-editor:bom:0.22.1"))
