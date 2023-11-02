@@ -14,6 +14,7 @@ import org.puffinbasic.antlr4.PuffinBasicParser.LineContext
 import org.puffinbasic.antlr4.PuffinBasicParser.ThenContext
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
+import org.puffinbasic.runtime.BabaSystem
 import org.puffinbasic.runtime.Types
 import java.util.SortedMap
 import java.util.concurrent.atomic.AtomicInteger
@@ -84,10 +85,10 @@ class LinenumberListener(
         }
         val oldLine = sortedLines.put(linenum, line)
         if (oldLine != null) {
-            val message = "Duplicate line number!" + System.lineSeparator() +
-                    "OLD:" + System.lineSeparator() +
+            val message = "Duplicate line number!" + BabaSystem.lineSeparator() +
+                    "OLD:" + BabaSystem.lineSeparator() +
                     oldLine +
-                    "NEW:" + System.lineSeparator() +
+                    "NEW:" + BabaSystem.lineSeparator() +
                     line
             if (throwOnDuplicate == ThrowOnDuplicate.THROW) {
                 throw PuffinBasicSyntaxError(message)

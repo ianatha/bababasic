@@ -26,6 +26,7 @@ import org.puffinbasic.parser.PuffinBasicIR
 import org.puffinbasic.parser.PuffinBasicIRListener
 import org.puffinbasic.parser.PuffinBasicImportPath
 import org.puffinbasic.parser.PuffinBasicSourceFile
+import org.puffinbasic.runtime.BabaSystem
 import org.puffinbasic.runtime.Environment
 import org.puffinbasic.runtime.PuffinBasicRuntime
 import org.puffinbasic.runtime.SystemEnv
@@ -100,7 +101,7 @@ object PuffinBasicInterpreterMain {
             Files.lines(Paths.get(filename), StandardCharsets.US_ASCII).use { stream ->
                 stream.forEach { s: String? ->
                     sb.append(s).append(
-                        System.lineSeparator()
+                        BabaSystem.lineSeparator()
                     )
                 }
             }
@@ -285,20 +286,20 @@ object PuffinBasicInterpreterMain {
             e: RecognitionException
         ) {
             val lineIndex = line - 1
-            val lines = input.split(System.lineSeparator().toRegex()).dropLastWhile { it.isEmpty() }
+            val lines = input.split(BabaSystem.lineSeparator().toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray()
             var inputLine: String
             if (lineIndex >= 0 && lineIndex < lines.size) {
                 inputLine = lines[lineIndex]
                 if (charPositionInLine >= 0 && charPositionInLine <= inputLine.length) {
-                    inputLine = (inputLine + System.lineSeparator()
+                    inputLine = (inputLine + BabaSystem.lineSeparator()
                             + Strings.repeat(" ", Math.max(0, charPositionInLine)) + '^')
                 }
             } else {
                 inputLine = "<LINE OUT OF RANGE>"
             }
             throw PuffinBasicSyntaxError(
-                "[" + line + ":" + charPositionInLine + "] " + msg + System.lineSeparator()
+                "[" + line + ":" + charPositionInLine + "] " + msg + BabaSystem.lineSeparator()
                         + inputLine
             )
         }
