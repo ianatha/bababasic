@@ -1,6 +1,7 @@
 package org.puffinbasic.runtime;
 
 import org.puffinbasic.domain.PuffinBasicSymbolTable;
+import org.puffinbasic.file.PuffinBasicExtendedFile;
 import org.puffinbasic.parser.PuffinBasicIR.Instruction;
 
 import java.util.List;
@@ -661,6 +662,10 @@ class GraphicsRuntime {
     }
 
     static class GraphicsState {
+        private PuffinBasicExtendedFile stdio;
+        GraphicsState(PuffinBasicExtendedFile stdio) {
+            this.stdio = stdio;
+        }
 //        private BasicFrame frame;
 
 //        boolean isInitialized() {
@@ -706,14 +711,20 @@ class GraphicsRuntime {
 //                );
 //            }
 //        }
-//    }
+    }
 
         public static void cls(GraphicsState graphicsState) {
-//        graphicsState.getFrame().getDrawingCanvas().clear();
+            graphicsState.stdio.print(VT100.CLEAR_SCREEN);
+//            graphicsState.getFrame().getDrawingCanvas().clear();
         }
 
-        public static void beep() {
+        public static void beep(GraphicsState graphicsState) {
 //            Toolkit.getDefaultToolkit().beep();
         }
-    }
+
+        static class VT100 {
+            protected static final String ESC = "\033";
+            protected  static final String CONTROL_SEQ_INTRODUCER = ESC + "[";
+            public static final String CLEAR_SCREEN = CONTROL_SEQ_INTRODUCER + "2J";
+        }
 }

@@ -159,7 +159,6 @@ class BabaTerminalSession(
         execProcess = object : Thread("Run[pid=$mShellPid]") {
             override fun run() {
                 Log.i("qb", "Running script: ${datum.src}")
-                stdin.outputText("--- OUTPUT START" + BabaSystem.lineSeparator())
                 try {
                     interpretAndRun(
                         userOptions,
@@ -179,7 +178,6 @@ class BabaTerminalSession(
                     stdin.outputText("!!! SYNTAX ERROR: ${e.message}")
                 }
                 Log.i("qb", "DONE")
-                stdin.outputText("--- OUTPUT END" + BabaSystem.lineSeparator())
                 execProcess = null
             }
         }

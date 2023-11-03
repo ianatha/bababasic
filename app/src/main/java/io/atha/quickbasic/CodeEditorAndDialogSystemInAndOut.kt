@@ -29,8 +29,6 @@ class CodeEditorAndDialogSystemInAndOut(private val editor: CodeEditor, val cont
     init {
         this.`in` = BufferedReader(InputStreamReader(System.`in`))
         this.out = System.out
-
-        outputText("--- OUTPUT START" + BabaSystem.lineSeparator())
     }
 
     override fun inputDialog(prompt: String): String? {
