@@ -66,9 +66,6 @@ class BabaTerminalSession(
     /** Buffer to write translate code points into utf8 before writing to mTerminalToProcessIOQueue  */
     private val mUtf8InputBuffer = ByteArray(5)
 
-    /** The pid of the shell process. 0 if not started and -1 if finished running.  */
-    var mShellPid = 0
-
     /** The exit status of the shell process. Only valid if $[.mShellPid] is -1.  */
     var mShellExitStatus = 0
 
@@ -116,26 +113,17 @@ class BabaTerminalSession(
      */
     override fun initializeEmulator(columns: Int, rows: Int) {
         mEmulator = TerminalEmulator(this, columns, rows, mTranscriptRows, mClient)
-
         var fileName = "editor.bas"
-
         val userOptions = PuffinBasicInterpreterMain.UserOptions(
-            false,
-            false,
-            false,
-            false,
-            false,
-            fileName,
+            logOnDuplicate = false,
+            listSourceCode = false,
+            printIR = false,
+            timing = false,
+            graphics = false,
+            filename = fileName,
         )
-
         val stdin = AndroidSystemInAndOut(mActivity)
-
-
-//        mTerminalFileDescriptor =
-//            JNI.createSubprocess(mShellPath, mCwd, mArgs, mEnv, processId, rows, columns)
-        mShellPid = 777
-        mClient.setTerminalShellPid(this, mShellPid)
-        object : Thread("TermSessionInputReader[pid=$mShellPid]") {
+        object : Thread("TermSessionInputReader") {
             override fun run() {
                 try {
                     stdin.getStdout().use { termIn ->
@@ -156,7 +144,7 @@ class BabaTerminalSession(
             }
         }.start()
 
-        execProcess = object : Thread("Run[pid=$mShellPid]") {
+        execProcess = object : Thread("Run") {
             override fun run() {
                 Log.i("qb", "Running script: ${datum.src}")
                 try {
@@ -198,7 +186,7 @@ class BabaTerminalSession(
 //                }
 //            }
 //        }.start()
-        object : Thread("TermSessionWaiter[pid=$mShellPid]") {
+        object : Thread("TermSessionWaiter") {
             override fun run() {
 //                val processExitCode = JNI.waitFor(mShellPid)
 //                mMainThreadHandler.sendMessage(
@@ -213,7 +201,7 @@ class BabaTerminalSession(
 
     /** Write data to the shell process.  */
     override fun write(data: ByteArray, offset: Int, count: Int) {
-        if (mShellPid > 0) mTerminalToProcessIOQueue.write(data, offset, count)
+        mTerminalToProcessIOQueue.write(data, offset, count)
     }
 
     /** Write the Unicode code point to the terminal encoded in UTF-8.  */
@@ -269,25 +257,19 @@ class BabaTerminalSession(
     /** Finish this terminal session by sending SIGKILL to the shell.  */
     override fun finishIfRunning() {
         if (isRunning) {
-            try {
-                Os.kill(mShellPid, OsConstants.SIGKILL)
-            } catch (e: ErrnoException) {
-                Logger.logWarn(mClient, LOG_TAG, "Failed sending SIGKILL: " + e.message)
-            }
+            execProcess?.interrupt()
         }
     }
 
     /** Cleanup resources when the process exits.  */
     fun cleanupResources(exitStatus: Int) {
         synchronized(this) {
-            mShellPid = -1
             mShellExitStatus = exitStatus
         }
 
         // Stop the reader and writer threads, and close the I/O streams
         mTerminalToProcessIOQueue.close()
         mProcessToTerminalIOQueue.close()
-//        JNI.close(mTerminalFileDescriptor)
     }
 
     override fun titleChanged(oldTitle: String, newTitle: String) {
@@ -296,7 +278,7 @@ class BabaTerminalSession(
 
     @Synchronized
     override fun isRunning(): Boolean {
-        return mShellPid != -1
+        return execProcess != null && execProcess!!.isAlive
     }
 
     /** Only valid if not [.isRunning].  */
@@ -322,29 +304,10 @@ class BabaTerminalSession(
     }
 
     override fun getPid(): Int {
-        return mShellPid
+        return 0
     }
 
-    /** Returns the shell's working directory or null if it was unavailable.  */
     override fun getCwd(): String? {
-        if (mShellPid < 1) {
-//            return null
-        }
-        try {
-            val cwdSymlink = String.format("/proc/%s/cwd/", mShellPid)
-            val outputPath = File(cwdSymlink).canonicalPath
-            var outputPathWithTrailingSlash = outputPath
-            if (!outputPath.endsWith("/")) {
-                outputPathWithTrailingSlash += '/'
-            }
-            if (cwdSymlink != outputPathWithTrailingSlash) {
-                return outputPath
-            }
-        } catch (e: IOException) {
-            Logger.logStackTraceWithMessage(mClient, LOG_TAG, "Error getting current directory", e)
-        } catch (e: SecurityException) {
-            Logger.logStackTraceWithMessage(mClient, LOG_TAG, "Error getting current directory", e)
-        }
         return null
     }
 
