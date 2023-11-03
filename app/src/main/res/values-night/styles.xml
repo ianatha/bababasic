@@ -25,7 +25,7 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
-        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimary">#FFFFFF</item>
         <item name="colorPrimaryDark">#3F51B5</item>
         <item name="colorAccent">#EC407A</item>
     </style>
