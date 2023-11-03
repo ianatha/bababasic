@@ -19,7 +19,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:orientation="horizontal"
@@ -30,7 +30,7 @@
             android:id="@+id/go_back"
             android:contentDescription="@string/go_back_to_editor"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:src="@drawable/undo" />
 
@@ -43,7 +43,7 @@
             android:contentDescription="@string/stop_execution"
             android:id="@+id/stop"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:src="@drawable/cancel"
             app:tint="@color/red_when_enabled" />

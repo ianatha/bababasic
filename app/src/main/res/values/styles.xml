@@ -3,5 +3,6 @@
         <item name="colorPrimary">#3F51B5</item>
         <item name="colorPrimaryDark">#3F51B5</item>
         <item name="colorAccent">#EC407A</item>
+        <item name="android:textColorHint">#8f8f8f</item>
     </style>
 </resources>
