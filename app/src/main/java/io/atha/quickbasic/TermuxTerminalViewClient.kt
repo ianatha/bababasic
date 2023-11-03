@@ -64,8 +64,8 @@ class TermuxTerminalViewClient(
      */
     fun onCreate() {
         onReloadProperties()
-//        mActivity.binding.terminal.setTextSize(mActivity.getPreferences().getFontSize())
-//        mActivity.binding.terminal.setKeepScreenOn(mActivity.getPreferences().shouldKeepScreenOn())
+        mActivity.binding.terminal.setTextSize(mActivity.getPreferences().fontSize)
+        mActivity.binding.terminal.keepScreenOn = mActivity.getPreferences().shouldKeepScreenOn()
     }
 
     /**
@@ -74,10 +74,10 @@ class TermuxTerminalViewClient(
     fun onStart() {
         // Set {@link TerminalView#TERMINAL_VIEW_KEY_LOGGING_ENABLED} value
         // Also required if user changed the preference from {@link TermuxSettings} activity and returns
-//        val isTerminalViewKeyLoggingEnabled: Boolean =
-//            mActivity.getPreferences().isTerminalViewKeyLoggingEnabled()
-//        mActivity.getTerminalView()
-//            .setIsTerminalViewKeyLoggingEnabled(isTerminalViewKeyLoggingEnabled)
+        val isTerminalViewKeyLoggingEnabled: Boolean =
+            mActivity.getPreferences().isTerminalViewKeyLoggingEnabled
+        mActivity.getTerminalView()
+            .setIsTerminalViewKeyLoggingEnabled(isTerminalViewKeyLoggingEnabled)
 
         // Piggyback on the terminal view key logging toggle for now, should add a separate toggle in future
 //        mActivity.getTermuxActivityRootView()
@@ -92,14 +92,14 @@ class TermuxTerminalViewClient(
         // Show the soft keyboard if required
 //        setSoftKeyboardState(true, mActivity.isActivityRecreated())
         mTerminalCursorBlinkerStateAlreadySet = false
-//        if (mActivity.getTerminalView().mEmulator != null) {
+        if (mActivity.getTerminalView().mEmulator != null) {
             // Start terminal cursor blinking if enabled
             // If emulator is already set, then start blinker now, otherwise wait for onEmulatorSet()
             // event to start it. This is needed since onEmulatorSet() may not be called after
             // TermuxActivity is started after device display timeout with double tap and not power button.
-//            setTerminalCursorBlinkerState(true)
-//            mTerminalCursorBlinkerStateAlreadySet = true
-//        }
+            setTerminalCursorBlinkerState(true)
+            mTerminalCursorBlinkerStateAlreadySet = true
+        }
     }
 
     /**
@@ -422,8 +422,9 @@ class TermuxTerminalViewClient(
     }
 
     fun changeFontSize(increase: Boolean) {
-//        mActivity.getPreferences().changeFontSize(increase)
+        mActivity.getPreferences().changeFontSize(increase)
 //        mActivity.getTerminalView().setTextSize(mActivity.getPreferences().getFontSize())
+        mActivity.getTerminalView().setTextSize(mActivity.getPreferences().fontSize)
     }
 
     /**

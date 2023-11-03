@@ -4,9 +4,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.KeyEvent
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.termux.shared.termux.terminal.TermuxTerminalSessionClientBase
 import com.termux.terminal.TerminalSession
@@ -19,13 +16,22 @@ data class RunDatum(
 ) : Serializable
 
 class RunActivity : AppCompatActivity() {
+    lateinit var mPreferences: AppSharedPreferences
     lateinit var binding: ActivityRunBinding
     lateinit var datum: RunDatum
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun getPreferences(): AppSharedPreferences {
+        return mPreferences
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        datum = intent.getSerializableExtra("datum", RunDatum::class.java)!!
+        mPreferences = AppSharedPreferences.build(this, true);
+        datum = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("datum", RunDatum::class.java)!!
+        } else {
+            intent.getSerializableExtra("datum") as RunDatum
+        }
         binding = ActivityRunBinding.inflate(layoutInflater)
 
         binding.goBack.setOnClickListener {
