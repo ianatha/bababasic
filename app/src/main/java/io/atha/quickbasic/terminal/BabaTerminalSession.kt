@@ -142,6 +142,7 @@ class BabaTerminalSession(
                         stdin,
                         SystemEnv(),
                     )
+                    sleep(250)
                 } catch (e: PuffinBasicInternalError) {
                     Log.e("qb", "error", e)
                     stdin.outputText("!!! INTERNAL ERROR: ${e.message}")
@@ -154,9 +155,11 @@ class BabaTerminalSession(
                     Log.e("qb", "error", e)
                     stdin.outputText("!!! SYNTAX ERROR: ${e.message}")
                     processExitCode = 2
+                } catch (e: InterruptedException) {
+                    Log.e("qb", "error", e)
+                    processExitCode = 200
                 }
                 Log.i("qb", "DONE")
-                sleep(250)
                 mMainThreadHandler.sendMessage(
                     mMainThreadHandler.obtainMessage(
                         MSG_PROCESS_EXITED,
