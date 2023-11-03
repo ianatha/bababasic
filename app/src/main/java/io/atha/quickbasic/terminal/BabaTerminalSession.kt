@@ -156,6 +156,7 @@ class BabaTerminalSession(
                     processExitCode = 2
                 }
                 Log.i("qb", "DONE")
+                sleep(250)
                 mMainThreadHandler.sendMessage(
                     mMainThreadHandler.obtainMessage(
                         MSG_PROCESS_EXITED,
