@@ -147,6 +147,7 @@ class BabaTerminalSession(
         execProcess = object : Thread("Run") {
             override fun run() {
                 Log.i("qb", "Running script: ${datum.src}")
+                var processExitCode = 0
                 try {
                     interpretAndRun(
                         userOptions,
@@ -158,15 +159,24 @@ class BabaTerminalSession(
                 } catch (e: PuffinBasicInternalError) {
                     Log.e("qb", "error", e)
                     stdin.outputText("!!! INTERNAL ERROR: ${e.message}")
+                    processExitCode = 1
                 } catch (e: PuffinBasicRuntimeError) {
                     Log.e("qb", "error", e)
                     stdin.outputText("!!! RUNTIME ERROR: ${e.message}")
+                    processExitCode = 128
                 } catch (e: PuffinBasicSyntaxError) {
                     Log.e("qb", "error", e)
                     stdin.outputText("!!! SYNTAX ERROR: ${e.message}")
+                    processExitCode = 2
                 }
                 Log.i("qb", "DONE")
                 execProcess = null
+                mMainThreadHandler.sendMessage(
+                    mMainThreadHandler.obtainMessage(
+                        MSG_PROCESS_EXITED,
+                        processExitCode
+                    )
+                )
             }
         }
         execProcess!!.start()
@@ -186,17 +196,6 @@ class BabaTerminalSession(
 //                }
 //            }
 //        }.start()
-        object : Thread("TermSessionWaiter") {
-            override fun run() {
-//                val processExitCode = JNI.waitFor(mShellPid)
-//                mMainThreadHandler.sendMessage(
-//                    mMainThreadHandler.obtainMessage(
-//                        MSG_PROCESS_EXITED,
-//                        processExitCode
-//                    )
-//                )
-            }
-        }.start()
     }
 
     /** Write data to the shell process.  */
