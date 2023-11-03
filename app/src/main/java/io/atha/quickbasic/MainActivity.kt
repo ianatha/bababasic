@@ -26,6 +26,7 @@ package io.atha.quickbasic
 //import com.itsaky.androidide.treesitter.java.TSLanguageJava
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.Intent.EXTRA_LOCAL_ONLY
@@ -213,7 +214,6 @@ class MainActivity : AppCompatActivity() {
         editor.isLineNumberEnabled = true
         editor.setPinLineNumber(true)
 
-        openAssetsFile("samples/sample.txt")
         intent.data?.let { data ->
             openAssetsUri(data)
         }
@@ -529,6 +529,26 @@ class MainActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         switchThemeIfRequired(this, binding.editor)
+    }
+
+    override fun onPause() {
+        Log.i("qb", "pause")
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)!!
+        with (sharedPref.edit()) {
+            putString("editor_context", binding.editor.text.toString())
+            apply()
+        }
+
+        super.onPause()
+    }
+
+    override fun onResume() {
+        Log.i("qb", "resume")
+        super.onResume()
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)!!
+        sharedPref.getString("editor_context", "10 PRINT \"HELLO WORLD\"")?.let {
+            binding.editor.setText(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
