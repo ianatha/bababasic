@@ -1,88 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ~    sora-editor - the awesome code editor for Android
-  ~    https://github.com/Rosemoe/sora-editor
-  ~    Copyright (C) 2020-2023  Rosemoe
-  ~
-  ~     This library is free software; you can redistribute it and/or
-  ~     modify it under the terms of the GNU Lesser General Public
-  ~     License as published by the Free Software Foundation; either
-  ~     version 2.1 of the License, or (at your option) any later version.
-  ~
-  ~     This library is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  ~     Lesser General Public License for more details.
-  ~
-  ~     You should have received a copy of the GNU Lesser General Public
-  ~     License along with this library; if not, write to the Free Software
-  ~     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
-  ~     USA
-  ~
-  ~     Please contact Rosemoe by email 2073412493@qq.com if you need
-  ~     additional information or have any questions
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
-    <ImageView
-        android:id="@+id/logo2"
-        android:layout_width="match_parent"
-        android:layout_height="256dp"
-        android:layout_weight="1"
-        android:contentDescription="BabaBASIC Logo"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="25dp" />
-
-    <TextView
-        android:id="@+id/appName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="48dp"
+        android:paddingBottom="48dp"
+    >
 
-    <TextView
-        android:id="@+id/version"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:contentDescription="BabaBASIC Logo"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="25dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
 
-    <TextView
-        android:id="@+id/aboutText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:paddingHorizontal="24dp"
-        android:text="@string/about_contents"
-        android:textAlignment="center" />
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
-    <Button
-        android:id="@+id/okButton"
-        android:layout_width="225dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:text="@android:string/ok" />
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/aboutText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:text="@string/about_contents"
+            android:textAlignment="center" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="225dp"
+            android:layout_height="48dp"
+            android:text="@android:string/ok" />
+    </LinearLayout>
+</ScrollView>
+
+
