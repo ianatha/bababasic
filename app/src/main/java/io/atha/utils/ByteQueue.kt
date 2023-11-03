@@ -1,4 +1,6 @@
-package io.atha.quickbasic
+package io.atha.utils
+
+import kotlin.math.min
 
 /** A circular byte buffer allowing one producer and one consumer thread.  */
 class ByteQueue(size: Int) : Object() {
@@ -38,8 +40,8 @@ class ByteQueue(size: Int) : Object() {
             var length = buffer.size
             var offset = 0
             while (length > 0 && mStoredBytes > 0) {
-                val oneRun = Math.min(bufferLength - mHead, mStoredBytes)
-                val bytesToCopy = Math.min(length, oneRun)
+                val oneRun = min(bufferLength - mHead, mStoredBytes)
+                val bytesToCopy = min(length, oneRun)
                 System.arraycopy(mBuffer, mHead, buffer, offset, bytesToCopy)
                 mHead += bytesToCopy
                 if (mHead >= bufferLength) mHead = 0
@@ -60,8 +62,8 @@ class ByteQueue(size: Int) : Object() {
      * Returns whether the output was totally written, false if it was closed before.
      */
     fun write(buffer: ByteArray, offset: Int, lengthToWrite: Int): Boolean {
-        var offset = offset
-        var lengthToWrite = lengthToWrite
+        @Suppress("NAME_SHADOWING") var offset = offset
+        @Suppress("NAME_SHADOWING") var lengthToWrite = lengthToWrite
         require(lengthToWrite + offset <= buffer.size) { "length + offset > buffer.length" }
         require(lengthToWrite > 0) { "length <= 0" }
         val bufferLength = mBuffer.size
@@ -76,7 +78,7 @@ class ByteQueue(size: Int) : Object() {
                 }
                 if (!mOpen) return false
                 val wasEmpty = mStoredBytes == 0
-                var bytesToWriteBeforeWaiting = Math.min(lengthToWrite, bufferLength - mStoredBytes)
+                var bytesToWriteBeforeWaiting = min(lengthToWrite, bufferLength - mStoredBytes)
                 lengthToWrite -= bytesToWriteBeforeWaiting
                 while (bytesToWriteBeforeWaiting > 0) {
                     var tail = mHead + mStoredBytes
@@ -88,12 +90,12 @@ class ByteQueue(size: Int) : Object() {
                         // Buffer: [.............]
                         // ___________T____H
                         // onRun= _____----_
-                        tail = tail - bufferLength
+                        tail -= bufferLength
                         oneRun = mHead - tail
                     } else {
                         oneRun = bufferLength - tail
                     }
-                    val bytesToCopy = Math.min(oneRun, bytesToWriteBeforeWaiting)
+                    val bytesToCopy = min(oneRun, bytesToWriteBeforeWaiting)
                     System.arraycopy(buffer, offset, mBuffer, tail, bytesToCopy)
                     offset += bytesToCopy
                     bytesToWriteBeforeWaiting -= bytesToCopy

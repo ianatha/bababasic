@@ -6,7 +6,7 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 
 import org.puffinbasic.domain.PuffinBasicSymbolTable;
-import org.puffinbasic.file.PuffinBasicExtendedFile;
+import org.puffinbasic.file.PuffinUserInterfaceFile;
 import org.puffinbasic.parser.PuffinBasicIR.Instruction;
 
 import java.util.List;
@@ -666,9 +666,30 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().isKeyPressed(key) ? -1 : 0);
     }
 
+    public static void cls(GraphicsState graphicsState) {
+        graphicsState.stdio.print(VT100.CLEAR_SCREEN);
+//            graphicsState.getFrame().getDrawingCanvas().clear();
+    }
+
+    public static void locate(GraphicsState graphicsState, Integer row, Integer col) {
+        graphicsState.stdio.print(VT100.MOVE_TO(row, col));
+    }
+
+    public static void beep(GraphicsState graphicsState) {
+        try {
+            ToneGenerator toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+            toneGenerator.startTone(ToneGenerator.TONE_CDMA_PIP, 100);
+            sleep(100);
+        } catch (Exception e) {
+            // ignore
+        }
+//            AWT: Toolkit.getDefaultToolkit().beep();
+    }
+
     static class GraphicsState {
-        private PuffinBasicExtendedFile stdio;
-        GraphicsState(PuffinBasicExtendedFile stdio) {
+        private final PuffinUserInterfaceFile stdio;
+
+        GraphicsState(PuffinUserInterfaceFile stdio) {
             this.stdio = stdio;
         }
 //        private BasicFrame frame;
@@ -718,43 +739,23 @@ class GraphicsRuntime {
 //        }
     }
 
-        public static void cls(GraphicsState graphicsState) {
-            graphicsState.stdio.print(VT100.CLEAR_SCREEN);
-//            graphicsState.getFrame().getDrawingCanvas().clear();
-        }
+    static class VT100 {
+        protected static final String ESC = "\033";
+        protected static final String CONTROL_SEQ_INTRODUCER = ESC + "[";
+        public static final String CLEAR_SCREEN = CONTROL_SEQ_INTRODUCER + "2J";
 
-        public static void locate(GraphicsState graphicsState, Integer row, Integer col) {
-            graphicsState.stdio.print(VT100.MOVE_TO(row, col));
-        }
-
-        public static void beep(GraphicsState graphicsState) {
-            try {
-                ToneGenerator toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
-                toneGenerator.startTone(ToneGenerator.TONE_CDMA_PIP, 100);
-                sleep(100);
-            } catch (Exception e) {
-                // ignore
+        public static String MOVE_TO(int row, Integer col) {
+            if (row < 1) {
+                throw new IllegalArgumentException("LOCATE row must be >= 1");
             }
-//            AWT: Toolkit.getDefaultToolkit().beep();
-        }
-
-        static class VT100 {
-            protected static final String ESC = "\033";
-            protected  static final String CONTROL_SEQ_INTRODUCER = ESC + "[";
-            public static final String CLEAR_SCREEN = CONTROL_SEQ_INTRODUCER + "2J";
-
-            public static String MOVE_TO(int row, Integer col) {
-                if (row < 1) {
-                    throw new IllegalArgumentException("LOCATE row must be >= 1");
+            if (col == null) {
+                return CONTROL_SEQ_INTRODUCER + row + "H";
+            } else {
+                if (col < 1) {
+                    throw new IllegalArgumentException("LOCATE col must be >= 1");
                 }
-                if (col == null) {
-                    return CONTROL_SEQ_INTRODUCER + row + "H";
-                } else {
-                    if (col < 1) {
-                        throw new IllegalArgumentException("LOCATE col must be >= 1");
-                    }
-                    return CONTROL_SEQ_INTRODUCER + row + ";" + col + "H";
-                }
+                return CONTROL_SEQ_INTRODUCER + row + ";" + col + "H";
             }
         }
+    }
 }

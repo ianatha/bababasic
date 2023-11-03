@@ -1,8 +1,5 @@
 package org.puffinbasic.domain
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import com.google.common.collect.Maps.newHashMap
 import org.puffinbasic.domain.STObjects.ArrayReferenceValue
 import org.puffinbasic.domain.STObjects.PuffinBasicAtomTypeId
 import org.puffinbasic.domain.STObjects.PuffinBasicType
@@ -22,32 +19,25 @@ import java.util.function.Consumer
 import java.util.function.Function
 import java.util.function.Predicate
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 class PuffinBasicSymbolTable {
-    private val defaultDataTypes: MutableMap<Char, PuffinBasicAtomTypeId>
-    private val userDefinedTypes: MutableMap<String, StructType>
-    private val labelNameToId: MutableMap<String, Int>
-    private val idmaker: AtomicInteger
+    private val defaultDataTypes: MutableMap<Char, PuffinBasicAtomTypeId> = mutableMapOf()
+    private val userDefinedTypes: MutableMap<String, StructType> = mutableMapOf()
+    private val labelNameToId: MutableMap<String, Int> = mutableMapOf()
+    private val idMaker: AtomicInteger = AtomicInteger()
     var currentScope: Scope?
         private set
     private var lastId: Int
-    private var lastLastId: Int
+    private var penultimateId: Int
     private var lastEntry: STEntry? = null
-    private var lastLastEntry: STEntry? = null
+    private var penultimateEntry: STEntry? = null
 
     init {
-        defaultDataTypes = mutableMapOf()
-        userDefinedTypes = mutableMapOf()
-        labelNameToId = mutableMapOf()
-        idmaker = AtomicInteger()
-        currentScope = Scope.GlobalScope()
-        lastLastId = -1
-        lastId = lastLastId
+        currentScope = GlobalScope()
+        penultimateId = -1
+        lastId = penultimateId
     }
 
-    private fun generateNextId(): Int {
-        return idmaker.incrementAndGet()
-    }
+    private fun generateNextId() = idMaker.incrementAndGet()
 
     private fun findScope(predicate: Predicate<Scope>): Optional<Scope> {
         var scope = currentScope
@@ -84,11 +74,11 @@ class PuffinBasicSymbolTable {
         if (id == lastId) {
             return lastEntry
         }
-        if (id == lastLastId) {
-            return lastLastEntry
+        if (id == penultimateId) {
+            return penultimateEntry
         }
-        lastLastId = lastId
-        lastLastEntry = lastEntry
+        penultimateId = lastId
+        penultimateEntry = lastEntry
         lastId = id
         lastEntry = getEntry(id)
         return lastEntry
@@ -156,7 +146,7 @@ class PuffinBasicSymbolTable {
         var id: Int = labelNameToId.getOrDefault(label, -1)
         if (id == -1) {
             id = addLabel()
-            labelNameToId.put(label, id)
+            labelNameToId[label] = id
         }
         return id
     }
@@ -232,19 +222,19 @@ class PuffinBasicSymbolTable {
         ) {
             return PuffinBasicAtomTypeId.COMPOSITE
         }
-        if (varname.length == 0) {
+        if (varname.isEmpty()) {
             throw PuffinBasicInternalError("Empty variable name: $varname")
         }
         return if (suffix == null) {
             val firstChar = varname[0]
             defaultDataTypes.getOrDefault(firstChar, PuffinBasicAtomTypeId.DOUBLE)
         } else {
-            PuffinBasicAtomTypeId.Companion.lookup(suffix)
+            PuffinBasicAtomTypeId.lookup(suffix)
         }
     }
 
     fun setDefaultDataType(c: Char, dataType: PuffinBasicAtomTypeId) {
-        defaultDataTypes.put(c, dataType)
+        defaultDataTypes[c] = dataType
     }
 
     fun addStructType(name: String, type: StructType) {

@@ -12,11 +12,11 @@ import org.puffinbasic.domain.STObjects.STValue
 import org.puffinbasic.domain.STObjects.STVariable
 import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
-import org.puffinbasic.file.PuffinBasicExtendedFile
 import org.puffinbasic.file.PuffinBasicFile
 import org.puffinbasic.file.PuffinBasicFile.FileAccessMode
 import org.puffinbasic.file.PuffinBasicFile.FileOpenMode
 import org.puffinbasic.file.PuffinBasicFiles
+import org.puffinbasic.file.PuffinUserInterfaceFile
 import org.puffinbasic.parser.PuffinBasicIR
 import org.puffinbasic.runtime.Formatter.FormatterCache
 import org.puffinbasic.runtime.Types.assertBothStringOrNumeric
@@ -346,7 +346,7 @@ object Statements {
                 }
             }
             val parser: CSVParser = try {
-                if (file is PuffinBasicExtendedFile) {
+                if (file is PuffinUserInterfaceFile) {
                     CSVParser.parse(file.inputDialog(prompt!!), CSVFormat.DEFAULT)
                 } else {
                     CSVParser.parse(file.readLine(), CSVFormat.DEFAULT)

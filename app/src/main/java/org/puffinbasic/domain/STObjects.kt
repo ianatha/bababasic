@@ -16,7 +16,6 @@ import java.util.function.Consumer
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 class STObjects {
     enum class PuffinBasicTypeId {
         SCALAR, ARRAY, UDF, STRUCT, LIST, SET, DICT
@@ -558,7 +557,7 @@ class STObjects {
         }
 
         fun setArrayDimensions(dims: List<Int>) {
-            this.dims!!.clear()
+            this.dims.clear()
             this.dims.addAll(dims)
         }
 

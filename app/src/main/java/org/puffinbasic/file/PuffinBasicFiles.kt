@@ -4,7 +4,7 @@ import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.file.PuffinBasicFile.FileAccessMode
 import org.puffinbasic.file.PuffinBasicFile.FileOpenMode
 
-class PuffinBasicFiles(@JvmField val sys: PuffinBasicExtendedFile) {
+class PuffinBasicFiles(@JvmField val sys: PuffinUserInterfaceFile) {
     private val files: MutableMap<Int, PuffinBasicFile> = mutableMapOf()
 
     fun open(

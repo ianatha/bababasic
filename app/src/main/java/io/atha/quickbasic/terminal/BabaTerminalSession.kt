@@ -1,29 +1,23 @@
-package io.atha.quickbasic
+package io.atha.quickbasic.terminal
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.system.ErrnoException
-import android.system.Os
-import android.system.OsConstants
 import android.util.Log
-import com.termux.terminal.Logger
 import com.termux.terminal.TerminalEmulator
 import com.termux.terminal.TerminalOutput
 import com.termux.terminal.TerminalSession
 import com.termux.terminal.TerminalSessionClient
+import io.atha.quickbasic.RunDatum
+import io.atha.utils.ByteQueue
 import org.puffinbasic.PuffinBasicInterpreterMain
 import org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun
 import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
-import org.puffinbasic.runtime.BabaSystem
 import org.puffinbasic.runtime.SystemEnv
-import java.io.File
-import java.io.IOException
-import java.nio.CharBuffer
 import java.nio.charset.StandardCharsets
 import java.util.UUID
 
@@ -44,7 +38,7 @@ import java.util.UUID
 class BabaTerminalSession(
     /** Callback which gets notified when a session finishes or changes title.  */
     var mClient: TerminalSessionClient,
-    val mActivity: Activity,
+    private val mActivity: Activity,
     val datum: RunDatum
 ) : TerminalOutput(), TerminalSession {
     private var execProcess: Thread? = null
@@ -61,28 +55,18 @@ class BabaTerminalSession(
      * A queue written to from the main thread due to user interaction, and read by another thread which forwards by
      * writing to the [.mTerminalFileDescriptor].
      */
-    val mTerminalToProcessIOQueue = ByteQueue(4096)
+    private val mTerminalToProcessIOQueue = ByteQueue(4096)
 
     /** Buffer to write translate code points into utf8 before writing to mTerminalToProcessIOQueue  */
     private val mUtf8InputBuffer = ByteArray(5)
 
     /** The exit status of the shell process. Only valid if $[.mShellPid] is -1.  */
-    var mShellExitStatus = 0
-
-    /**
-     * The file descriptor referencing the master half of a pseudo-terminal pair, resulting from calling
-     * [JNI.createSubprocess].
-     */
-    private var mTerminalFileDescriptor = 0
+    private var mShellExitStatus = 0
 
     /** Set by the application for user identification of session, not by terminal.  */
-    var mSessionName: String? = null
+    private var mSessionName: String? = null
     val mMainThreadHandler: Handler = MainThreadHandler()
 
-    /**
-     * @param client The [TerminalSessionClient] interface implementation to allow
-     * for communication between [ProcessTerminalSession] and its client.
-     */
     override fun updateTerminalSessionClient(client: TerminalSessionClient) {
         mClient = client
         if (mEmulator != null) mEmulator!!.updateTerminalSessionClient(client)
@@ -103,7 +87,7 @@ class BabaTerminalSession(
         return if (mEmulator == null) null else mEmulator!!.title
     }
 
-    val mTranscriptRows = 1000
+    private val mTranscriptRows = 1000
 
     /**
      * Set the terminal emulator's window size and start terminal emulation.
@@ -113,7 +97,7 @@ class BabaTerminalSession(
      */
     override fun initializeEmulator(columns: Int, rows: Int) {
         mEmulator = TerminalEmulator(this, columns, rows, mTranscriptRows, mClient)
-        var fileName = "editor.bas"
+        val fileName = "editor.bas"
         val userOptions = PuffinBasicInterpreterMain.UserOptions(
             logOnDuplicate = false,
             listSourceCode = false,
@@ -127,8 +111,9 @@ class BabaTerminalSession(
             override fun run() {
                 try {
                     stdin.getStdout().use { termIn ->
-                        val buffer: ByteArray = ByteArray(4096)
+                        val buffer = ByteArray(4096)
                         while (true) {
+                            Log.i("qb", "read looper running")
                             val read: Int = termIn.read(buffer)
                             if (read == -1) return@use
                             if (read > 0) {
@@ -141,6 +126,7 @@ class BabaTerminalSession(
                     Log.e("qb", "stdin listening copier", e)
                     // Ignore, just shutting down.
                 }
+                Log.i("qb", "TermSessionInputReader ended")
             }
         }.start()
 
@@ -170,13 +156,13 @@ class BabaTerminalSession(
                     processExitCode = 2
                 }
                 Log.i("qb", "DONE")
-                execProcess = null
                 mMainThreadHandler.sendMessage(
                     mMainThreadHandler.obtainMessage(
                         MSG_PROCESS_EXITED,
                         processExitCode
                     )
                 )
+                execProcess = null
             }
         }
         execProcess!!.start()
@@ -205,7 +191,7 @@ class BabaTerminalSession(
 
     /** Write the Unicode code point to the terminal encoded in UTF-8.  */
     override fun writeCodePoint(prependEscape: Boolean, codePoint: Int) {
-        require(!(codePoint > 1114111 || codePoint >= 0xD800 && codePoint <= 0xDFFF)) {
+        require(!(codePoint > 1114111 || codePoint in 0xD800..0xDFFF)) {
             // 1114111 (= 2**16 + 1024**2 - 1) is the highest code point, [0xD800,0xDFFF] is the surrogate range.
             "Invalid code point: $codePoint"
         }
@@ -243,7 +229,7 @@ class BabaTerminalSession(
     }
 
     /** Notify the [.mClient] that the screen has changed.  */
-    protected fun notifyScreenUpdate() {
+    private fun notifyScreenUpdate() {
         mClient.onTextChanged(this)
     }
 
@@ -322,10 +308,6 @@ class BabaTerminalSession(
         return mHandle
     }
 
-    fun stop() {
-        execProcess?.interrupt()
-    }
-
     @SuppressLint("HandlerLeak")
     internal inner class MainThreadHandler : Handler(Looper.getMainLooper()) {
         private val mReceiveBuffer = ByteArray(4 * 1024)
@@ -358,6 +340,5 @@ class BabaTerminalSession(
     companion object {
         private const val MSG_NEW_INPUT = 1
         private const val MSG_PROCESS_EXITED = 4
-        private const val LOG_TAG = "TerminalSession"
     }
 }

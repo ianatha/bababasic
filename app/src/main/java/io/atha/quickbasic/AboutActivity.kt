@@ -14,8 +14,7 @@ class AboutActivity : AppCompatActivity() {
         setContentView(binding.root)
         val pInfo: PackageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
 
-        @Suppress("DEPRECATION")
-        binding.version.text = "v" + pInfo.versionName + " (" + pInfo.versionCode + ")"
+        binding.version.text = "v${pInfo.versionName} (${pInfo.versionCode})"
 
         binding.okButton.setOnClickListener {
             finish()

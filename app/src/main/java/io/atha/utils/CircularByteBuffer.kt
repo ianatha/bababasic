@@ -1,9 +1,10 @@
-package io.atha.quickbasic
+package io.atha.utils
 
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.nio.BufferOverflowException
+import kotlin.math.min
 
 /**
  * Implements the Circular Buffer producer/consumer model for bytes.
@@ -18,11 +19,6 @@ import java.nio.BufferOverflowException
  *
  *
  * This class is thread safe.
- *
- * @see CircularCharBuffer
- *
- * @see CircularObjectBuffer
- *
  *
  * @author Stephen Ostermiller http://ostermiller.org/contact.pl?regarding=Java+Utilities
  * @since ostermillerutils 1.00.00
@@ -55,7 +51,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      *
      * @since ostermillerutils 1.00.00
      */
-    protected var buffer: ByteArray
+    private var buffer: ByteArray
 
     /**
      * Index of the first byte available to be read.
@@ -63,7 +59,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      * @since ostermillerutils 1.00.00
      */
     @Volatile
-    protected var readPosition = 0
+    private var readPosition = 0
 
     /**
      * Index of the first byte available to be written.
@@ -71,7 +67,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      * @since ostermillerutils 1.00.00
      */
     @Volatile
-    protected var writePosition = 0
+    private var writePosition = 0
 
     /**
      * Index of the first saved byte. (To support stream marking.)
@@ -79,7 +75,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      * @since ostermillerutils 1.00.00
      */
     @Volatile
-    protected var markPosition = 0
+    private var markPosition = 0
 
     /**
      * Number of bytes that have to be saved
@@ -88,7 +84,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      * @since ostermillerutils 1.00.00
      */
     @Volatile
-    protected var markSize = 0
+    private var markSize = 0
 
     /**
      * If this buffer is infinite (should resize itself when full)
@@ -96,7 +92,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      * @since ostermillerutils 1.00.00
      */
     @Volatile
-    protected var infinite = false
+    private var infinite = false
 
     /**
      * True if a write to a full buffer should block until the buffer
@@ -104,7 +100,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      *
      * @since ostermillerutils 1.00.00
      */
-    protected var blockingWrite = true
+    private var blockingWrite = true
     /**
      * Retrieve a InputStream that can be used to empty
      * this buffer.
@@ -123,14 +119,14 @@ class CircularByteBuffer @JvmOverloads constructor(
      * @since ostermillerutils 1.00.00
      */
     var inputStream: InputStream = CircularByteBufferInputStream()
-        protected set
+        private set
 
     /**
      * true if the close() method has been called on the InputStream
      *
      * @since ostermillerutils 1.00.00
      */
-    protected var inputStreamClosed = false
+    private var inputStreamClosed = false
     /**
      * Retrieve a OutputStream that can be used to fill
      * this buffer.
@@ -153,14 +149,14 @@ class CircularByteBuffer @JvmOverloads constructor(
      * @since ostermillerutils 1.00.00
      */
     var outputStream: OutputStream = CircularByteBufferOutputStream()
-        protected set
+        private set
 
     /**
      * true if the close() method has been called on the OutputStream
      *
      * @since ostermillerutils 1.00.00
      */
-    protected var outputStreamClosed = false
+    private var outputStreamClosed = false
 
     /**
      * Make this buffer ready for reuse.  The contents of the buffer
@@ -391,7 +387,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      *
      * @since ostermillerutils 1.00.00
      */
-    protected inner class CircularByteBufferInputStream : InputStream() {
+    private inner class CircularByteBufferInputStream : InputStream() {
         /**
          * Returns the number of bytes that can be read (or skipped over) from this
          * input stream without blocking by the next caller of a method for this input
@@ -534,9 +530,9 @@ class CircularByteBuffer @JvmOverloads constructor(
                     if (inputStreamClosed) throw IOException("InputStream has been closed; cannot read from a closed InputStream.")
                     val available = this@CircularByteBuffer.available()
                     if (available > 0) {
-                        val length = Math.min(len, available)
+                        val length = min(len, available)
                         val firstLen =
-                            Math.min(length, buffer.size - readPosition)
+                            min(length, buffer.size - readPosition)
                         val secondLen = length - firstLen
                         System.arraycopy(buffer, readPosition, cbuf, off, firstLen)
                         if (secondLen > 0) {
@@ -599,9 +595,9 @@ class CircularByteBuffer @JvmOverloads constructor(
                     if (inputStreamClosed) throw IOException("InputStream has been closed; cannot skip bytes on a closed InputStream.")
                     val available = this@CircularByteBuffer.available()
                     if (available > 0) {
-                        val length = Math.min(n.toInt(), available)
+                        val length = min(n.toInt(), available)
                         val firstLen =
-                            Math.min(length, buffer.size - readPosition)
+                            min(length, buffer.size - readPosition)
                         val secondLen = length - firstLen
                         if (secondLen > 0) {
                             readPosition = secondLen
@@ -634,7 +630,7 @@ class CircularByteBuffer @JvmOverloads constructor(
      *
      * @since ostermillerutils 1.00.00
      */
-    protected inner class CircularByteBufferOutputStream : OutputStream() {
+    private inner class CircularByteBufferOutputStream : OutputStream() {
         /**
          * Close the stream, flushing it first.
          * This will cause the InputStream associated with this circular buffer
@@ -708,8 +704,8 @@ class CircularByteBuffer @JvmOverloads constructor(
          */
         @Throws(IOException::class)
         override fun write(cbuf: ByteArray, off: Int, len: Int) {
-            var off = off
-            var len = len
+            @Suppress("NAME_SHADOWING") var off = off
+            @Suppress("NAME_SHADOWING") var len = len
             while (len > 0) {
                 synchronized(this@CircularByteBuffer) {
                     if (outputStreamClosed) throw IOException("OutputStream has been closed; cannot write to a closed OutputStream.")
@@ -720,11 +716,11 @@ class CircularByteBuffer @JvmOverloads constructor(
                         spaceLeft = spaceLeft()
                     }
                     if (!blockingWrite && spaceLeft < len) throw BufferOverflowException()
-                    val realLen = Math.min(len, spaceLeft)
+                    val realLen = min(len, spaceLeft)
                     val firstLen =
-                        Math.min(realLen, buffer.size - writePosition)
+                        min(realLen, buffer.size - writePosition)
                     val secondLen =
-                        Math.min(realLen - firstLen, buffer.size - markPosition - 1)
+                        min(realLen - firstLen, buffer.size - markPosition - 1)
                     val written = firstLen + secondLen
                     if (firstLen > 0) {
                         System.arraycopy(cbuf, off, buffer, writePosition, firstLen)

@@ -3,14 +3,6 @@ package org.puffinbasic.error
 import org.puffinbasic.parser.PuffinBasicIR
 import org.puffinbasic.runtime.BabaSystem
 
-abstract class PuffinError(
-    message: String?,
-    cause: Throwable? = null,
-    enableSuppression: Boolean = false,
-    writableStackTrace: Boolean = true,
-) : RuntimeException(message, cause, enableSuppression, writableStackTrace) {
-}
-
 class PuffinBasicRuntimeError : PuffinError {
     val errorCode: ErrorCode
 

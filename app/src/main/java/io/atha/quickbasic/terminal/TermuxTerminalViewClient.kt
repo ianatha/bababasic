@@ -1,4 +1,4 @@
-package io.atha.quickbasic
+package io.atha.quickbasic.terminal
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -31,6 +31,7 @@ import com.termux.shared.view.KeyboardUtils
 import com.termux.terminal.KeyHandler
 import com.termux.terminal.TerminalEmulator
 import com.termux.terminal.TerminalSession
+import io.atha.quickbasic.RunActivity
 import java.util.Arrays
 import java.util.Collections
 
@@ -180,16 +181,16 @@ class TermuxTerminalViewClient(
     }
 
     override fun shouldEnforceCharBasedInput(): Boolean {
-        return  false // mActivity.getProperties().isEnforcingCharBasedInput()
+        return false // mActivity.getProperties().isEnforcingCharBasedInput()
     }
 
     override fun shouldUseCtrlSpaceWorkaround(): Boolean {
-        return  false // mActivity.getProperties().isUsingCtrlSpaceWorkaround()
+        return false // mActivity.getProperties().isUsingCtrlSpaceWorkaround()
     }
 
     override fun isTerminalViewSelected(): Boolean {
-        return  false //  mActivity.getTerminalToolbarViewPager() == null || mActivity.isTerminalViewSelected() || mActivity.getTerminalView()
-            // .hasFocus()
+        return false //  mActivity.getTerminalToolbarViewPager() == null || mActivity.isTerminalViewSelected() || mActivity.getTerminalView()
+        // .hasFocus()
     }
 
     override fun copyModeChanged(copyMode: Boolean) {
@@ -297,7 +298,7 @@ class TermuxTerminalViewClient(
 //                LOG_TAG,
 //                "Failed to read an unregistered $specialButton special button value from extra keys."
 //            )
-            return false
+        return false
 //        }
 //        return state
     }
