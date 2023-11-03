@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
@@ -22,8 +23,13 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
     }
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
+        Log.e("CrashHandler", "Uncaught exception", ex)
+
         if (!isDebugBuild) {
+            Log.i("CrashHandler", "reporting to Crashlytics")
             Firebase.crashlytics.recordException(ex)
+        } else {
+            Log.i("CrashHandler", "did not report to Crashlytics")
         }
 
         handler.post {
