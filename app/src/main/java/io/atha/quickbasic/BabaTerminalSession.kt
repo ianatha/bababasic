@@ -47,6 +47,7 @@ class BabaTerminalSession(
     val mActivity: Activity,
     val datum: RunDatum
 ) : TerminalOutput(), TerminalSession {
+    private var execProcess: Thread? = null
     private val mHandle = UUID.randomUUID().toString()
     var mEmulator: TerminalEmulator? = null
 
@@ -155,7 +156,7 @@ class BabaTerminalSession(
             }
         }.start()
 
-        object : Thread("Run[pid=$mShellPid]") {
+        execProcess = object : Thread("Run[pid=$mShellPid]") {
             override fun run() {
                 Log.i("qb", "Running script: ${datum.src}")
                 stdin.outputText("--- OUTPUT START" + BabaSystem.lineSeparator())
@@ -179,8 +180,10 @@ class BabaTerminalSession(
                 }
                 Log.i("qb", "DONE")
                 stdin.outputText("--- OUTPUT END" + BabaSystem.lineSeparator())
+                execProcess = null
             }
-        }.start()
+        }
+        execProcess!!.start()
 //        object : Thread("TermSessionOutputWriter[pid=$mShellPid]") {
 //            override fun run() {
 //                val buffer = ByteArray(4096)
@@ -357,6 +360,10 @@ class BabaTerminalSession(
 
     override fun getHandle(): String {
         return mHandle
+    }
+
+    fun stop() {
+        execProcess?.interrupt()
     }
 
     @SuppressLint("HandlerLeak")
