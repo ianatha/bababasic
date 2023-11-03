@@ -90,6 +90,7 @@ stmt
     | drawstrstmt
     | loadimgstmt
     | saveimgstmt
+    | locatestmt
     | clsstmt
     | beepstmt
     | repaintstmt
@@ -565,6 +566,10 @@ saveimgstmt
     : SAVEIMG path=expr COMMA variable
     ;
 
+locatestmt
+    : LOCATE row=expr (COMMA col=expr)?
+    ;
+
 clsstmt
     : CLS
     ;
@@ -659,6 +664,10 @@ SET
 
 EQGT
     : '=' '>'
+    ;
+
+LOCATE
+    : L O C A T E
     ;
 
 DEFAULT

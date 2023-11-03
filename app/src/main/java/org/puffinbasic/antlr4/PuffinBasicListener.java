@@ -2076,6 +2076,16 @@ public interface PuffinBasicListener extends ParseTreeListener {
 	 */
 	void exitSaveimgstmt(PuffinBasicParser.SaveimgstmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PuffinBasicParser#locatestmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterLocatestmt(PuffinBasicParser.LocatestmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PuffinBasicParser#locatestmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitLocatestmt(PuffinBasicParser.LocatestmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PuffinBasicParser#clsstmt}.
 	 * @param ctx the parse tree
 	 */

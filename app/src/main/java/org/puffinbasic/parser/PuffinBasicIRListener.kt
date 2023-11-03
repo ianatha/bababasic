@@ -11,6 +11,7 @@ import org.puffinbasic.antlr4.PuffinBasicParser
 import org.puffinbasic.antlr4.PuffinBasicParser.AccessContext
 import org.puffinbasic.antlr4.PuffinBasicParser.Array1dcopystmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.Array1dsortstmtContext
+import org.puffinbasic.antlr4.PuffinBasicParser.LocatestmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.Array2dshifthorstmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.Array2dshiftverstmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.ArraycopystmtContext
@@ -4704,6 +4705,30 @@ class PuffinBasicIRListener(
             OpCode.CLS,
             PuffinBasicSymbolTable.NULL_ID,
             PuffinBasicSymbolTable.NULL_ID,
+            PuffinBasicSymbolTable.NULL_ID
+        )
+    }
+
+    override fun exitLocatestmt(ctx: LocatestmtContext) {
+        var row = lookupInstruction(ctx.row)
+        var col = ctx.col?.let { col -> lookupInstruction(col) } ?: null
+        Types.assertNumeric(
+            ir.symbolTable[row.result]!!.type!!.atomTypeId
+        ) { getCtxString(ctx) }
+        col?.let { col ->
+            Types.assertNumeric(
+                ir.symbolTable[col.result]!!.type!!.atomTypeId
+            ) { getCtxString(ctx) }
+        }
+
+        ir.addInstruction(
+            sourceFile,
+            currentLineNumber,
+            ctx.start.startIndex,
+            ctx.stop.stopIndex,
+            OpCode.LOCATE,
+            row.result,
+            col?.result ?: PuffinBasicSymbolTable.NULL_ID,
             PuffinBasicSymbolTable.NULL_ID
         )
     }

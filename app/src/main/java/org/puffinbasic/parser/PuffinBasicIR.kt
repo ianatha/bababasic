@@ -130,6 +130,7 @@ class PuffinBasicIR(@JvmField val symbolTable: PuffinBasicSymbolTable) {
         GGET("gget"), BUFFERCOPYHOR("buffercopyhor"), LOADIMG("loadimg"), SAVEIMG("saveimg"), DRAWSTR(
             "drawstr"
         ),
+        LOCATE("locate"),
         DRAW("draw"), FONT("font"), CLS("cls"), BEEP("beep"), ARRAYREF("arrayref"), HSB2RGB("hsb2rgb"), LOADWAV(
             "loadwav"
         ),
