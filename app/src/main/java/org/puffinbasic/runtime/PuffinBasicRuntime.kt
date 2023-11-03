@@ -717,6 +717,13 @@ class PuffinBasicRuntime(
             OpCode.INKEYDLR -> GraphicsRuntime.inkeydlr(graphicsState, ir.symbolTable, instruction)
             OpCode.CLS -> GraphicsRuntime.cls(graphicsState)
             OpCode.BEEP -> GraphicsRuntime.beep(graphicsState)
+            OpCode.LOCATE -> {
+                var row = ir.symbolTable[instruction.op1]!!.value!!.int32
+                var col = if (instruction.op2 != PuffinBasicSymbolTable.NULL_ID) {
+                    ir.symbolTable[instruction.op2]!!.value!!.int32
+                } else null
+                GraphicsRuntime.locate(graphicsState, row, col)
+            }
             OpCode.LOADWAV -> GraphicsRuntime.loadwav(soundState, ir.symbolTable, instruction)
             OpCode.PLAYWAV -> GraphicsRuntime.playwav(soundState, ir.symbolTable, instruction)
             OpCode.STOPWAV -> GraphicsRuntime.stopwav(soundState, ir.symbolTable, instruction)

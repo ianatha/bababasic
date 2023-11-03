@@ -2261,6 +2261,18 @@ public class PuffinBasicBaseListener implements PuffinBasicListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLocatestmt(PuffinBasicParser.LocatestmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLocatestmt(PuffinBasicParser.LocatestmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterClsstmt(PuffinBasicParser.ClsstmtContext ctx) { }
 	/**
 	 * {@inheritDoc}

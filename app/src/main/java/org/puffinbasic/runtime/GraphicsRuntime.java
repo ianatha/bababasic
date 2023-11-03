@@ -718,6 +718,10 @@ class GraphicsRuntime {
 //            graphicsState.getFrame().getDrawingCanvas().clear();
         }
 
+        public static void locate(GraphicsState graphicsState, Integer row, Integer col) {
+            graphicsState.stdio.print(VT100.MOVE_TO(row, col));
+        }
+
         public static void beep(GraphicsState graphicsState) {
 //            Toolkit.getDefaultToolkit().beep();
         }
@@ -726,5 +730,19 @@ class GraphicsRuntime {
             protected static final String ESC = "\033";
             protected  static final String CONTROL_SEQ_INTRODUCER = ESC + "[";
             public static final String CLEAR_SCREEN = CONTROL_SEQ_INTRODUCER + "2J";
+
+            public static String MOVE_TO(int row, Integer col) {
+                if (row < 1) {
+                    throw new IllegalArgumentException("LOCATE row must be >= 1");
+                }
+                if (col == null) {
+                    return CONTROL_SEQ_INTRODUCER + row + "H";
+                } else {
+                    if (col < 1) {
+                        throw new IllegalArgumentException("LOCATE col must be >= 1");
+                    }
+                    return CONTROL_SEQ_INTRODUCER + row + ";" + col + "H";
+                }
+            }
         }
 }
