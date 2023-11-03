@@ -86,6 +86,8 @@ import io.github.rosemoe.sora.widget.schemes.SchemeVS2019
 import io.github.rosemoe.sora.widget.subscribeEvent
 import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
+import org.puffinbasic.PuffinBasicInterpreterMain.checkSyntax
+import org.puffinbasic.error.PuffinBasicSyntaxError
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -602,12 +604,36 @@ class MainActivity : AppCompatActivity() {
             R.id.text_redo -> editor.redo()
 
             R.id.run_script -> {
+                val text = editor.text.toString()
+                try {
+                    checkSyntax("input.bas", text)
+                } catch (e: PuffinBasicSyntaxError) {
+                    val lines = text.split("\n")
+                    val rowToIndex = (0 until ((e.row ?: 1) - 1)).sumOf { lines[it].length } + (e.col ?: 0)
+                    val diagnostics = DiagnosticsContainer()
+                    diagnostics.addDiagnostic(
+                        DiagnosticRegion(
+                            rowToIndex,
+                            rowToIndex + 2,
+                            DiagnosticRegion.SEVERITY_ERROR
+                        )
+                    )
+                    binding.editor.diagnostics = diagnostics
+                    AlertDialog.Builder(this)
+                        .setTitle("Syntax Error")
+                        .setMessage(e.message)
+                        .setPositiveButton(
+                            android.R.string.ok
+                        ) { dialog, which ->
+                            // Continue with delete operation
+                        } // A null listener allows the button to dismiss the dialog and take no further action.
+                        .show()
+                    return true
+                }
                 // run the RunActivity intent
                 val intent = Intent(this, RunActivity::class.java)
                 intent.putExtra(
-                    "datum", RunDatum(
-                        editor.text.toString()
-                    )
+                    "datum", RunDatum(text)
                 )
                 startActivity(intent)
             }
