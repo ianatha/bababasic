@@ -46,8 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/cancel"
-            app:tint="@color/red_800" />
-
+            app:tint="@color/red_when_enabled" />
     </LinearLayout>
 
 </LinearLayout>
