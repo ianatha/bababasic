@@ -564,7 +564,7 @@ class MainActivity : AppCompatActivity() {
             R.id.run_script -> {
                 val text = editor.text.toString()
                 try {
-                    checkSyntax("input.bas", text)
+                    checkSyntax("input.bas", text+"\n")
                 } catch (e: PuffinBasicSyntaxError) {
                     val lines = text.split("\n")
                     val rowToIndex = (0 until ((e.row ?: 1) - 1)).sumOf { lines[it].length } + (e.col ?: 0)

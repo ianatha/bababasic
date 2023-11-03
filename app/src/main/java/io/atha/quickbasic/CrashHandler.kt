@@ -22,7 +22,7 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
 
-    override fun uncaughtException(thread: Thread, ex: Throwable) {
+    private fun handleException(ex: Throwable) {
         Log.e("CrashHandler", "Uncaught exception", ex)
 
         if (!isDebugBuild) {
@@ -39,6 +39,10 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    override fun uncaughtException(thread: Thread, ex: Throwable) {
+        handleException(ex)
 
         // Save the world, hopefully
         if (Looper.myLooper() != null) {
@@ -47,13 +51,7 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
                     Looper.loop()
                     return
                 } catch (t: Throwable) {
-                    handler.post {
-                        Toast.makeText(
-                            context,
-                            context.resources.getString(R.string.crash),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    handleException(t)
                 }
             }
         }
