@@ -1,50 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="layout_tv_last">Scorso</string>
-      
-  <string name="layout_tv_next">Prossimo</string>
-      
-  <string name="layout_tv_replace">Sostituire</string>
-      
-  <string name="layout_tv_replaceAll">Sostituisci tutto</string>
-      
-  <string name="text_to_search">Testo da cercare</string>
-      
-  <string name="replacement">Sostituzione</string>
-
-  <string name="undo">Disfare</string>
-      
-  <string name="redo">Rifare</string>
-      
-  <string name="search_text">Cerca testo</string>
-      
-  <string name="search_panel">Pannello di ricerca</string>
-      
-  <string name="color_scheme">Combinazione di colori</string>
-      
-  <string name="wordwrap">Avvolgiparola</string>
-
-  <string name="line_number_visibility">Mostra il numero di riga</string>
-      
-  <string name="settings">Impostazioni</string>
-      
-  <string name="magnifier">Lente d\'ingrandimento</string>
-      
-  <string name="layout_tv_search_options">Opzioni</string>
-      
-  <string name="search_option_regex">RegEx</string>
-      
-  <string name="search_option_whole_word">Parola intera</string>
-      
-  <string name="search_option_match_case">Caso di corrispondenza</string>
-      
-  <string name="paste_text">Impasto</string>
-      
-  <string name="copy_text">copia</string>
-      
-  <string name="text_selection_more">Di più…</string>
-  <string name="about">Questo</string>
-  <string name="save_file">Save File</string>
-  <string name="run">Run</string>
-  <string name="open_file">Open File</string>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="layout_tv_last">Scorso</string>
+    <string name="layout_tv_next">Prossimo</string>
+    <string name="layout_tv_replace">Sostituire</string>
+    <string name="layout_tv_replaceAll">Sostituisci tutto</string>
+    <string name="text_to_search">Testo da cercare</string>
+    <string name="replacement">Sostituzione</string>
+    <string name="undo">Disfare</string>
+    <string name="redo">Rifare</string>
+    <string name="search_text">Cerca testo</string>
+    <string name="search_panel">Pannello di ricerca</string>
+    <string name="color_scheme">Combinazione di colori</string>
+    <string name="wordwrap">Avvolgiparola</string>
+    <string name="line_number_visibility">Mostra il numero di riga</string>
+    <string name="settings">Impostazioni</string>
+    <string name="magnifier">Lente d\'ingrandimento</string>
+    <string name="layout_tv_search_options">Opzioni</string>
+    <string name="search_option_regex">RegEx</string>
+    <string name="search_option_whole_word">Parola intera</string>
+    <string name="search_option_match_case">Caso di corrispondenza</string>
+    <string name="paste_text">Impasto</string>
+    <string name="copy_text">copia</string>
+    <string name="text_selection_more">Di più…</string>
+    <string name="about">Questo</string>
+    <string name="save_file">Save File</string>
+    <string name="run">Run</string>
+    <string name="open_file">Open File</string>
+    <string name="go_back_to_editor">Go back to editor</string>
+    <string name="stop_execution">Stop execution</string>
+    <string name="crash">Crash</string>
+    <string name="about_contents">BabaBASIC è un progetto open source realizzato da Ian Atha. Ho iniziato a creare questa app perché mio padre, che era un programmatore negli anni \'80, mi ha chiesto di trovargli un\'app Android per mostrare la programmazione ad altri utilizzando BASIC, quindi ho passato la notte e ho realizzato questa. Per qualsiasi cosa tu possa aver bisogno, invia un\'e-mail a ian@atha.io.</string>
 </resources>

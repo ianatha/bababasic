@@ -5,82 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/search_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="gotoLast"
-                    android:text="@string/layout_tv_last"
-                    style="?android:attr/buttonBarButtonStyle" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="gotoNext"
-                    android:text="@string/layout_tv_next"
-                    style="?android:attr/buttonBarButtonStyle" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="replace"
-                    android:text="@string/layout_tv_replace"
-                    style="?android:attr/buttonBarButtonStyle" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="replaceAll"
-                    android:text="@string/layout_tv_replaceAll"
-                    style="?android:attr/buttonBarButtonStyle" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="showSearchOptions"
-                    android:text="@string/layout_tv_search_options"
-                    android:id="@+id/search_options"
-                    style="?android:attr/buttonBarButtonStyle" />
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-
-        <EditText
-            android:id="@+id/search_editor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/text_to_search" />
-
-        <EditText
-            android:id="@+id/replace_editor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/replacement" />
-
-    </LinearLayout>
-
     <com.termux.view.TerminalView
         android:id="@+id/terminal"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="56dp"
+        android:layout_height="0dp"
         android:scrollbarThumbHorizontal="@drawable/scrollbar_thumb"
         android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
         android:scrollbarTrackHorizontal="@drawable/scrollbar_track"
@@ -90,36 +19,34 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="-56dp"
-        android:orientation="vertical">
+        android:layout_height="40dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:orientation="horizontal"
+        android:background="@color/black"
+        >
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
+        <ImageButton
+            android:id="@+id/go_back"
+            android:contentDescription="@string/go_back_to_editor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/undo" />
 
-            <io.github.rosemoe.sora.widget.SymbolInputView
-                android:id="@+id/symbol_input"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp" >
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
 
-                <ImageButton
-                    android:id="@+id/go_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/undo" />
-
-                <ImageButton
-                    android:id="@+id/stop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel" />
-            </io.github.rosemoe.sora.widget.SymbolInputView>
-
-        </HorizontalScrollView>
-
+        <ImageButton
+            android:contentDescription="@string/stop_execution"
+            android:id="@+id/stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/cancel"
+            app:tint="@color/red_800" />
 
     </LinearLayout>
 

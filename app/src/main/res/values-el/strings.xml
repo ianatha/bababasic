@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="layout_tv_last">Τελευταίο</string>
     <string name="layout_tv_next">Επόμενο</string>
     <string name="layout_tv_replace">Αντικατάσταση</string>
@@ -24,6 +24,9 @@
     <string name="about">Περί</string>
     <string name="about_contents">Το BabaBASIC είναι λογισμικό ανοιχτού κώδικα που δημιουργήθηκε από τον Θεοχάρη Αθανασάκη. Ξεκίνησα να το φτιάχνω επειδή ο 65-χρονος πατέρας μου, ο οποίος ήταν προγραμματιστής στη δεκαετία του 80, μου ζήτησε να του βρω μια BASIC για Android για να δείχνει τι είναι ο προγραμματισμός στους φίλους του. Για οτιδήποτε χρειαστείτε, στείλτε email στο ian@atha.io.</string>
     <string name="save_file">Save File</string>
-    <string name="run">Run</string>
+    <string name="run">Εκτέλεση</string>
     <string name="open_file">Open File</string>
+    <string name="go_back_to_editor">Go back to editor</string>
+    <string name="stop_execution">Stop execution</string>
+    <string name="crash">Σφάλμα</string>
 </resources>

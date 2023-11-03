@@ -1,51 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
-      
-  <string name="layout_tv_last">最後</string>
-      
-  <string name="layout_tv_next">次</string>
-      
-  <string name="layout_tv_replace">交換する</string>
-      
-  <string name="layout_tv_replaceAll">すべて置換</string>
-      
-  <string name="text_to_search">検索するテキスト</string>
-      
-  <string name="replacement">交換</string>
-      
-  <string name="undo">元に戻す</string>
-      
-  <string name="redo">やり直し</string>
-      
-  <string name="search_text">検索テキスト</string>
-      
-  <string name="search_panel">検索パネル</string>
-      
-  <string name="color_scheme">カラースキーム</string>
-      
-  <string name="wordwrap">ワードラップ</string>
-      
-  <string name="line_number_visibility">行番号を表示</string>
-      
-  <string name="settings">設定</string>
-      
-  <string name="magnifier">拡大鏡</string>
-      
-  <string name="layout_tv_search_options">オプション</string>
-      
-  <string name="search_option_regex">レゲクス</string>
-      
-  <string name="search_option_whole_word">単語全体</string>
-      
-  <string name="search_option_match_case">マッチケース</string>
-      
-  <string name="paste_text">ペースト</string>
-      
-  <string name="copy_text">コピー</string>
-      
-  <string name="text_selection_more">もっと…</string>
-  <string name="about">情報</string>
-  <string name="save_file">Save File</string>
-  <string name="run">Run</string>
-  <string name="open_file">Open File</string>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="layout_tv_last">最後</string>
+    <string name="layout_tv_next">次</string>
+    <string name="layout_tv_replace">交換する</string>
+    <string name="layout_tv_replaceAll">すべて置換</string>
+    <string name="text_to_search">検索するテキスト</string>
+    <string name="replacement">交換</string>
+    <string name="undo">元に戻す</string>
+    <string name="redo">やり直し</string>
+    <string name="search_text">検索テキスト</string>
+    <string name="search_panel">検索パネル</string>
+    <string name="color_scheme">カラースキーム</string>
+    <string name="wordwrap">ワードラップ</string>
+    <string name="line_number_visibility">行番号を表示</string>
+    <string name="settings">設定</string>
+    <string name="magnifier">拡大鏡</string>
+    <string name="layout_tv_search_options">オプション</string>
+    <string name="search_option_regex">レゲクス</string>
+    <string name="search_option_whole_word">単語全体</string>
+    <string name="search_option_match_case">マッチケース</string>
+    <string name="paste_text">ペースト</string>
+    <string name="copy_text">コピー</string>
+    <string name="text_selection_more">もっと…</string>
+    <string name="about">について</string>
+    <string name="save_file">保存</string>
+    <string name="run">実行</string>
+    <string name="open_file">開く</string>
+    <string name="go_back_to_editor">Go back to editor</string>
+    <string name="stop_execution">実行を停止する</string>
+    <string name="crash">クラッシュ</string>
+    <string name="about_contents">BabaBASIC は、Ian Atha によって作成されたオープンソース プロジェクトです。 私がこのアプリを作り始めた理由は、80 年代にプログラマーだった父が、BASIC を使ったプログラミングを他の人に紹介するための Android アプリを探してくれと頼んだためで、徹夜でこれを作りました。 必要な場合は、ian@atha.io まで電子メールでお問い合わせください。</string>
 </resources>
