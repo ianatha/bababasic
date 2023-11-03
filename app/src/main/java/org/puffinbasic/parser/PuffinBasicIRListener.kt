@@ -250,8 +250,8 @@ class PuffinBasicIRListener(
     private val graphics: Boolean
 ) : PuffinBasicBaseListener() {
     private val linenumGenerator: AtomicInteger = AtomicInteger()
-    private val nodeToInstruction: ParseTreeProperty<PuffinBasicIR.Instruction>
-    private val udfStateMap: MutableMap<Variable, UDFState>
+    private val nodeToInstruction: ParseTreeProperty<PuffinBasicIR.Instruction> = ParseTreeProperty()
+    private val udfStateMap: MutableMap<Variable, UDFState> = mutableMapOf()
     private val whileLoopStateList: LinkedList<WhileLoopState>
     private val forLoopStateList: LinkedList<ForLoopState>
     private val ifStateList: LinkedList<IfState>
@@ -260,8 +260,6 @@ class PuffinBasicIRListener(
     private var currentLineNumber = 0
 
     init {
-        nodeToInstruction = ParseTreeProperty()
-        udfStateMap = mutableMapOf()
         whileLoopStateList = LinkedList()
         forLoopStateList = LinkedList()
         ifStateList = LinkedList()
@@ -591,15 +589,15 @@ class PuffinBasicIRListener(
         instruction: PuffinBasicIR.Instruction,
         shouldCopy: Boolean
     ) {
-        var instruction = instruction
+        var _instruction = instruction
         if (shouldCopy) {
             val copy = ir.symbolTable.addTmpCompatibleWith(instruction.result)
-            instruction = ir.addInstruction(
+            _instruction = ir.addInstruction(
                 sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
                 OpCode.COPY, instruction.result, copy, copy
             )
         }
-        nodeToInstruction.put(ctx, instruction)
+        nodeToInstruction.put(ctx, _instruction)
     }
 
     override fun exitExprVariable(ctx: ExprVariableContext) {
@@ -755,8 +753,7 @@ class PuffinBasicIRListener(
             Types.assertNumeric(dt1, dt2) { getCtxString(ctx) }
             val upcast = Types.upcast(dt1, dt2) { getCtxString(ctx) }
             val result = ir.symbolTable.addTmp(upcast) { e: STEntry? -> }
-            val opCode: OpCode
-            opCode = when (upcast) {
+            val opCode: OpCode = when (upcast) {
                 PuffinBasicAtomTypeId.INT32 -> if (plus) OpCode.ADDI32 else OpCode.SUBI32
                 PuffinBasicAtomTypeId.INT64 -> if (plus) OpCode.ADDI64 else OpCode.SUBI64
                 PuffinBasicAtomTypeId.FLOAT -> if (plus) OpCode.ADDF32 else OpCode.SUBF32
@@ -800,8 +797,7 @@ class PuffinBasicIRListener(
         val dt1 = ir.symbolTable[exprL.result]!!.type!!.atomTypeId
         val dt2 = ir.symbolTable[exprR.result]!!.type!!.atomTypeId
         checkDataTypeMatch(dt1, dt2) { getCtxString(ctx) }
-        val opCode: OpCode?
-        opCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
+        val opCode: OpCode? = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
             if (ctx.RELEQ() != null) OpCode.EQSTR else if (ctx.RELNEQ() != null) OpCode.NESTR else if (ctx.RELLT() != null) OpCode.LTSTR else if (ctx.RELGT() != null) OpCode.GTSTR else if (ctx.RELLE() != null) OpCode.LESTR else if (ctx.RELGE() != null) OpCode.GESTR else null
         } else {
             if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
@@ -1997,8 +1993,7 @@ class PuffinBasicIRListener(
     }
 
     override fun exitListstmt(ctx: ListstmtContext) {
-        val itemType: PuffinBasicType
-        itemType = if (ctx.typename != null) {
+        val itemType: PuffinBasicType = if (ctx.typename != null) {
             // struct
             val typeName = ctx.typename.VARNAME().text
             ir.symbolTable.getStructType(typeName)
@@ -2041,8 +2036,7 @@ class PuffinBasicIRListener(
     override fun exitDictstmt(ctx: DictstmtContext) {
         val keyAtomType = lookup(ctx.dictk1.text)
         val keyType: PuffinBasicType = ScalarType(keyAtomType)
-        val valueType: PuffinBasicType
-        valueType = if (ctx.dictv1 != null) {
+        val valueType: PuffinBasicType = if (ctx.dictv1 != null) {
             // struct
             val typeName = ctx.dictv1.VARNAME().text
             ir.symbolTable.getStructType(typeName)
@@ -2112,8 +2106,7 @@ class PuffinBasicIRListener(
                 // list
                 val name =
                     VariableName(compCtx.elem.VARNAME().text, null, PuffinBasicAtomTypeId.COMPOSITE)
-                val itemType: PuffinBasicType
-                itemType = if (compCtx.list1 != null) {
+                val itemType: PuffinBasicType = if (compCtx.list1 != null) {
                     // struct
                     ir.symbolTable.getStructType(compCtx.list1.VARNAME().text)
                 } else {
@@ -2131,8 +2124,7 @@ class PuffinBasicIRListener(
                 val name =
                     VariableName(compCtx.elem.VARNAME().text, null, PuffinBasicAtomTypeId.COMPOSITE)
                 val keyType = ScalarType(lookup(compCtx.dictk1.text))
-                val valueType: PuffinBasicType
-                valueType = if (compCtx.dictv1 != null) {
+                val valueType: PuffinBasicType = if (compCtx.dictv1 != null) {
                     // struct
                     ir.symbolTable.getStructType(compCtx.dictv1.VARNAME().text)
                 } else {
@@ -2216,7 +2208,7 @@ class PuffinBasicIRListener(
     }
 
     override fun exitPrintstmt(ctx: PrintstmtContext) {
-        handlePrintstmt(ctx, ctx.printlist().children, null)
+        handlePrintstmt(ctx, ctx.printlist()?.children ?: listOf(), null)
     }
 
     override fun exitPrinthashstmt(ctx: PrinthashstmtContext) {
@@ -2263,8 +2255,7 @@ class PuffinBasicIRListener(
                 PuffinBasicSymbolTable.NULL_ID
             )
         }
-        val fileNumberId: Int
-        fileNumberId = if (fileNumber != null) {
+        val fileNumberId: Int = if (fileNumber != null) {
             Types.assertNumeric(
                 ir.symbolTable[fileNumber.result]!!.type!!.atomTypeId
             ) { getCtxString(ctx) }
@@ -2334,8 +2325,7 @@ class PuffinBasicIRListener(
                 PuffinBasicSymbolTable.NULL_ID
             )
         }
-        val fileNumberId: Int
-        fileNumberId = if (fileNumber != null) {
+        val fileNumberId: Int = if (fileNumber != null) {
             Types.assertNumeric(
                 ir.symbolTable[fileNumber.result]!!.type!!.atomTypeId
             ) { getCtxString(ctx) }
@@ -2596,8 +2586,7 @@ class PuffinBasicIRListener(
                 // list
                 paramName =
                     VariableName(compCtx.elem.VARNAME().text, null, PuffinBasicAtomTypeId.COMPOSITE)
-                val itemType: PuffinBasicType
-                itemType = if (compCtx.list1 != null) {
+                val itemType: PuffinBasicType = if (compCtx.list1 != null) {
                     // struct
                     ir.symbolTable.getStructType(compCtx.list1.VARNAME().text)
                 } else if (compCtx.list3 != null) {
@@ -2619,8 +2608,7 @@ class PuffinBasicIRListener(
                 paramName =
                     VariableName(compCtx.elem.VARNAME().text, null, PuffinBasicAtomTypeId.COMPOSITE)
                 val keyType = ScalarType(lookup(compCtx.dictk1.text))
-                val valueType: PuffinBasicType
-                valueType = if (compCtx.dictv1 != null) {
+                val valueType: PuffinBasicType = if (compCtx.dictv1 != null) {
                     // struct
                     ir.symbolTable.getStructType(compCtx.dictv1.VARNAME().text)
                 } else {
@@ -2848,8 +2836,7 @@ class PuffinBasicIRListener(
     }
 
     private fun getLTOpCode(dt1: PuffinBasicAtomTypeId, dt2: PuffinBasicAtomTypeId): OpCode {
-        val opCode: OpCode
-        opCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
+        val opCode: OpCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
             OpCode.LTSTR
         } else {
             if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
@@ -2866,8 +2853,7 @@ class PuffinBasicIRListener(
     }
 
     private fun getGTOpCode(dt1: PuffinBasicAtomTypeId, dt2: PuffinBasicAtomTypeId): OpCode {
-        val opCode: OpCode
-        opCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
+        val opCode: OpCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
             OpCode.GTSTR
         } else {
             if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
@@ -2884,8 +2870,7 @@ class PuffinBasicIRListener(
     }
 
     private fun getGEOpCode(dt1: PuffinBasicAtomTypeId, dt2: PuffinBasicAtomTypeId): OpCode {
-        val opCode: OpCode
-        opCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
+        val opCode: OpCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
             OpCode.GESTR
         } else {
             if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
@@ -2975,8 +2960,7 @@ class PuffinBasicIRListener(
 
         // Add step
         val tmpAdd = ir.symbolTable.addTmpCompatibleWith(varInstr.result)
-        val addOpCode: OpCode
-        addOpCode = when (stVariable.type!!.atomTypeId) {
+        val addOpCode: OpCode = when (stVariable.type!!.atomTypeId) {
             PuffinBasicAtomTypeId.INT32 -> OpCode.ADDI32
             PuffinBasicAtomTypeId.INT64 -> OpCode.ADDI64
             PuffinBasicAtomTypeId.FLOAT -> OpCode.ADDF32
