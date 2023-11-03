@@ -4696,7 +4696,6 @@ class PuffinBasicIRListener(
     }
 
     override fun exitClsstmt(ctx: ClsstmtContext) {
-        assertGraphics()
         ir.addInstruction(
             sourceFile,
             currentLineNumber,

@@ -180,14 +180,13 @@ import org.puffinbasic.runtime.Statements.write
 import org.puffinbasic.runtime.Types.copy
 import org.puffinbasic.runtime.Types.paramCopy
 import org.puffinbasic.runtime.Types.varref
-import java.util.ArrayDeque
 import java.util.Random
 import java.util.Stack
 import java.util.stream.Collectors
 
 class PuffinBasicRuntime(
     private val ir: PuffinBasicIR,
-    private val stdinout: PuffinBasicExtendedFile,
+    private val stdio: PuffinBasicExtendedFile,
     private val env: Environment
 ) {
     private var printBuffer: PrintBuffer? = null
@@ -252,9 +251,9 @@ class PuffinBasicRuntime(
         random = Random()
         formatterCache = FormatterCache()
         params = ArrayList(4)
-        files = PuffinBasicFiles(stdinout)
+        files = PuffinBasicFiles(stdio)
         readData = processDataInstructions(instructions)
-        graphicsState = GraphicsRuntime.GraphicsState()
+        graphicsState = GraphicsRuntime.GraphicsState(stdio)
         soundState = SoundState()
         try {
             val numInstructions = instructions.size
@@ -716,8 +715,8 @@ class PuffinBasicRuntime(
             OpCode.SAVEIMG -> GraphicsRuntime.saveimg(ir.symbolTable, instruction)
             OpCode.DRAW -> GraphicsRuntime.draw(graphicsState, ir.symbolTable, instruction)
             OpCode.INKEYDLR -> GraphicsRuntime.inkeydlr(graphicsState, ir.symbolTable, instruction)
-            OpCode.CLS -> {}
-            OpCode.BEEP -> {}
+            OpCode.CLS -> GraphicsRuntime.cls(graphicsState)
+            OpCode.BEEP -> GraphicsRuntime.beep(graphicsState)
             OpCode.LOADWAV -> GraphicsRuntime.loadwav(soundState, ir.symbolTable, instruction)
             OpCode.PLAYWAV -> GraphicsRuntime.playwav(soundState, ir.symbolTable, instruction)
             OpCode.STOPWAV -> GraphicsRuntime.stopwav(soundState, ir.symbolTable, instruction)
