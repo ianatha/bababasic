@@ -120,7 +120,6 @@
         android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
         android:scrollbarTrackHorizontal="@drawable/scrollbar_track"
         android:scrollbarTrackVertical="@drawable/scrollbar_track"
-        android:contentDescription="@string/editor"
         app:lnPanelPosition="center"
         app:lnPanelPositionMode="follow" />
 
