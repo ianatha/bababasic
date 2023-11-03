@@ -49,6 +49,13 @@
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="closeSearchPanel"
+                    android:text="@string/close" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:onClick="gotoLast"
                     android:text="@string/layout_tv_last" />
 

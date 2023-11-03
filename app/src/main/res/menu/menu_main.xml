@@ -31,14 +31,10 @@
         android:title="@string/redo"
         app:showAsAction="ifRoom" />
 
-    <item android:title="@string/search_text">
-        <menu>
-            <item
-                android:id="@+id/search_panel_st"
-                android:checkable="true"
-                android:title="@string/search_panel" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/search_panel_st"
+        android:title="@string/search_text" />
+
     <item android:title="@string/settings">
         <menu>
             <item

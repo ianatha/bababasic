@@ -7,8 +7,7 @@
     <string name="replacement">Αντικατάσταση με</string>
     <string name="undo">Αναίρεση</string>
     <string name="redo">Επανάληψη</string>
-    <string name="search_text">Εύρεση και αντικατάσταση</string>
-    <string name="search_panel">Search Panel</string>
+    <string name="search_text">Εύρεση &amp; Αντικατάσταση</string>
     <string name="wordwrap">Wordwrap</string>
     <string name="line_number_visibility">Εμφάνιση αρ. γραμμής</string>
     <string name="settings">Επιλογές</string>
@@ -29,4 +28,5 @@
     <string name="crash">Σφάλμα</string>
     <string name="symbol_keyboard">Symbol Keyobard</string>
     <string name="editor">Editor</string>
+    <string name="close">Κλείσιμο</string>
 </resources>

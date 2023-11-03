@@ -8,8 +8,7 @@
     <string name="replacement">Sostituzione</string>
     <string name="undo">Disfare</string>
     <string name="redo">Rifare</string>
-    <string name="search_text">Cerca testo</string>
-    <string name="search_panel">Pannello di ricerca</string>
+    <string name="search_text">Cerca &amp; Sostituisci</string>
     <string name="wordwrap">Avvolgiparola</string>
     <string name="line_number_visibility">Mostra il numero di riga</string>
     <string name="settings">Impostazioni</string>
@@ -30,4 +29,5 @@
     <string name="about_contents">BabaBASIC è un progetto open source realizzato da Ian Atha. Ho iniziato a creare questa app perché mio padre, che era un programmatore negli anni \'80, mi ha chiesto di trovargli un\'app Android per mostrare la programmazione ad altri utilizzando BASIC, quindi ho passato la notte e ho realizzato questa. Per qualsiasi cosa tu possa aver bisogno, invia un\'e-mail a ian@atha.io.</string>
     <string name="symbol_keyboard">Symbol Keyobard</string>
     <string name="editor">Editor</string>
+    <string name="close">Close</string>
 </resources>

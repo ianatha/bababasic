@@ -8,8 +8,7 @@
     <string name="replacement">交換</string>
     <string name="undo">元に戻す</string>
     <string name="redo">やり直し</string>
-    <string name="search_text">検索テキスト</string>
-    <string name="search_panel">検索パネル</string>
+    <string name="search_text">検索と置換</string>
     <string name="wordwrap">ワードラップ</string>
     <string name="line_number_visibility">行番号を表示</string>
     <string name="settings">設定</string>
@@ -30,4 +29,5 @@
     <string name="about_contents">BabaBASIC は、Ian Atha によって作成されたオープンソース プロジェクトです。 私がこのアプリを作り始めた理由は、80 年代にプログラマーだった父が、BASIC を使ったプログラミングを他の人に紹介するための Android アプリを探してくれと頼んだためで、徹夜でこれを作りました。 必要な場合は、ian@atha.io まで電子メールでお問い合わせください。</string>
     <string name="symbol_keyboard">Symbol Keyobard</string>
     <string name="editor">Editor</string>
+    <string name="close">Close</string>
 </resources>

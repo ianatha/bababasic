@@ -607,12 +607,10 @@ class MainActivity : AppCompatActivity() {
                         searchEditor.setText("")
                         editor.searcher.stopSearch()
                         searchPanel.visibility = View.VISIBLE
-                        item.isChecked = true
                     }
                 } else {
                     binding.searchPanel.visibility = View.GONE
                     editor.searcher.stopSearch()
-                    item.isChecked = false
                 }
             }
 
@@ -635,6 +633,11 @@ class MainActivity : AppCompatActivity() {
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         }
+    }
+
+    fun closeSearchPanel(view: View?) {
+        binding.searchPanel.visibility = View.GONE
+        binding.editor.searcher.stopSearch()
     }
 
     fun gotoLast(view: View?) {
