@@ -37,6 +37,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.Duration
 import java.time.Instant
+import kotlin.math.max
 
 object PuffinBasicInterpreterMain {
     private const val UNKNOWN_SOURCE_FILE = "<UNKNOWN>"
@@ -299,7 +300,7 @@ object PuffinBasicInterpreterMain {
             line: Int,
             charPositionInLine: Int,
             msg: String,
-            e: RecognitionException
+            e: RecognitionException?
         ) {
             val lineIndex = line - 1
             val lines =
@@ -310,7 +311,7 @@ object PuffinBasicInterpreterMain {
                 inputLine = lines[lineIndex]
                 if (charPositionInLine >= 0 && charPositionInLine <= inputLine.length) {
                     inputLine = (inputLine + BabaSystem.lineSeparator()
-                            + Strings.repeat(" ", Math.max(0, charPositionInLine)) + '^')
+                            + Strings.repeat(" ", max(0, charPositionInLine)) + '^')
                 }
             } else {
                 inputLine = "<LINE OUT OF RANGE>"
