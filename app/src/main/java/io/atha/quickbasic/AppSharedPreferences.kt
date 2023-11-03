@@ -320,7 +320,10 @@ class AppSharedPreferences private constructor(context: Context) :
          * be shown which when dismissed will exit the app.
          * @return Returns the [AppSharedPreferences]. This will `null` if an exception is raised.
          */
-        fun build(context: Context, exitAppOnError: Boolean): io.atha.quickbasic.AppSharedPreferences {
+        fun build(
+            context: Context,
+            exitAppOnError: Boolean
+        ): io.atha.quickbasic.AppSharedPreferences {
             val termuxPackageContext = TermuxUtils.getContextForPackageOrExitApp(
                 context,
                 "io.atha.quickbasic",

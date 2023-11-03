@@ -18,7 +18,7 @@ import org.puffinbasic.antlr4.PuffinBasicParser
 import org.puffinbasic.domain.PuffinBasicSymbolTable
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
-import org.puffinbasic.file.PuffinBasicExtendedFile
+import org.puffinbasic.file.PuffinUserInterfaceFile
 import org.puffinbasic.file.SystemInputOutputFile
 import org.puffinbasic.parser.LinenumberListener
 import org.puffinbasic.parser.LinenumberListener.ThrowOnDuplicate
@@ -39,6 +39,7 @@ import java.time.Instant
 
 object PuffinBasicInterpreterMain {
     private const val UNKNOWN_SOURCE_FILE = "<UNKNOWN>"
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @JvmStatic
     fun main(args: Array<String>) {
@@ -119,7 +120,7 @@ object PuffinBasicInterpreterMain {
     fun interpretAndRun(
         userOptions: UserOptions,
         sourceCode: String,
-        stdinout: PuffinBasicExtendedFile?,
+        stdinout: PuffinUserInterfaceFile?,
         env: Environment?
     ) {
         interpretAndRun(userOptions, UNKNOWN_SOURCE_FILE, sourceCode, stdinout, env)
@@ -131,7 +132,7 @@ object PuffinBasicInterpreterMain {
         userOptions: UserOptions,
         sourceFilename: String?,
         sourceCode: String,
-        stdinout: PuffinBasicExtendedFile?,
+        stdinout: PuffinUserInterfaceFile?,
         env: Environment?
     ) {
         val importPath = PuffinBasicImportPath(sourceFilename)
@@ -181,7 +182,7 @@ object PuffinBasicInterpreterMain {
         log("[$tag] time taken = $timeSec s", log)
     }
 
-    private fun run(ir: PuffinBasicIR, out: PuffinBasicExtendedFile, env: Environment) {
+    private fun run(ir: PuffinBasicIR, out: PuffinUserInterfaceFile, env: Environment) {
         val runtime = PuffinBasicRuntime(ir, out, env)
         try {
             runtime.run()
@@ -275,7 +276,7 @@ object PuffinBasicInterpreterMain {
         MAIN, LIB
     }
 
-    private class ThrowingErrorListener internal constructor(private val input: String) :
+    private class ThrowingErrorListener(private val input: String) :
         BaseErrorListener() {
         override fun syntaxError(
             recognizer: Recognizer<*, *>?,
@@ -286,8 +287,9 @@ object PuffinBasicInterpreterMain {
             e: RecognitionException
         ) {
             val lineIndex = line - 1
-            val lines = input.split(BabaSystem.lineSeparator().toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()
+            val lines =
+                input.split(BabaSystem.lineSeparator().toRegex()).dropLastWhile { it.isEmpty() }
+                    .toTypedArray()
             var inputLine: String
             if (lineIndex >= 0 && lineIndex < lines.size) {
                 inputLine = lines[lineIndex]

@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets
 class SystemInputOutputFile(
     `in`: InputStream?,
     private val out: PrintStream
-) : PuffinBasicExtendedFile {
+) : PuffinUserInterfaceFile {
     private val `in`: BufferedReader
 
     init {

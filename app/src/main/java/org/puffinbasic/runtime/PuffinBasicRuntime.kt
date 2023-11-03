@@ -4,8 +4,8 @@ import org.puffinbasic.domain.PuffinBasicSymbolTable
 import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
-import org.puffinbasic.file.PuffinBasicExtendedFile
 import org.puffinbasic.file.PuffinBasicFiles
+import org.puffinbasic.file.PuffinUserInterfaceFile
 import org.puffinbasic.parser.PuffinBasicIR
 import org.puffinbasic.parser.PuffinBasicIR.OpCode
 import org.puffinbasic.runtime.ArraysUtil.ArrayState
@@ -186,7 +186,7 @@ import java.util.stream.Collectors
 
 class PuffinBasicRuntime(
     private val ir: PuffinBasicIR,
-    private val stdio: PuffinBasicExtendedFile,
+    private val stdio: PuffinUserInterfaceFile,
     private val env: Environment
 ) {
     private var printBuffer: PrintBuffer? = null
@@ -724,6 +724,7 @@ class PuffinBasicRuntime(
                 } else null
                 GraphicsRuntime.locate(graphicsState, row, col)
             }
+
             OpCode.LOADWAV -> GraphicsRuntime.loadwav(soundState, ir.symbolTable, instruction)
             OpCode.PLAYWAV -> GraphicsRuntime.playwav(soundState, ir.symbolTable, instruction)
             OpCode.STOPWAV -> GraphicsRuntime.stopwav(soundState, ir.symbolTable, instruction)

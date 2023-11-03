@@ -10,7 +10,7 @@ import com.google.firebase.ktx.Firebase
 
 class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
     private val handler = Handler(Looper.getMainLooper())
-    private var context: Context? = null
+    private lateinit var context: Context
 
     fun init(context: Context) {
         this.context = context.applicationContext
@@ -23,21 +23,22 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
         handler.post {
             Toast.makeText(
                 context,
-                "err_crash",
+                context.resources.getString(R.string.crash),
                 Toast.LENGTH_SHORT
             ).show()
         }
+
         // Save the world, hopefully
         if (Looper.myLooper() != null) {
             while (true) {
                 try {
                     Looper.loop()
-                    return  // Quit loop if no exception
+                    return
                 } catch (t: Throwable) {
                     handler.post {
                         Toast.makeText(
                             context,
-                            "err_crash",
+                            context.resources.getString(R.string.crash),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

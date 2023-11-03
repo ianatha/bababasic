@@ -32,7 +32,6 @@ import android.content.Intent.EXTRA_LOCAL_ONLY
 import android.content.res.Configuration
 import android.graphics.Typeface
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -46,17 +45,15 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import io.atha.quickbasic.databinding.ActivityMainBinding
+import io.atha.quickbasic.editor.switchThemeIfRequired
 import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.event.EditorKeyEvent
 import io.github.rosemoe.sora.event.KeyBindingEvent
@@ -70,7 +67,6 @@ import io.github.rosemoe.sora.langs.textmate.TextMateLanguage
 import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry
 import io.github.rosemoe.sora.langs.textmate.registry.GrammarRegistry
 import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
-import io.github.rosemoe.sora.langs.textmate.registry.dsl.languages
 import io.github.rosemoe.sora.langs.textmate.registry.model.DefaultGrammarDefinition
 import io.github.rosemoe.sora.langs.textmate.registry.model.ThemeModel
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver
@@ -88,25 +84,14 @@ import io.github.rosemoe.sora.widget.schemes.SchemeGitHub
 import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX
 import io.github.rosemoe.sora.widget.schemes.SchemeVS2019
 import io.github.rosemoe.sora.widget.subscribeEvent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
-import org.puffinbasic.PuffinBasicInterpreterMain
-import org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun
-import org.puffinbasic.error.PuffinBasicInternalError
-import org.puffinbasic.error.PuffinBasicRuntimeError
-import org.puffinbasic.error.PuffinBasicSyntaxError
-import org.puffinbasic.runtime.Functions
-import org.puffinbasic.runtime.SystemEnv
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.util.regex.PatternSyntaxException
 import java.util.stream.Collectors
-import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -242,9 +227,10 @@ class MainActivity : AppCompatActivity() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
-        val activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
-            Log.i("app", "info $result")
-        }
+        val activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
+                Log.i("app", "info $result")
+            }
 
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
@@ -454,18 +440,23 @@ class MainActivity : AppCompatActivity() {
         val searcher = binding.editor.searcher
         if (searcher.hasQuery()) {
             val idx = searcher.currentMatchedPositionIndex
-            val count = searcher.matchedPositionCount
-            val matchText = if (count == 0) {
-                "no match"
-            } else if (count == 1) {
-                "1 match"
-            } else {
-                "$count matches"
+            val matchText = when (val count = searcher.matchedPositionCount) {
+                0 -> {
+                    "no match"
+                }
+
+                1 -> {
+                    "1 match"
+                }
+
+                else -> {
+                    "$count matches"
+                }
             }
-            if (idx == -1) {
-                text += "($matchText)"
+            text += if (idx == -1) {
+                "($matchText)"
             } else {
-                text += "(${idx + 1} of $matchText)"
+                "(${idx + 1} of $matchText)"
             }
         }
     }
@@ -554,7 +545,7 @@ class MainActivity : AppCompatActivity() {
             val contents = reader.lines().collect(Collectors.joining("\n"))
             binding.editor.setText(contents)
         } else if (requestCode == CREATE_DOCUMENT_REQUEST_ID && resultCode == RESULT_OK) {
-            var uri: Uri = data!!.data!!
+            val uri: Uri = data!!.data!!
             try {
                 val output: OutputStream = contentResolver.openOutputStream(uri)!!
                 output.write(binding.editor.text.toString().toByteArray(Charsets.UTF_8))
@@ -573,7 +564,6 @@ class MainActivity : AppCompatActivity() {
         binding.editor.release()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         val editor = binding.editor
@@ -614,9 +604,11 @@ class MainActivity : AppCompatActivity() {
             R.id.run_script -> {
                 // run the RunActivity intent
                 val intent = Intent(this, RunActivity::class.java)
-                intent.putExtra("datum", RunDatum(
-                    editor.text.toString()
-                ))
+                intent.putExtra(
+                    "datum", RunDatum(
+                        editor.text.toString()
+                    )
+                )
                 startActivity(intent)
             }
 

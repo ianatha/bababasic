@@ -11,7 +11,6 @@ import org.puffinbasic.antlr4.PuffinBasicParser
 import org.puffinbasic.antlr4.PuffinBasicParser.AccessContext
 import org.puffinbasic.antlr4.PuffinBasicParser.Array1dcopystmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.Array1dsortstmtContext
-import org.puffinbasic.antlr4.PuffinBasicParser.LocatestmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.Array2dshifthorstmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.Array2dshiftverstmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.ArraycopystmtContext
@@ -168,6 +167,7 @@ import org.puffinbasic.antlr4.PuffinBasicParser.LinestmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.ListstmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.LoadimgstmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.LoadwavstmtContext
+import org.puffinbasic.antlr4.PuffinBasicParser.LocatestmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.LockContext
 import org.puffinbasic.antlr4.PuffinBasicParser.LoopwavstmtContext
 import org.puffinbasic.antlr4.PuffinBasicParser.LsetstmtContext
@@ -251,7 +251,8 @@ class PuffinBasicIRListener(
     private val graphics: Boolean
 ) : PuffinBasicBaseListener() {
     private val linenumGenerator: AtomicInteger = AtomicInteger()
-    private val nodeToInstruction: ParseTreeProperty<PuffinBasicIR.Instruction> = ParseTreeProperty()
+    private val nodeToInstruction: ParseTreeProperty<PuffinBasicIR.Instruction> =
+        ParseTreeProperty()
     private val udfStateMap: MutableMap<Variable, UDFState> = mutableMapOf()
     private val whileLoopStateList: LinkedList<WhileLoopState>
     private val forLoopStateList: LinkedList<ForLoopState>
@@ -798,19 +799,20 @@ class PuffinBasicIRListener(
         val dt1 = ir.symbolTable[exprL.result]!!.type!!.atomTypeId
         val dt2 = ir.symbolTable[exprR.result]!!.type!!.atomTypeId
         checkDataTypeMatch(dt1, dt2) { getCtxString(ctx) }
-        val opCode: OpCode? = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
-            if (ctx.RELEQ() != null) OpCode.EQSTR else if (ctx.RELNEQ() != null) OpCode.NESTR else if (ctx.RELLT() != null) OpCode.LTSTR else if (ctx.RELGT() != null) OpCode.GTSTR else if (ctx.RELLE() != null) OpCode.LESTR else if (ctx.RELGE() != null) OpCode.GESTR else null
-        } else {
-            if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
-                if (ctx.RELEQ() != null) OpCode.EQF64 else if (ctx.RELNEQ() != null) OpCode.NEF64 else if (ctx.RELLT() != null) OpCode.LTF64 else if (ctx.RELGT() != null) OpCode.GTF64 else if (ctx.RELLE() != null) OpCode.LEF64 else if (ctx.RELGE() != null) OpCode.GEF64 else null
-            } else if (dt1 === PuffinBasicAtomTypeId.INT64 || dt2 === PuffinBasicAtomTypeId.INT64) {
-                if (ctx.RELEQ() != null) OpCode.EQI64 else if (ctx.RELNEQ() != null) OpCode.NEI64 else if (ctx.RELLT() != null) OpCode.LTI64 else if (ctx.RELGT() != null) OpCode.GTI64 else if (ctx.RELLE() != null) OpCode.LEI64 else if (ctx.RELGE() != null) OpCode.GEI64 else null
-            } else if (dt1 === PuffinBasicAtomTypeId.FLOAT || dt2 === PuffinBasicAtomTypeId.FLOAT) {
-                if (ctx.RELEQ() != null) OpCode.EQF32 else if (ctx.RELNEQ() != null) OpCode.NEF32 else if (ctx.RELLT() != null) OpCode.LTF32 else if (ctx.RELGT() != null) OpCode.GTF32 else if (ctx.RELLE() != null) OpCode.LEF32 else if (ctx.RELGE() != null) OpCode.GEF32 else null
+        val opCode: OpCode? =
+            if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
+                if (ctx.RELEQ() != null) OpCode.EQSTR else if (ctx.RELNEQ() != null) OpCode.NESTR else if (ctx.RELLT() != null) OpCode.LTSTR else if (ctx.RELGT() != null) OpCode.GTSTR else if (ctx.RELLE() != null) OpCode.LESTR else if (ctx.RELGE() != null) OpCode.GESTR else null
             } else {
-                if (ctx.RELEQ() != null) OpCode.EQI32 else if (ctx.RELNEQ() != null) OpCode.NEI32 else if (ctx.RELLT() != null) OpCode.LTI32 else if (ctx.RELGT() != null) OpCode.GTI32 else if (ctx.RELLE() != null) OpCode.LEI32 else if (ctx.RELGE() != null) OpCode.GEI32 else null
+                if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
+                    if (ctx.RELEQ() != null) OpCode.EQF64 else if (ctx.RELNEQ() != null) OpCode.NEF64 else if (ctx.RELLT() != null) OpCode.LTF64 else if (ctx.RELGT() != null) OpCode.GTF64 else if (ctx.RELLE() != null) OpCode.LEF64 else if (ctx.RELGE() != null) OpCode.GEF64 else null
+                } else if (dt1 === PuffinBasicAtomTypeId.INT64 || dt2 === PuffinBasicAtomTypeId.INT64) {
+                    if (ctx.RELEQ() != null) OpCode.EQI64 else if (ctx.RELNEQ() != null) OpCode.NEI64 else if (ctx.RELLT() != null) OpCode.LTI64 else if (ctx.RELGT() != null) OpCode.GTI64 else if (ctx.RELLE() != null) OpCode.LEI64 else if (ctx.RELGE() != null) OpCode.GEI64 else null
+                } else if (dt1 === PuffinBasicAtomTypeId.FLOAT || dt2 === PuffinBasicAtomTypeId.FLOAT) {
+                    if (ctx.RELEQ() != null) OpCode.EQF32 else if (ctx.RELNEQ() != null) OpCode.NEF32 else if (ctx.RELLT() != null) OpCode.LTF32 else if (ctx.RELGT() != null) OpCode.GTF32 else if (ctx.RELLE() != null) OpCode.LEF32 else if (ctx.RELGE() != null) OpCode.GEF32 else null
+                } else {
+                    if (ctx.RELEQ() != null) OpCode.EQI32 else if (ctx.RELNEQ() != null) OpCode.NEI32 else if (ctx.RELLT() != null) OpCode.LTI32 else if (ctx.RELGT() != null) OpCode.GTI32 else if (ctx.RELLE() != null) OpCode.LEI32 else if (ctx.RELGE() != null) OpCode.GEI32 else null
+                }
             }
-        }
         if (opCode == null) {
             throw PuffinBasicSemanticError(
                 PuffinBasicSemanticError.ErrorCode.DATA_TYPE_MISMATCH,
@@ -2353,7 +2355,8 @@ class PuffinBasicIRListener(
             variableName,
             { variableName1: VariableName? ->
                 Variable(
-                    variableName1!!, STObjects.ArrayType(variableName1.dataType, dims.toMutableList(), true)
+                    variableName1!!,
+                    STObjects.ArrayType(variableName1.dataType, dims.toMutableList(), true)
                 )
             },
             variableConsumer { id: Int, entry: STVariable, v1: Variable? ->
@@ -2388,7 +2391,8 @@ class PuffinBasicIRListener(
             variableName,
             { variableName1: VariableName? ->
                 Variable(
-                    variableName1!!, STObjects.ArrayType(variableName1.dataType, dims.toMutableList(), true)
+                    variableName1!!,
+                    STObjects.ArrayType(variableName1.dataType, dims.toMutableList(), true)
                 )
             },
             variableConsumer { id: Int, entry: STVariable, v1: Variable? ->
@@ -2837,53 +2841,56 @@ class PuffinBasicIRListener(
     }
 
     private fun getLTOpCode(dt1: PuffinBasicAtomTypeId, dt2: PuffinBasicAtomTypeId): OpCode {
-        val opCode: OpCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
-            OpCode.LTSTR
-        } else {
-            if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
-                OpCode.LTF64
-            } else if (dt1 === PuffinBasicAtomTypeId.INT64 || dt2 === PuffinBasicAtomTypeId.INT64) {
-                OpCode.LTI64
-            } else if (dt1 === PuffinBasicAtomTypeId.FLOAT || dt2 === PuffinBasicAtomTypeId.FLOAT) {
-                OpCode.LTF32
+        val opCode: OpCode =
+            if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
+                OpCode.LTSTR
             } else {
-                OpCode.LTI32
+                if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
+                    OpCode.LTF64
+                } else if (dt1 === PuffinBasicAtomTypeId.INT64 || dt2 === PuffinBasicAtomTypeId.INT64) {
+                    OpCode.LTI64
+                } else if (dt1 === PuffinBasicAtomTypeId.FLOAT || dt2 === PuffinBasicAtomTypeId.FLOAT) {
+                    OpCode.LTF32
+                } else {
+                    OpCode.LTI32
+                }
             }
-        }
         return opCode
     }
 
     private fun getGTOpCode(dt1: PuffinBasicAtomTypeId, dt2: PuffinBasicAtomTypeId): OpCode {
-        val opCode: OpCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
-            OpCode.GTSTR
-        } else {
-            if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
-                OpCode.GTF64
-            } else if (dt1 === PuffinBasicAtomTypeId.INT64 || dt2 === PuffinBasicAtomTypeId.INT64) {
-                OpCode.GTI64
-            } else if (dt1 === PuffinBasicAtomTypeId.FLOAT || dt2 === PuffinBasicAtomTypeId.FLOAT) {
-                OpCode.GTF32
+        val opCode: OpCode =
+            if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
+                OpCode.GTSTR
             } else {
-                OpCode.GTI32
+                if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
+                    OpCode.GTF64
+                } else if (dt1 === PuffinBasicAtomTypeId.INT64 || dt2 === PuffinBasicAtomTypeId.INT64) {
+                    OpCode.GTI64
+                } else if (dt1 === PuffinBasicAtomTypeId.FLOAT || dt2 === PuffinBasicAtomTypeId.FLOAT) {
+                    OpCode.GTF32
+                } else {
+                    OpCode.GTI32
+                }
             }
-        }
         return opCode
     }
 
     private fun getGEOpCode(dt1: PuffinBasicAtomTypeId, dt2: PuffinBasicAtomTypeId): OpCode {
-        val opCode: OpCode = if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
-            OpCode.GESTR
-        } else {
-            if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
-                OpCode.GEF64
-            } else if (dt1 === PuffinBasicAtomTypeId.INT64 || dt2 === PuffinBasicAtomTypeId.INT64) {
-                OpCode.GEI64
-            } else if (dt1 === PuffinBasicAtomTypeId.FLOAT || dt2 === PuffinBasicAtomTypeId.FLOAT) {
-                OpCode.GEF32
+        val opCode: OpCode =
+            if (dt1 === PuffinBasicAtomTypeId.STRING && dt2 === PuffinBasicAtomTypeId.STRING) {
+                OpCode.GESTR
             } else {
-                OpCode.GEI32
+                if (dt1 === PuffinBasicAtomTypeId.DOUBLE || dt2 === PuffinBasicAtomTypeId.DOUBLE) {
+                    OpCode.GEF64
+                } else if (dt1 === PuffinBasicAtomTypeId.INT64 || dt2 === PuffinBasicAtomTypeId.INT64) {
+                    OpCode.GEI64
+                } else if (dt1 === PuffinBasicAtomTypeId.FLOAT || dt2 === PuffinBasicAtomTypeId.FLOAT) {
+                    OpCode.GEF32
+                } else {
+                    OpCode.GEI32
+                }
             }
-        }
         return opCode
     }
 

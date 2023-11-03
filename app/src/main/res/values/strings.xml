@@ -26,4 +26,5 @@
     <string name="save_file">Save File</string>
     <string name="run">Run</string>
     <string name="open_file">Open File</string>
+    <string name="crash">Crash</string>
 </resources>
