@@ -346,7 +346,7 @@ class BabaTerminalSession(
                     // Negated signal.
                     exitDescription += " (signal " + -exitCode + ")"
                 }
-                exitDescription += " - press Enter]"
+                exitDescription += "]"
                 val bytesToWrite = exitDescription.toByteArray(StandardCharsets.UTF_8)
                 mEmulator!!.append(bytesToWrite, bytesToWrite.size)
                 notifyScreenUpdate()
