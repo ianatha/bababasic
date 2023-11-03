@@ -29,4 +29,6 @@
     <string name="crash">Crash</string>
     <string name="go_back_to_editor">Go back to editor</string>
     <string name="stop_execution">Stop execution</string>
+    <string name="symbol_keyboard">Symbol Keyobard</string>
+    <string name="editor">Editor</string>
 </resources>
