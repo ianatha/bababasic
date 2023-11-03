@@ -16,6 +16,10 @@ class AboutActivity : AppCompatActivity() {
 
         binding.version.text = "v${pInfo.versionName} (${pInfo.versionCode})"
 
+        binding.logo2.setOnClickListener {
+            throw RuntimeException("Crash by clicking on logo!")
+        }
+
         binding.okButton.setOnClickListener {
             finish()
         }
