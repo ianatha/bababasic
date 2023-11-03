@@ -214,9 +214,6 @@ class MainActivity : AppCompatActivity() {
         editor.isLineNumberEnabled = true
         editor.setPinLineNumber(true)
 
-        intent.data?.let { data ->
-            openAssetsUri(data)
-        }
         updatePositionText()
         updateBtnState()
 
@@ -351,35 +348,6 @@ class MainActivity : AppCompatActivity() {
 
         sb.append(KeyEvent.keyCodeToString(event.keyCode))
         return sb.toString()
-    }
-
-    private fun openAssetsUri(uri: Uri) {
-        Thread {
-            val inputStream = contentResolver.openInputStream(uri)
-            val reader = BufferedReader(InputStreamReader(inputStream))
-            val contents = reader.lines().collect(Collectors.joining("\n"))
-            runOnUiThread {
-                binding.editor.setText(contents, null)
-            }
-        }.start()
-        updatePositionText()
-        updateBtnState()
-    }
-
-    private fun openAssetsFile(name: String) {
-        Thread {
-            try {
-                val text = ContentIO.createFrom(assets.open(name))
-                runOnUiThread {
-                    binding.editor.setText(text, null)
-                    //setupDiagnostics()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }.start()
-        updatePositionText()
-        updateBtnState()
     }
 
     private fun updateBtnState() {
@@ -566,6 +534,11 @@ class MainActivity : AppCompatActivity() {
             val reader = BufferedReader(InputStreamReader(inputStream))
             val contents = reader.lines().collect(Collectors.joining("\n"))
             binding.editor.setText(contents)
+            val sharedPref = getPreferences(Context.MODE_PRIVATE)!!
+            with (sharedPref.edit()) {
+                putString("editor_context", contents)
+                apply()
+            }
         } else if (requestCode == CREATE_DOCUMENT_REQUEST_ID && resultCode == RESULT_OK) {
             val uri: Uri = data!!.data!!
             try {
