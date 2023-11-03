@@ -1,5 +1,10 @@
 package org.puffinbasic.runtime;
 
+import static java.lang.Thread.sleep;
+
+import android.media.AudioManager;
+import android.media.ToneGenerator;
+
 import org.puffinbasic.domain.PuffinBasicSymbolTable;
 import org.puffinbasic.file.PuffinBasicExtendedFile;
 import org.puffinbasic.parser.PuffinBasicIR.Instruction;
@@ -723,7 +728,14 @@ class GraphicsRuntime {
         }
 
         public static void beep(GraphicsState graphicsState) {
-//            Toolkit.getDefaultToolkit().beep();
+            try {
+                ToneGenerator toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+                toneGenerator.startTone(ToneGenerator.TONE_CDMA_PIP, 100);
+                sleep(100);
+            } catch (Exception e) {
+                // ignore
+            }
+//            AWT: Toolkit.getDefaultToolkit().beep();
         }
 
         static class VT100 {

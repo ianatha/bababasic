@@ -4821,7 +4821,6 @@ class PuffinBasicIRListener(
     }
 
     override fun exitBeepstmt(ctx: BeepstmtContext) {
-        assertGraphics()
         ir.addInstruction(
             sourceFile,
             currentLineNumber,
