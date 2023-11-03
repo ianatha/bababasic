@@ -176,6 +176,7 @@ class MainActivity : AppCompatActivity() {
                     ::updateBtnState,
                     50
                 )
+                binding.editor.diagnostics = DiagnosticsContainer()
             }
             subscribeEvent<SideIconClickEvent> { _, _ ->
                 Toast.makeText(this@MainActivity, "Side icon clicked", Toast.LENGTH_SHORT).show()
