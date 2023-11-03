@@ -19,6 +19,7 @@ class RunActivity : AppCompatActivity() {
     lateinit var mPreferences: AppSharedPreferences
     lateinit var binding: ActivityRunBinding
     lateinit var datum: RunDatum
+    lateinit var session: BabaTerminalSession
 
     fun getPreferences(): AppSharedPreferences {
         return mPreferences
@@ -35,7 +36,12 @@ class RunActivity : AppCompatActivity() {
         binding = ActivityRunBinding.inflate(layoutInflater)
 
         binding.goBack.setOnClickListener {
+            session.stop()
             finish()
+        }
+
+        binding.stop.setOnClickListener {
+            session.stop()
         }
 
         val client1 = object : TermuxTerminalSessionClientBase() {
@@ -46,7 +52,7 @@ class RunActivity : AppCompatActivity() {
         }
         val client2 = TermuxTerminalViewClient(this)
 
-        val session = BabaTerminalSession(
+        session = BabaTerminalSession(
             client1,
             this,
             datum,
