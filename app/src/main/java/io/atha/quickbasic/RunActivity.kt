@@ -16,6 +16,7 @@ data class RunDatum(
 ) : Serializable
 
 class RunActivity : AppCompatActivity() {
+    lateinit var viewClient: TermuxTerminalViewClient
     lateinit var mPreferences: AppSharedPreferences
     lateinit var binding: ActivityRunBinding
     lateinit var datum: RunDatum
@@ -23,6 +24,16 @@ class RunActivity : AppCompatActivity() {
 
     fun getPreferences(): AppSharedPreferences {
         return mPreferences
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewClient.onResume()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewClient.onStart()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +60,13 @@ class RunActivity : AppCompatActivity() {
                 super.onTextChanged(changedSession)
                 binding.terminal.onScreenUpdated()
             }
+
+            override fun onSessionFinished(finishedSession: TerminalSession) {
+                super.onSessionFinished(finishedSession)
+                binding.stop.isEnabled = false
+            }
         }
-        val client2 = TermuxTerminalViewClient(this)
+        viewClient = TermuxTerminalViewClient(this)
 
         session = BabaTerminalSession(
             client1,
@@ -62,14 +78,20 @@ class RunActivity : AppCompatActivity() {
         binding.terminal.setTextSize(30)
         binding.terminal.setTypeface(Typeface.MONOSPACE)
         binding.terminal.attachSession(session)
-        binding.terminal.setTerminalViewClient(client2)
+        binding.terminal.setTerminalViewClient(viewClient)
         session.initializeEmulator(30, 10)
         setContentView(binding.root)
+        viewClient.onCreate()
     }
 
     fun getTerminalView(): TerminalView = binding.terminal
     fun getCurrentSession(): TerminalSession? = binding.terminal.currentSession
     fun toggleTerminalToolbar() {
         TODO("Not yet implemented")
+    }
+
+    fun isActivityRecreated(): Boolean {
+        // TODO
+        return false
     }
 }
