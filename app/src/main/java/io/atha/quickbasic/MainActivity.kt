@@ -27,7 +27,6 @@ package io.atha.quickbasic
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.Intent.EXTRA_LOCAL_ONLY
 import android.content.res.Configuration
@@ -71,19 +70,12 @@ import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
 import io.github.rosemoe.sora.langs.textmate.registry.model.DefaultGrammarDefinition
 import io.github.rosemoe.sora.langs.textmate.registry.model.ThemeModel
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver
-import io.github.rosemoe.sora.text.ContentIO
 import io.github.rosemoe.sora.text.LineSeparator
 import io.github.rosemoe.sora.widget.CodeEditor
 import io.github.rosemoe.sora.widget.EditorSearcher.SearchOptions
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion
 import io.github.rosemoe.sora.widget.component.Magnifier
 import io.github.rosemoe.sora.widget.getComponent
-import io.github.rosemoe.sora.widget.schemes.EditorColorScheme
-import io.github.rosemoe.sora.widget.schemes.SchemeDarcula
-import io.github.rosemoe.sora.widget.schemes.SchemeEclipse
-import io.github.rosemoe.sora.widget.schemes.SchemeGitHub
-import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX
-import io.github.rosemoe.sora.widget.schemes.SchemeVS2019
 import io.github.rosemoe.sora.widget.subscribeEvent
 import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
@@ -213,6 +205,7 @@ class MainActivity : AppCompatActivity() {
         editor.setEditorLanguage(language)
         editor.isLineNumberEnabled = true
         editor.setPinLineNumber(true)
+        editor.getComponent(Magnifier::class.java).isEnabled = true
 
         updatePositionText()
         updateBtnState()
@@ -297,15 +290,6 @@ class MainActivity : AppCompatActivity() {
     private /*suspend*/ fun loadDefaultLanguages() /*= withContext(Dispatchers.Main)*/ {
         GrammarRegistry.getInstance().loadGrammars("textmate/languages.json")
     }
-
-    private fun resetColorScheme() {
-        binding.editor.apply {
-            val colorScheme = this.colorScheme
-            // reset
-            this.colorScheme = colorScheme
-        }
-    }
-
 
     private fun setupDiagnostics() {
         val editor = binding.editor
@@ -474,26 +458,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val loadTMTLauncher = registerForActivityResult(GetContent()) { result: Uri? ->
-        try {
-            if (result == null) return@registerForActivityResult
-
-            ensureTextmateTheme()
-
-            ThemeRegistry.getInstance().loadTheme(
-                IThemeSource.fromInputStream(
-                    contentResolver.openInputStream(result), result.path,
-                    null
-                )
-            )
-
-            resetColorScheme()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         switchThemeIfRequired(this, binding.editor)
@@ -636,11 +600,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, AboutActivity::class.java))
             }
 
-            R.id.magnifier -> {
-                item.isChecked = !item.isChecked
-                editor.getComponent(Magnifier::class.java).isEnabled = item.isChecked
-            }
-
             R.id.search_panel_st -> {
                 if (binding.searchPanel.visibility == View.GONE) {
                     binding.apply {
@@ -655,67 +614,6 @@ class MainActivity : AppCompatActivity() {
                     editor.searcher.stopSearch()
                     item.isChecked = false
                 }
-            }
-
-            R.id.switch_colors -> {
-                val themes = arrayOf(
-                    "Default",
-                    "GitHub",
-                    "Eclipse",
-                    "Darcula",
-                    "VS2019",
-                    "NotepadXX",
-                    "QuietLight for TM(VSCode)",
-                    "Darcula for TM",
-                    "Abyss for TM",
-                    "Solarized(Dark) for TM(VSCode)",
-                    "TM theme from file"
-                )
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.color_scheme)
-                    .setSingleChoiceItems(themes, -1) { dialog: DialogInterface, which: Int ->
-                        when (which) {
-                            0 -> editor.colorScheme = EditorColorScheme()
-                            1 -> editor.colorScheme = SchemeGitHub()
-                            2 -> editor.colorScheme = SchemeEclipse()
-                            3 -> editor.colorScheme = SchemeDarcula()
-                            4 -> editor.colorScheme = SchemeVS2019()
-                            5 -> editor.colorScheme = SchemeNotepadXX()
-                            6 -> try {
-                                ensureTextmateTheme()
-                                ThemeRegistry.getInstance().setTheme("quietlight")
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-
-                            7 -> try {
-                                ensureTextmateTheme()
-                                ThemeRegistry.getInstance().setTheme("darcula")
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-
-                            8 -> try {
-                                ensureTextmateTheme()
-                                ThemeRegistry.getInstance().setTheme("abyss")
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-
-                            9 -> try {
-                                ensureTextmateTheme()
-                                ThemeRegistry.getInstance().setTheme("solarized_drak")
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-
-                            10 -> loadTMTLauncher.launch("*/*")
-                        }
-                        resetColorScheme()
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
             }
 
             R.id.text_wordwrap -> {

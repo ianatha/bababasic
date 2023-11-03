@@ -10,11 +10,9 @@
     <string name="redo">Wiederholen</string>
     <string name="search_text">Suchtext</string>
     <string name="search_panel">Suchfeld</string>
-    <string name="color_scheme">Farbschema</string>
     <string name="wordwrap">Zeilenumbruch</string>
     <string name="line_number_visibility">Zeilennummer anzeigen</string>
     <string name="settings">Einstellungen</string>
-    <string name="magnifier">Lupe</string>
     <string name="layout_tv_search_options">Optionen</string>
     <string name="search_option_regex">RegEx</string>
     <string name="search_option_whole_word">Ganze Welt</string>

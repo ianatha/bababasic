@@ -10,11 +10,9 @@
     <string name="redo">やり直し</string>
     <string name="search_text">検索テキスト</string>
     <string name="search_panel">検索パネル</string>
-    <string name="color_scheme">カラースキーム</string>
     <string name="wordwrap">ワードラップ</string>
     <string name="line_number_visibility">行番号を表示</string>
     <string name="settings">設定</string>
-    <string name="magnifier">拡大鏡</string>
     <string name="layout_tv_search_options">オプション</string>
     <string name="search_option_regex">レゲクス</string>
     <string name="search_option_whole_word">単語全体</string>

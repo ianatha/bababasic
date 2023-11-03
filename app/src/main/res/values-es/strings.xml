@@ -10,11 +10,9 @@
     <string name="redo">Rehacer</string>
     <string name="search_text">Buscar texto</string>
     <string name="search_panel">Panel de búsqueda</string>
-    <string name="color_scheme">Esquema de colores</string>
     <string name="wordwrap">Ajuste de línea</string>
     <string name="line_number_visibility">Mostrar número de línea</string>
     <string name="settings">Ajustes</string>
-    <string name="magnifier">lupa</string>
     <string name="layout_tv_search_options">Opciones</string>
     <string name="search_option_regex">RegEx</string>
     <string name="search_option_whole_word">Toda palabra</string>

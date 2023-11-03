@@ -20,15 +20,11 @@
 
     <string name="search_panel">Panneau de recherche</string>
 
-    <string name="color_scheme">Schéma de couleur</string>
-
     <string name="wordwrap">Retour à la ligne</string>
 
     <string name="line_number_visibility">Afficher le numéro de ligne</string>
 
     <string name="settings">Paramètres</string>
-
-    <string name="magnifier">Loupe</string>
 
     <string name="layout_tv_search_options">Possibilités</string>
 

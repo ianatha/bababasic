@@ -50,14 +50,6 @@
                 android:checkable="true"
                 android:checked="true"
                 android:title="@string/line_number_visibility" />
-            <item
-                android:id="@+id/magnifier"
-                android:checkable="true"
-                android:checked="true"
-                android:title="@string/magnifier" />
-            <item
-                android:id="@+id/switch_colors"
-                android:title="@string/color_scheme" />
         </menu>
     </item>
 

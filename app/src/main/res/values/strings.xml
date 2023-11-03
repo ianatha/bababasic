@@ -9,11 +9,9 @@
     <string name="redo">Redo</string>
     <string name="search_text">Search Text</string>
     <string name="search_panel">Search Panel</string>
-    <string name="color_scheme">Color Scheme</string>
     <string name="wordwrap">Wordwrap</string>
     <string name="line_number_visibility">Show line number</string>
     <string name="settings">Settings</string>
-    <string name="magnifier">Magnifier</string>
     <string name="layout_tv_search_options">Options</string>
     <string name="search_option_regex">RegEx</string>
     <string name="search_option_whole_word">Whole Word</string>
