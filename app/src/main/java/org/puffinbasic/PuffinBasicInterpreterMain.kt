@@ -18,6 +18,7 @@ import org.puffinbasic.antlr4.PuffinBasicParser
 import org.puffinbasic.domain.PuffinBasicSymbolTable
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
+import org.puffinbasic.error.PuffinError
 import org.puffinbasic.file.PuffinUserInterfaceFile
 import org.puffinbasic.file.SystemInputOutputFile
 import org.puffinbasic.parser.LinenumberListener
@@ -126,22 +127,19 @@ object PuffinBasicInterpreterMain {
         interpretAndRun(userOptions, UNKNOWN_SOURCE_FILE, sourceCode, stdinout, env)
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Throws(PuffinBasicRuntimeError::class)
-    fun interpretAndRun(
-        userOptions: UserOptions,
+    @JvmStatic()
+    @Throws(PuffinBasicSyntaxError::class)
+    public fun checkSyntax(
         sourceFilename: String?,
         sourceCode: String,
-        stdinout: PuffinUserInterfaceFile?,
-        env: Environment?
-    ) {
+        throwOnDuplicate: ThrowOnDuplicate = ThrowOnDuplicate.THROW,
+    ): PuffinBasicSourceFile {
         val importPath = PuffinBasicImportPath(sourceFilename)
-        val t1 = Instant.now()
         val sourceFile = syntaxCheckAndSortByLineNumber(
             importPath,
             sourceFilename,
             sourceCode,
-            if (userOptions.logOnDuplicate) ThrowOnDuplicate.LOG else ThrowOnDuplicate.THROW,
+            throwOnDuplicate,
             SourceFileMode.MAIN
         )
         if (sourceFile.sourceCode.isEmpty()) {
@@ -149,6 +147,24 @@ object PuffinBasicInterpreterMain {
                 "Failed to parse source code! Check if a linenumber is missing"
             )
         }
+        return sourceFile
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Throws(PuffinError::class)
+    fun interpretAndRun(
+        userOptions: UserOptions,
+        sourceFilename: String?,
+        sourceCode: String,
+        stdinout: PuffinUserInterfaceFile?,
+        env: Environment?
+    ) {
+        val t1 = Instant.now()
+        val sourceFile = checkSyntax(
+            sourceFilename,
+            sourceCode,
+            if (userOptions.logOnDuplicate) ThrowOnDuplicate.LOG else ThrowOnDuplicate.THROW
+        )
         logTimeTaken("SORT", t1, userOptions.timing)
         log("LIST", userOptions.listSourceCode)
         log(sourceFile.sourceCode, userOptions.listSourceCode)
@@ -157,9 +173,8 @@ object PuffinBasicInterpreterMain {
         logTimeTaken("IR", t2, userOptions.timing)
         log("IR", userOptions.printIR)
         if (userOptions.printIR) {
-            var i = 0
-            for (instruction in ir.getInstructions()) {
-                log(i++.toString() + ": " + instruction, true)
+            ir.getInstructions().withIndex().forEach { (i, instruction) ->
+                log("$i: $instruction", true)
             }
         }
         log("RUN", userOptions.timing)
@@ -302,7 +317,9 @@ object PuffinBasicInterpreterMain {
             }
             throw PuffinBasicSyntaxError(
                 "[" + line + ":" + charPositionInLine + "] " + msg + BabaSystem.lineSeparator()
-                        + inputLine
+                        + inputLine,
+                line,
+                charPositionInLine
             )
         }
     }
