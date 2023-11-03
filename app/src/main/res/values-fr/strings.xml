@@ -51,4 +51,6 @@
     <string name="stop_execution">Stop execution</string>
     <string name="crash">Crash</string>
     <string name="about_contents">BabaBASIC est un projet open source réalisé par Ian Atha. J\'ai commencé à créer cette application parce que mon père, qui était programmeur dans les années 80, m\'a demandé de lui trouver une application Android pour présenter la programmation à d\'autres utilisant BASIC, alors j\'ai passé une nuit blanche et j\'ai créé ceci. Pour tout ce dont vous pourriez avoir besoin, veuillez envoyer un e-mail à ian@atha.io.</string>
+    <string name="symbol_keyboard">Symbol Keyobard</string>
+    <string name="editor">Editor</string>
 </resources>
