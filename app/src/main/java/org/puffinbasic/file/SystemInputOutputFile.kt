@@ -28,6 +28,10 @@ class SystemInputOutputFile(
         return ""
     }
 
+    override fun outputText(text: String) {
+        out.print(text)
+    }
+
     override fun setFieldParams(symbolTable: PuffinBasicSymbolTable, recordParts: List<Int>) {
         throw PuffinBasicRuntimeError(
             PuffinBasicRuntimeError.ErrorCode.ILLEGAL_FILE_ACCESS,

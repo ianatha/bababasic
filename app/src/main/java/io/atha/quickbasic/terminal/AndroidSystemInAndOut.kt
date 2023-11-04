@@ -20,31 +20,31 @@ class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterface
     private val bufin = CircularByteBuffer(4096)
 
     override fun inputDialog(prompt: String): String? {
-        var result: String? = null
-        val latch = CountDownLatch(1)
-        context.runOnUiThread {
-            val builder = AlertDialog.Builder(context)
-            builder.setTitle(prompt)
-            val input = EditText(context)
-            input.inputType = InputType.TYPE_CLASS_TEXT
-            builder.setView(input)
-            builder.setPositiveButton(
-                "OK"
-            ) { _, _ ->
-                result = input.text.toString()
-                latch.countDown()
+        var result: StringBuffer = StringBuffer()
+        do {
+            val c = takeInputCharBlocking()
+            Log.i("qb", "input: $c ${c.codePoints().findFirst()}")
+            if (c == "\r") {
+                break;
+            } else if (c.toByteArray()[0] == 127.toByte()) {
+                if (result.isNotEmpty()) {
+                    result.deleteCharAt(result.length - 1)
+                    outputText("\b \b")
+                }
+            } else {
+                outputText(c)
+                result.append(c)
             }
-            builder.setNegativeButton(
-                "Cancel"
-            ) { dialog, _ ->
-                dialog.cancel()
-                latch.countDown()
-            }
-            builder.show()
-        }
-        latch.await()
-        outputText(" " + result!! + BabaSystem.lineSeparator())
-        return result
+        } while (c != "\r");
+        outputText(BabaSystem.lineSeparator());
+        return result.toString()
+    }
+
+    private fun takeInputCharBlocking(): String {
+        val b = bufin.inputStream.read()
+        val c = b.toChar()
+        val s = c.toString()
+        return s
     }
 
     override fun takeInputChar(): String {
@@ -59,7 +59,7 @@ class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterface
         }
     }
 
-    fun outputText(s: String) {
+    override fun outputText(s: String) {
         bufout.outputStream.write(s.toByteArray(Charsets.UTF_8))
         Log.i("qb-out", s)
     }

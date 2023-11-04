@@ -3954,16 +3954,12 @@ class PuffinBasicIRListener(
                 PuffinBasicSymbolTable.NULL_ID
             )
         }
-        val promptId: Int
+        var promptId: Int = PuffinBasicSymbolTable.NULL_ID
         if (ctx.expr() != null) {
             promptId = lookupInstruction(ctx.expr()).result
             Types.assertString(
                 ir.symbolTable[promptId]!!.type!!.atomTypeId
             ) { getCtxString(ctx) }
-        } else {
-            promptId = ir.symbolTable.addTmp(PuffinBasicAtomTypeId.STRING) { e: STEntry? ->
-                e!!.value!!.string = "?"
-            }
         }
         ir.addInstruction(
             sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,

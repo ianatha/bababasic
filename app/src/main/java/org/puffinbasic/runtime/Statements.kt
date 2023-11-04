@@ -322,7 +322,11 @@ object Statements {
             prompt = symbolTable[instruction.op1]!!.value!!.string
             printPrompt = true
             // TODO: do not print prompt when reading from file
-            files.sys.print(prompt!!)
+            files.sys.outputText(prompt!!)
+        } else {
+            prompt = "? "
+            printPrompt = true
+            files.sys.outputText(prompt!!)
         }
         val file: PuffinBasicFile = if (instruction.op2 != PuffinBasicSymbolTable.NULL_ID) {
             val fileNumber = symbolTable[instruction.op2]!!.value!!.int32
@@ -335,7 +339,7 @@ object Statements {
         do {
             if (retry) {
                 if (printPrompt) {
-                    System.err.println("?Redo from start")
+                    files.sys.outputText(BabaSystem.lineSeparator() + "Redo from start" + BabaSystem.lineSeparator())
                 } else {
                     throw PuffinBasicRuntimeError(
                         PuffinBasicRuntimeError.ErrorCode.IO_ERROR,
