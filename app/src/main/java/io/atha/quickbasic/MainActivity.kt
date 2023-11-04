@@ -458,11 +458,42 @@ class MainActivity : BabaActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
+    private val EXAMPLES = mapOf(
+        "HELLO.bas" to "10 PRINT \"HELLO WORLD\"\n",
+        "PRIME.bas" to "FOR I% = 1 TO 10000\n" +
+                "  J% = 3\n" +
+                "  N% = I% \\ 2\n" +
+                "  ISPRIME% = (I% > 1) AND ((I% MOD 2 <> 0) OR (I% = 2))\n" +
+                "  WHILE J% <= N% AND ISPRIME% = -1\n" +
+                "    ISPRIME% = I% MOD J% <> 0\n" +
+                "    J% = J% + 2\n" +
+                "  WEND\n" +
+                "  IF ISPRIME% THEN PRINT STR\$(I%), \" is prime\"\n" +
+                "NEXT I%\n",
+        "FIB.bas" to "10 LET A = 0\n20 LET B = 1\n30 LET C = A + B\n40 PRINT C\n50 LET A = B\n60 LET B = C\n65 SLEEP 500\n70 GOTO 30\n",
+    )
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         undo = menu.findItem(R.id.text_undo)
         redo = menu.findItem(R.id.text_redo)
+        val examples = menu.findItem(R.id.examples_menu).subMenu!!
+        EXAMPLES.forEach { (name, code) ->
+            examples.add(name).setOnMenuItemClickListener {
+                setText(code, name)
+                true
+            }
+        }
         return super.onCreateOptionsMenu(menu)
+    }
+
+    fun setText(text: String, name: String? = null) {
+        binding.editor.setText(text)
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)!!
+        with (sharedPref.edit()) {
+            putString("editor_context", text)
+            apply()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -472,12 +503,7 @@ class MainActivity : BabaActivity<ActivityMainBinding>(ActivityMainBinding::infl
             val inputStream = contentResolver.openInputStream(selectedfile)
             val reader = BufferedReader(InputStreamReader(inputStream))
             val contents = reader.lines().collect(Collectors.joining("\n"))
-            binding.editor.setText(contents)
-            val sharedPref = getPreferences(Context.MODE_PRIVATE)!!
-            with (sharedPref.edit()) {
-                putString("editor_context", contents)
-                apply()
-            }
+            setText(contents)
         } else if (requestCode == CREATE_DOCUMENT_REQUEST_ID && resultCode == RESULT_OK) {
             val uri: Uri = data!!.data!!
             try {

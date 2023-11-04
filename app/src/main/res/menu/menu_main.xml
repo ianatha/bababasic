@@ -49,6 +49,11 @@
         </menu>
     </item>
 
+    <item android:title="@string/examples" android:id="@+id/examples_menu">
+        <menu>
+        </menu>
+    </item>
+
     <item
         android:id="@+id/about"
         android:title="@string/about" />
