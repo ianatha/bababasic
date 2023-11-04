@@ -49,4 +49,5 @@
     <string name="editor">Editor</string>
     <string name="close">Close</string>
     <string name="examples">Exemples</string>
+    <string name="show_keyboard">Show Keyboard</string>
 </resources>

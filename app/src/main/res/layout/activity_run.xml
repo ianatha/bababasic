@@ -40,6 +40,19 @@
             android:layout_weight="2" />
 
         <ImageButton
+            android:contentDescription="@string/show_keyboard"
+            android:id="@+id/keyboard"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:src="@drawable/keyboard" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+        <ImageButton
             android:contentDescription="@string/stop_execution"
             android:id="@+id/stop"
             android:layout_width="0dp"

@@ -31,4 +31,5 @@
     <string name="editor">Editor</string>
     <string name="close">Close</string>
     <string name="examples">例</string>
+    <string name="show_keyboard">Show Keyboard</string>
 </resources>

@@ -18,6 +18,7 @@ import org.puffinbasic.error.PuffinBasicInternalError
 import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.error.PuffinBasicSyntaxError
 import org.puffinbasic.runtime.SystemEnv
+import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.UUID
 
@@ -168,27 +169,28 @@ class BabaTerminalSession(
                 execProcess = null
             }
         }
+        object : Thread("TermSessionOutputWriter") {
+            override fun run() {
+                val buffer = ByteArray(4096)
+                try {
+                    stdin.getStdin().use { termOut ->
+                        while (true) {
+                            val bytesToWrite: Int = mTerminalToProcessIOQueue.read(buffer, true)
+                            if (bytesToWrite == -1) return
+                            termOut.write(buffer, 0, bytesToWrite)
+                        }
+                    }
+                } catch (e: IOException) {
+                    // Ignore.
+                }
+            }
+        }.start()
         execProcess!!.start()
-//        object : Thread("TermSessionOutputWriter[pid=$mShellPid]") {
-//            override fun run() {
-//                val buffer = ByteArray(4096)
-//                try {
-//                    FileOutputStream(terminalFileDescriptorWrapped).use { termOut ->
-//                        while (true) {
-//                            val bytesToWrite: Int = mTerminalToProcessIOQueue.read(buffer, true)
-//                            if (bytesToWrite == -1) return
-//                            termOut.write(buffer, 0, bytesToWrite)
-//                        }
-//                    }
-//                } catch (e: IOException) {
-//                    // Ignore.
-//                }
-//            }
-//        }.start()
     }
 
     /** Write data to the shell process.  */
     override fun write(data: ByteArray, offset: Int, count: Int) {
+        Log.i("qb", "mTerminalToProcessIOQueue.write")
         mTerminalToProcessIOQueue.write(data, offset, count)
     }
 

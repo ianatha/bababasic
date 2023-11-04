@@ -449,11 +449,13 @@ class MainActivity : BabaActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onPause()
     }
 
+    private val defaultScript = "10 PRINT \"HELLO WORLD\""
+
     override fun onResume() {
         Log.i("qb", "resume")
         super.onResume()
         val sharedPref = getPreferences(Context.MODE_PRIVATE)!!
-        sharedPref.getString("editor_context", "10 PRINT \"HELLO WORLD\"")?.let {
+        sharedPref.getString("editor_context", defaultScript)?.let {
             binding.editor.setText(it)
         }
     }
@@ -471,6 +473,24 @@ class MainActivity : BabaActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 "  IF ISPRIME% THEN PRINT STR\$(I%), \" is prime\"\n" +
                 "NEXT I%\n",
         "FIB.bas" to "10 LET A = 0\n20 LET B = 1\n30 LET C = A + B\n40 PRINT C\n50 LET A = B\n60 LET B = C\n65 SLEEP 500\n70 GOTO 30\n",
+        "INKEY.bas" to "PRINT \"PRESS a OR d TO MOVE THE STAR. PRESS q to QUIT.\"\n" +
+                "X = 5\n" +
+                "LABEL \"event_loop\"\n" +
+                "LOCATE 2\n" +
+                "FOR I = 0 TO 10\n" +
+                "   IF X = I THEN PRINT \"*\"; ELSE PRINT \" \";\n" +
+                "NEXT I\n" +
+                "A\$ = INKEY\$\n" +
+                "IF A\$ <> \"\" THEN BEGIN\n" +
+                "   LOCATE 15\n" +
+                "   PRINT \"YOU PRESSED \" + A\$\n" +
+                "   IF A$ = \"a\" THEN X = X - 1\n"+
+                "   IF A$ = \"d\" THEN X = X + 1\n" +
+                "   IF A$ = \"q\" THEN END\n" +
+                "END IF\n" +
+                "IF X < 0 THEN X = 0\n" +
+                "IF X > 10 THEN X = 10\n" +
+                "GOTO \"event_loop\""
     )
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

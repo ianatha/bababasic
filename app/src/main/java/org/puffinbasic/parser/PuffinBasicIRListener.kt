@@ -1488,7 +1488,6 @@ class PuffinBasicIRListener(
     }
 
     override fun exitFuncInkeyDlr(ctx: FuncInkeyDlrContext) {
-        assertGraphics()
         nodeToInstruction.put(
             ctx, ir.addInstruction(
                 sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,

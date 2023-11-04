@@ -24,6 +24,10 @@ class SystemInputOutputFile(
         return readLine()
     }
 
+    override fun takeInputChar(): String {
+        return ""
+    }
+
     override fun setFieldParams(symbolTable: PuffinBasicSymbolTable, recordParts: List<Int>) {
         throw PuffinBasicRuntimeError(
             PuffinBasicRuntimeError.ErrorCode.ILLEGAL_FILE_ACCESS,

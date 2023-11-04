@@ -11,11 +11,13 @@ import org.puffinbasic.error.PuffinBasicRuntimeError
 import org.puffinbasic.file.PuffinUserInterfaceFile
 import org.puffinbasic.runtime.BabaSystem
 import java.io.InputStream
+import java.io.OutputStream
 import java.util.concurrent.CountDownLatch
 
 
 class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterfaceFile {
-    private val buf = CircularByteBuffer(4096)
+    private val bufout = CircularByteBuffer(4096)
+    private val bufin = CircularByteBuffer(4096)
 
     override fun inputDialog(prompt: String): String? {
         var result: String? = null
@@ -45,8 +47,20 @@ class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterface
         return result
     }
 
+    override fun takeInputChar(): String {
+        return if (bufin.available > 0) {
+            Log.i("qb-in", "available: ${bufin.available}")
+            val b = bufin.inputStream.read()
+            val c = b.toChar()
+            val s = c.toString()
+            s
+        } else {
+            ""
+        }
+    }
+
     fun outputText(s: String) {
-        buf.outputStream.write(s.toByteArray(Charsets.UTF_8))
+        bufout.outputStream.write(s.toByteArray(Charsets.UTF_8))
         Log.i("qb-out", s)
     }
 
@@ -95,7 +109,7 @@ class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterface
 //    private val buf = StringBuilder()
 
     override fun writeByte(b: Byte) {
-        buf.outputStream.write(b.toInt())
+        bufout.outputStream.write(b.toInt())
     }
 
     override fun eof(): Boolean {
@@ -121,11 +135,14 @@ class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterface
     }
 
     override fun close() {
-        buf.outputStream.close()
+        bufout.outputStream.close()
     }
 
-
     fun getStdout(): InputStream {
-        return buf.inputStream
+        return bufout.inputStream
+    }
+
+    fun getStdin(): OutputStream {
+        return bufin.outputStream
     }
 }

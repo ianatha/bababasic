@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.termux.shared.termux.terminal.TermuxTerminalSessionClientBase
 import com.termux.terminal.TerminalSession
@@ -26,6 +27,16 @@ class RunActivity : AppCompatActivity() {
 
     fun getPreferences(): AppSharedPreferences {
         return mPreferences
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        super.onKeyDown(keyCode, event)
+        return binding.terminal.onKeyDown(keyCode, event!!)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        super.onKeyUp(keyCode, event)
+        return binding.terminal.onKeyUp(keyCode, event!!)
     }
 
     override fun onResume() {
@@ -52,6 +63,10 @@ class RunActivity : AppCompatActivity() {
         binding.goBack.setOnClickListener {
             session.finishIfRunning()
             finish()
+        }
+
+        binding.keyboard.setOnClickListener {
+            viewClient.setSoftKeyboardState(true, false)
         }
 
         binding.stop.setOnClickListener {
