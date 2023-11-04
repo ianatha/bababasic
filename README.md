@@ -2,7 +2,10 @@
 
 ## Write and run BASIC programs, just like in the 70s
 
-<img alt="BabaBASIC Screenshot" src="https://github.com/ianatha/bababasic/blob/main/design_assets/playstore_screenshot_phone.png" width="256px" />
+<p float="left">
+<img alt="BabaBASIC Screenshot" src="https://github.com/ianatha/bababasic/blob/main/design_assets/screenshot_1.png" width="256px" />
+<img alt="BabaBASIC Screenshot" src="https://github.com/ianatha/bababasic/blob/main/design_assets/screenshot_2.png" width="256px" />
+</p>
 
 BabaBASIC lets you write and run BASIC on your Android device, enabling you to reminisce of the prehistoric computing era.
 
@@ -16,3 +19,4 @@ I couldn't find anything that I felt comfortable recommending to him, so I pulle
 This app relies heavily on:
 * [mayuropensource/PuffinBASIC](https://github.com/mayuropensource/PuffinBASIC)
 * [Rosemoe/sora-editor](https://github.com/Rosemoe/sora-editor)
+* [termux/termux-app](https://github.com/termux/termux-app)
