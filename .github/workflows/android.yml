@@ -6,6 +6,9 @@ on:
 
 jobs:
   build:
+    concurrency:
+      group: android-ci-${{ github.ref }}
+      cancel-in-progress: true
 
     runs-on: ubuntu-latest
 

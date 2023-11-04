@@ -1,8 +1,6 @@
 name: "CodeQL"
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   schedule:
@@ -10,6 +8,10 @@ on:
 
 jobs:
   analyze:
+    concurrency:
+      group: codeql-${{ github.ref }}
+      cancel-in-progress: true
+
     name: Analyze
     runs-on: 'ubuntu-latest'
     timeout-minutes: 360
