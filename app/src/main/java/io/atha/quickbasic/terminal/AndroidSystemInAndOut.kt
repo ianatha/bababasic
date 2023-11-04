@@ -23,7 +23,6 @@ class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterface
         var result: StringBuffer = StringBuffer()
         do {
             val c = takeInputCharBlocking()
-            Log.i("qb", "input: $c ${c.codePoints().findFirst()}")
             if (c == "\r") {
                 break;
             } else if (c.toByteArray()[0] == 127.toByte()) {
@@ -49,7 +48,6 @@ class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterface
 
     override fun takeInputChar(): String {
         return if (bufin.available > 0) {
-            Log.i("qb-in", "available: ${bufin.available}")
             val b = bufin.inputStream.read()
             val c = b.toChar()
             val s = c.toString()
@@ -61,7 +59,6 @@ class AndroidSystemInAndOut(private val context: Activity) : PuffinUserInterface
 
     override fun outputText(s: String) {
         bufout.outputStream.write(s.toByteArray(Charsets.UTF_8))
-        Log.i("qb-out", s)
     }
 
     override fun setFieldParams(symbolTable: PuffinBasicSymbolTable, recordParts: List<Int>) {

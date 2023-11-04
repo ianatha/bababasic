@@ -517,6 +517,7 @@ class TermuxTerminalViewClient(
             }
         }
         mActivity.getTerminalView().setOnFocusChangeListener { view, hasFocus ->
+            Log.i("qb", "terminal view has focus")
                             // Force show soft keyboard if TerminalView or toolbar text input view has
                             // focus and close it if they don't
                             var textInputViewHasFocus = false
@@ -543,7 +544,7 @@ class TermuxTerminalViewClient(
 
         // Do not force show soft keyboard if termux-reload-settings command was run with hardware keyboard
         // or soft keyboard is to be hidden or is disabled
-//        if (!isReloadTermuxProperties && !noShowKeyboard) {
+        if (!isReloadTermuxProperties && !noShowKeyboard) {
             // Request focus for TerminalView
             // Also show the keyboard, since onFocusChange will not be called if TerminalView already
             // had focus on startup to show the keyboard, like when opening url with context menu
@@ -552,11 +553,7 @@ class TermuxTerminalViewClient(
             Logger.logVerbose(LOG_TAG, "Requesting TerminalView focus and showing soft keyboard")
             mActivity.getTerminalView().requestFocus()
             mActivity.getTerminalView().postDelayed(showSoftKeyboardRunnable, 300)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            activity.getTerminalView().windowInsetsController!!.show(WindowInsetsCompat.Type.ime())
         }
-
-//        }
     }
 
     private val showSoftKeyboardRunnable: Runnable
