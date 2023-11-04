@@ -449,7 +449,9 @@ class MainActivity : BabaActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onPause()
     }
 
-    private val defaultScript = "10 PRINT \"HELLO WORLD\""
+    private val defaultScript = "10 PRINT \"HELLO WORLD\"\n" +
+            "20 INPUT \"Name? \", A$\n" +
+            "30 PRINT \"HELLO \" + A$\n"
 
     override fun onResume() {
         Log.i("qb", "resume")
@@ -461,36 +463,54 @@ class MainActivity : BabaActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private val EXAMPLES = mapOf(
-        "HELLO.bas" to "10 PRINT \"HELLO WORLD\"\n",
-        "PRIME.bas" to "FOR I% = 1 TO 10000\n" +
-                "  J% = 3\n" +
-                "  N% = I% \\ 2\n" +
-                "  ISPRIME% = (I% > 1) AND ((I% MOD 2 <> 0) OR (I% = 2))\n" +
-                "  WHILE J% <= N% AND ISPRIME% = -1\n" +
-                "    ISPRIME% = I% MOD J% <> 0\n" +
-                "    J% = J% + 2\n" +
-                "  WEND\n" +
-                "  IF ISPRIME% THEN PRINT STR\$(I%), \" is prime\"\n" +
-                "NEXT I%\n",
-        "FIB.bas" to "10 LET A = 0\n20 LET B = 1\n30 LET C = A + B\n40 PRINT C\n50 LET A = B\n60 LET B = C\n65 SLEEP 500\n70 GOTO 30\n",
-        "INKEY.bas" to "PRINT \"PRESS a OR d TO MOVE THE STAR. PRESS q to QUIT.\"\n" +
-                "X = 5\n" +
-                "LABEL \"event_loop\"\n" +
-                "LOCATE 2\n" +
-                "FOR I = 0 TO 10\n" +
-                "   IF X = I THEN PRINT \"*\"; ELSE PRINT \" \";\n" +
-                "NEXT I\n" +
-                "A\$ = INKEY\$\n" +
-                "IF A\$ <> \"\" THEN BEGIN\n" +
-                "   LOCATE 15\n" +
-                "   PRINT \"YOU PRESSED \" + A\$\n" +
-                "   IF A$ = \"a\" THEN X = X - 1\n"+
-                "   IF A$ = \"d\" THEN X = X + 1\n" +
-                "   IF A$ = \"q\" THEN END\n" +
-                "END IF\n" +
-                "IF X < 0 THEN X = 0\n" +
-                "IF X > 10 THEN X = 10\n" +
-                "GOTO \"event_loop\""
+        "HELLO.bas" to """10 PRINT "HELLO WORLD"
+""",
+        "PRIME.bas" to """FOR I% = 1 TO 10000
+  J% = 3
+  N% = I% \ 2
+  ISPRIME% = (I% > 1) AND ((I% MOD 2 <> 0) OR (I% = 2))
+  WHILE J% <= N% AND ISPRIME% = -1
+    ISPRIME% = I% MOD J% <> 0
+    J% = J% + 2
+  WEND
+  IF ISPRIME% THEN PRINT STR$(I%), " is prime"
+NEXT I%
+""",
+        "FIB.bas" to """10 LET A = 0
+20 LET B = 1
+30 LET C = A + B
+40 PRINT C
+50 LET A = B
+60 LET B = C
+65 SLEEP 500
+70 GOTO 30
+""",
+        "INKEY.bas" to """PRINT "PRESS w,a,s,d TO MOVE THE STAR. PRESS q to QUIT."
+X = 5
+Y = 5
+LABEL "event_loop"
+LOCATE 2
+FOR I = 0 TO 10
+FOR J = 0 TO 10
+   IF X = I AND Y = J THEN PRINT "*"; ELSE PRINT " ";
+NEXT J
+PRINT
+NEXT I
+A$ = INKEY$
+IF A$ <> "" THEN BEGIN
+   LOCATE 15
+   PRINT "YOU PRESSED " + A$
+   IF A$ = "a" THEN Y = Y - 1
+   IF A$ = "d" THEN Y = Y + 1
+   IF A$ = "w" THEN X = X - 1
+   IF A$ = "s" THEN X = X + 1
+   IF A$ = "q" THEN END
+END IF
+IF X < 0 THEN X = 0
+IF X > 10 THEN X = 10
+IF Y < 0 THEN Y = 0
+IF Y > 10 THEN Y = 10
+GOTO "event_loop""""
     )
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

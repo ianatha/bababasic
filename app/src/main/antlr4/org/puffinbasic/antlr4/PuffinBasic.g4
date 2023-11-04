@@ -436,7 +436,7 @@ fieldstmt
     ;
 
 inputstmt
-    : INPUT SEMICOLON? (expr (SEMICOLON | COMMA)) variable (COMMA variable)*
+    : INPUT SEMICOLON? (expr (SEMICOLON | COMMA))? variable (COMMA variable)*
     ;
 
 inputhashstmt
