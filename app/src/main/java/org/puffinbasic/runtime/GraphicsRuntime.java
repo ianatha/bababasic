@@ -565,7 +565,8 @@ class GraphicsRuntime {
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
 //        var key = graphicsState.getFrame().getDrawingCanvas().takeNextKey();
-//        symbolTable.get(instruction.result).getValue().setString(key);
+        var key = "";
+        symbolTable.get(instruction.result).getValue().setString(key);
     }
 
     public static void loadwav(
