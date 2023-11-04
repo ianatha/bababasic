@@ -296,7 +296,7 @@ object PuffinBasicInterpreterMain {
         BaseErrorListener() {
         override fun syntaxError(
             recognizer: Recognizer<*, *>?,
-            offendingSymbol: Any,
+            offendingSymbol: Any?,
             line: Int,
             charPositionInLine: Int,
             msg: String,
