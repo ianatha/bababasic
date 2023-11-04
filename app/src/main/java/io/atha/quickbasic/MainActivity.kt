@@ -37,6 +37,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -46,6 +47,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
@@ -77,6 +79,7 @@ import io.github.rosemoe.sora.widget.component.EditorAutoCompletion
 import io.github.rosemoe.sora.widget.component.Magnifier
 import io.github.rosemoe.sora.widget.getComponent
 import io.github.rosemoe.sora.widget.subscribeEvent
+import kotlinx.coroutines.coroutineScope
 import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
 import org.puffinbasic.PuffinBasicInterpreterMain.checkSyntax
@@ -88,44 +91,69 @@ import java.io.OutputStream
 import java.util.regex.PatternSyntaxException
 import java.util.stream.Collectors
 
+abstract class BabaActivity<T: ViewBinding>(val inflateFn: (LayoutInflater) -> T) : AppCompatActivity() {
+    lateinit var firebaseAnalytics: FirebaseAnalytics
+    lateinit var binding: T
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var searchMenu: PopupMenu
-    private var searchOptions = SearchOptions(false, false)
-    private var undo: MenuItem? = null
-    private var redo: MenuItem? = null
+    abstract fun prepareView()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
         CrashHandler.INSTANCE.init(this)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        binding = inflateFn(layoutInflater)
+        prepareView()
         setContentView(binding.root)
-        val inputView = binding.symbolInput
-        inputView.bindEditor(binding.editor)
-        val typeface = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
-        inputView.addSymbols(
-            arrayOf(
-                "->",
-                "=",
-                "$",
-                "%",
-                "(",
-                ")",
-                "\"",
-                ",",
-                ".",
-                "+",
-                "-",
-                "*",
-                "/"
-            ), arrayOf("\t", "=", "$", "%", "(", ")", "\"", ",", ".", "+", "-", "*", "/")
-        )
-        inputView.forEachButton {
-            it.typeface = typeface
+        checkForUpdates()
+    }
+
+    private fun checkForUpdates() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
+            Log.i("app", "checkForUpdates $result")
         }
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    1011
+                )
+            }
+        }
+    }
+}
+
+
+class MainActivity : BabaActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+    private var searchOptions = SearchOptions(false, false)
+    private var undo: MenuItem? = null
+    private var redo: MenuItem? = null
+
+    private val symbolInputViewSymbols = mapOf(
+        "->" to "\t",
+        "=" to "=",
+        "$" to "$",
+        "%" to  "%",
+        "(" to  "(",
+        ")" to  ")",
+        "\"" to  "\"",
+        "," to  ",",
+        "." to ".",
+        "+" to  "+",
+        "-" to  "-",
+        "*" to "*",
+        "/" to  "/",
+    )
+
+    private fun prepareSearchTool() {
         binding.searchEditor.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -133,7 +161,8 @@ class MainActivity : AppCompatActivity() {
                 tryCommitSearch()
             }
         })
-        searchMenu = PopupMenu(this, binding.searchOptions)
+
+        val searchMenu = PopupMenu(this, binding.searchOptions)
         searchMenu.inflate(R.menu.menu_search_options)
         searchMenu.setOnMenuItemClickListener {
             it.isChecked = !it.isChecked
@@ -162,6 +191,27 @@ class MainActivity : AppCompatActivity() {
             tryCommitSearch()
             true
         }
+        binding.searchOptions.setOnClickListener {
+            searchMenu.show()
+        }
+    }
+
+    private fun prepareSymbolInputView() {
+        val typeface = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
+        val inputView = binding.symbolInput
+        inputView.bindEditor(binding.editor)
+        inputView.addSymbols(symbolInputViewSymbols.keys.toTypedArray(), symbolInputViewSymbols.values.toTypedArray())
+        inputView.forEachButton {
+            it.typeface = typeface
+        }
+    }
+
+    override fun prepareView() {
+        prepareSymbolInputView()
+        prepareSearchTool()
+
+        val typeface = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
+
         binding.editor.apply {
             typefaceText = typeface
             props.stickyScroll = true
@@ -212,33 +262,6 @@ class MainActivity : AppCompatActivity() {
         updateBtnState()
 
         switchThemeIfRequired(this, binding.editor)
-
-        checkForUpdates()
-    }
-
-    private fun checkForUpdates() {
-        val appUpdateManager = AppUpdateManagerFactory.create(this)
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-
-        val activityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
-                Log.i("app", "info $result")
-            }
-
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-            ) {
-                appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
-                    this,
-                    1011
-                )
-            } else {
-                Log.i("app", "no update available")
-            }
-        }
     }
 
     private fun tryCommitSearch() {
@@ -290,22 +313,6 @@ class MainActivity : AppCompatActivity() {
 
     private /*suspend*/ fun loadDefaultLanguages() /*= withContext(Dispatchers.Main)*/ {
         GrammarRegistry.getInstance().loadGrammars("textmate/languages.json")
-    }
-
-    private fun setupDiagnostics() {
-        val editor = binding.editor
-        val container = DiagnosticsContainer()
-        for (i in 0 until editor.text.lineCount) {
-            val index = editor.text.getCharIndex(i, 0)
-            container.addDiagnostic(
-                DiagnosticRegion(
-                    index,
-                    index + editor.text.getColumnCount(i),
-                    DiagnosticRegion.SEVERITY_ERROR
-                )
-            )
-        }
-        editor.diagnostics = container
     }
 
     private fun ensureTextmateTheme() {
@@ -426,39 +433,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val loadTMLLauncher = registerForActivityResult(GetContent()) { result: Uri? ->
-        try {
-            if (result == null) return@registerForActivityResult
-
-
-            val editorLanguage = binding.editor.editorLanguage
-
-            val language = if (editorLanguage is TextMateLanguage) {
-                editorLanguage.updateLanguage(
-                    DefaultGrammarDefinition.withGrammarSource(
-                        IGrammarSource.fromInputStream(
-                            contentResolver.openInputStream(result),
-                            result.path, null
-                        ),
-                    )
-                )
-                editorLanguage
-            } else {
-                TextMateLanguage.create(
-                    DefaultGrammarDefinition.withGrammarSource(
-                        IGrammarSource.fromInputStream(
-                            contentResolver.openInputStream(result),
-                            result.path, null
-                        ),
-                    ), true
-                )
-            }
-            binding.editor.setEditorLanguage(language)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         switchThemeIfRequired(this, binding.editor)
@@ -532,6 +506,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent()
                     .setType("text/plain")
                     .putExtra(EXTRA_LOCAL_ONLY, true)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
                     .setAction(Intent.ACTION_GET_CONTENT)
 
                 startActivityForResult(
@@ -663,9 +638,5 @@ class MainActivity : AppCompatActivity() {
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         }
-    }
-
-    fun showSearchOptions(view: View?) {
-        searchMenu.show()
     }
 }

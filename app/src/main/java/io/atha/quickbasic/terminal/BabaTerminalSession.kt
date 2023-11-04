@@ -113,7 +113,6 @@ class BabaTerminalSession(
                     stdin.getStdout().use { termIn ->
                         val buffer = ByteArray(4096)
                         while (true) {
-                            Log.i("qb", "read looper running")
                             val read: Int = termIn.read(buffer)
                             if (read == -1) return@use
                             if (read > 0) {
