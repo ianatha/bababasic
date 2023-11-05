@@ -52,7 +52,7 @@ enum class PuffinBasicAtomTypeId(protected val _repr: Char?) {
 
         override fun copyArray(src: Collection<*>, dst: STValue) {
             dst.arrayDimensions = mutableListOf(src.size)
-            val array = (dst as STInt32ArrayValue).int32Array1D
+            val array = (dst as STInt32ArrayValue).value
             var i = 0
             for (o in src) {
                 array[i++] = o as Int
@@ -62,7 +62,7 @@ enum class PuffinBasicAtomTypeId(protected val _repr: Char?) {
         override fun copyArray(src: Array<*>, dst: STValue) {
             val srcList = src as Array<Int>
             dst.arrayDimensions = mutableListOf(src.size)
-            val array = (dst as STInt32ArrayValue).int32Array1D
+            val array = (dst as STInt32ArrayValue).value
             var i = 0
             for (o in srcList) {
                 array[i++] = o
@@ -792,7 +792,7 @@ class ListType(private val type: PuffinBasicType) : PuffinBasicType {
                 MemberFunction(
                     "values", arrayOf(), valuesType
                 ) { obj: Any?, params: Array<STValue>, result: STValue ->
-                    val list = obj as Array<Any>
+                    val list = obj as java.util.ArrayList<Any>
                     if (type.typeId == PuffinBasicTypeId.SCALAR) {
                         type.atomTypeId.copyArray(list, result)
                     } else {
