@@ -1,29 +1,4 @@
-/*******************************************************************************
- *    sora-editor - the awesome code editor for Android
- *    https://github.com/Rosemoe/sora-editor
- *    Copyright (C) 2020-2023  Rosemoe
- *
- *     This library is free software; you can redistribute it and/or
- *     modify it under the terms of the GNU Lesser General Public
- *     License as published by the Free Software Foundation; either
- *     version 2.1 of the License, or (at your option) any later version.
- *
- *     This library is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *     Lesser General Public License for more details.
- *
- *     You should have received a copy of the GNU Lesser General Public
- *     License along with this library; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
- *     USA
- *
- *     Please contact Rosemoe by email 2073412493@qq.com if you need
- *     additional information or have any questions
- ******************************************************************************/
 package io.atha.bababasic
-
-//import com.itsaky.androidide.treesitter.java.TSLanguageJava
 
 import android.app.AlertDialog
 import android.content.Context
@@ -32,6 +7,7 @@ import android.content.Intent.EXTRA_LOCAL_ONLY
 import android.content.res.Configuration
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -41,6 +17,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import io.atha.bababasic.databinding.ActivityMainBinding
 import io.atha.bababasic.editor.switchThemeIfRequired
 import io.atha.libbababasic.Interpreter.checkSyntax
@@ -76,7 +61,43 @@ import java.util.regex.PatternSyntaxException
 import java.util.stream.Collectors
 
 
-class ActivityMain : ActivityBase<ActivityMainBinding>(ActivityMainBinding::inflate) {
+class ActivityMain : AppCompatActivity() {
+    lateinit var firebaseAnalytics: FirebaseAnalytics
+    lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+        CrashHandler.INSTANCE.init(this)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        prepareView()
+        setContentView(binding.root)
+        checkForUpdates()
+    }
+
+    private fun checkForUpdates() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
+            Log.i("ActivityBase", "checkForUpdates: result=$result")
+        }
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    1011
+                )
+            }
+        }
+    }
+
     private var searchOptions = SearchOptions(false, false)
     private var undo: MenuItem? = null
     private var redo: MenuItem? = null
@@ -153,7 +174,7 @@ class ActivityMain : ActivityBase<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    override fun prepareView() {
+    fun prepareView() {
         prepareSymbolInputView()
         prepareSearchTool()
 
