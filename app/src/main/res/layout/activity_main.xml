@@ -23,69 +23,69 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/search_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+            android:id="@+id/search_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
         <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="closeSearchPanel"
-                    android:text="@string/close" />
+                    android:orientation="horizontal">
 
                 <Button
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="gotoLast"
-                    android:text="@string/layout_tv_last" />
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="closeSearchPanel"
+                        android:text="@string/close" />
 
                 <Button
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="gotoNext"
-                    android:text="@string/layout_tv_next" />
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="gotoLast"
+                        android:text="@string/layout_tv_last" />
 
                 <Button
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="replace"
-                    android:text="@string/layout_tv_replace" />
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="gotoNext"
+                        android:text="@string/layout_tv_next" />
 
                 <Button
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="replaceAll"
-                    android:text="@string/layout_tv_replaceAll" />
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="replace"
+                        android:text="@string/layout_tv_replace" />
 
                 <Button
-                    android:id="@+id/search_options"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/layout_tv_search_options" />
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="replaceAll"
+                        android:text="@string/layout_tv_replaceAll" />
+
+                <Button
+                        android:id="@+id/search_options"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/layout_tv_search_options" />
 
             </LinearLayout>
 
@@ -93,51 +93,51 @@
 
 
         <EditText
-            android:id="@+id/search_editor"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:autofillHints=""
-            android:hint="@string/text_to_search"
-            android:inputType="text" />
+                android:id="@+id/search_editor"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:autofillHints=""
+                android:hint="@string/text_to_search"
+                android:inputType="text" />
 
         <EditText
-            android:id="@+id/replace_editor"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:autofillHints=""
-            android:hint="@string/replacement"
-            android:inputType="text" />
+                android:id="@+id/replace_editor"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:autofillHints=""
+                android:hint="@string/replacement"
+                android:inputType="text" />
 
     </LinearLayout>
 
     <io.github.rosemoe.sora.widget.CodeEditor
-        android:id="@+id/editor"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="40dp"
-        android:scrollbarThumbHorizontal="@drawable/scrollbar_thumb"
-        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
-        android:scrollbarTrackHorizontal="@drawable/scrollbar_track"
-        android:scrollbarTrackVertical="@drawable/scrollbar_track"
-        app:lnPanelPosition="center"
-        app:lnPanelPositionMode="follow" />
+            android:id="@+id/editor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="40dp"
+            android:scrollbarThumbHorizontal="@drawable/scrollbar_thumb"
+            android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+            android:scrollbarTrackHorizontal="@drawable/scrollbar_track"
+            android:scrollbarTrackVertical="@drawable/scrollbar_track"
+            app:lnPanelPosition="center"
+            app:lnPanelPositionMode="follow" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="-40dp"
-        android:orientation="vertical">
-
-        <HorizontalScrollView
-            android:contentDescription="@string/symbol_keyboard"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            tools:ignore="UselessParent">
+            android:layout_marginTop="-40dp"
+            android:orientation="vertical">
+
+        <HorizontalScrollView
+                android:contentDescription="@string/symbol_keyboard"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                tools:ignore="UselessParent">
 
             <io.github.rosemoe.sora.widget.SymbolInputView
-                android:id="@+id/symbol_input"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp" />
+                    android:id="@+id/symbol_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp" />
 
         </HorizontalScrollView>
 

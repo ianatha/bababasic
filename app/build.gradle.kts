@@ -5,8 +5,10 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
+val supportedLanguages = listOf("en", "de", "el", "es", "fr", "it", "ja", "pt")
+
 android {
-    namespace = "io.atha.quickbasic"
+    namespace = "io.atha.bababasic"
     compileSdk = 34
 
     defaultConfig {
@@ -20,6 +22,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        resourceConfigurations.addAll(supportedLanguages)
     }
 
     buildTypes {
@@ -27,7 +30,8 @@ android {
             isDebuggable = true
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -57,7 +61,6 @@ android {
 
 dependencies {
     implementation(project(":libbababasic"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     implementation("com.google.android.play:app-update-ktx:2.0.1")
 
@@ -67,16 +70,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.android.gms:play-services-tagmanager:18.0.4")
 
-    implementation("org.antlr:antlr4-runtime:4.13.1")
-    implementation("com.google.guava:guava:29.0-jre")
-    implementation("it.unimi.dsi:fastutil:8.4.0")
-    implementation("org.jetbrains:annotations:19.0.0")
-    implementation("org.apache.commons:commons-csv:1.7")
-    implementation("net.sourceforge.argparse4j:argparse4j:0.8.1")
-    implementation("org.apache.commons:commons-math3:3.6.1")
-    implementation("commons-io:commons-io:2.7")
-
-    implementation("com.github.ianatha:termux:feat-non-proc-terms-SNAPSHOT")
+    implementation("com.github.ianatha.termux:termux-shared:feat-non-proc-terms-SNAPSHOT")
+    implementation("com.github.ianatha.termux:terminal-view:feat-non-proc-terms-SNAPSHOT")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation(platform("io.github.Rosemoe.sora-editor:bom:0.22.1"))
@@ -95,6 +90,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("com.google.android.gms:play-services-measurement-api:21.4.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
