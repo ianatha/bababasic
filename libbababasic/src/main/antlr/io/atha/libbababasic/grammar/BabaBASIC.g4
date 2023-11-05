@@ -352,7 +352,7 @@ deffnstmt
     ;
 
 functionbeginstmt
-    : FUNCTION fnname=varname fnrettype=varsuffix? LPAREN (compositetype (COMMA compositetype)*)? RPAREN LBRACE
+    : FUNCTION fnname=varname fnrettype=varsuffix? LPAREN (compositetype (COMMA compositetype)*)? RPAREN
     ;
 
 functionreturnstmt
@@ -360,7 +360,7 @@ functionreturnstmt
     ;
 
 functionendstmt
-    : RBRACE
+    : END FUNCTION
     ;
 
 importstmt
