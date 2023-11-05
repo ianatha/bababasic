@@ -1,15 +1,15 @@
 PRINT "DECLARE FUNCTION"
 
-FUNCTION fun1# (X, Y) {
+FUNCTION fun1# (X, Y)
   Z = X + Y
   RETURN Z
-}
+END FUNCTION
 
-FUNCTION fun2 (X, Y) {
+FUNCTION fun2 (X, Y)
   IF Y = 0 THEN RETURN 0
   Z = X / Y
   RETURN Z
-}
+END FUNCTION
 
 PRINT "CALL FUNCTION"
 PRINT fun1#(2, 3)
@@ -18,12 +18,12 @@ PRINT fun2(2, 0)
 
 PRINT "ARRAY TEST"
 
-FUNCTION initArray (DIM X(0), n, v) {
+FUNCTION initArray (DIM X(0), n, v)
   FOR I% = 0 TO n - 1
     X(I%) = v
   NEXT
   RETURN 0
-}
+END FUNCTION
 
 DIM A%(10)
 initArray(A%, LEN(A%), 10)
