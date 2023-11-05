@@ -192,8 +192,7 @@ class TermuxTerminalViewClient(
     }
 
     override fun isTerminalViewSelected(): Boolean {
-        return false //  mActivity.getTerminalToolbarViewPager() == null || mActivity.isTerminalViewSelected() || mActivity.getTerminalView()
-        // .hasFocus()
+        return mActivity.getTerminalView().hasFocus()
     }
 
     override fun copyModeChanged(copyMode: Boolean) {
