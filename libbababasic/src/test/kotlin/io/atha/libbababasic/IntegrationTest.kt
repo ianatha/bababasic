@@ -133,7 +133,6 @@ class IntegrationTest {
     }
 
     @Test
-    @Ignore("TODO: reinstate support for LIST")
     fun testList() {
         runTest("list.bas", "list.bas.output")
     }
@@ -144,7 +143,6 @@ class IntegrationTest {
     }
 
     @Test
-    @Ignore("TODO: reinstate support for DICT")
     fun testDict() {
         runTest("dict.bas", "dict.bas.output")
     }
