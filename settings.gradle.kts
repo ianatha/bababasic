@@ -5,6 +5,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -15,6 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "QBasic"
+rootProject.name = "BabaBASIC"
 include(":app")
 include(":libbababasic")
+include(":bbasic")

@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/open_file"
-        android:icon="@drawable/open"
-        android:title="@string/open_file"
-        app:showAsAction="always" />
+            android:id="@+id/open_file"
+            android:icon="@drawable/open"
+            android:title="@string/open_file"
+            app:showAsAction="always" />
 
     <item
-        android:id="@+id/save_file"
-        android:icon="@drawable/save"
-        android:title="@string/save_file"
-        app:showAsAction="always" />
-    
-    <item
-        android:id="@+id/run_script"
-        android:icon="@drawable/play"
-        android:title="@string/run"
-        app:showAsAction="always" />
+            android:id="@+id/save_file"
+            android:icon="@drawable/save"
+            android:title="@string/save_file"
+            app:showAsAction="always" />
 
     <item
-        android:id="@+id/text_undo"
-        android:icon="@drawable/undo"
-        android:title="@string/undo"
-        app:showAsAction="ifRoom" />
+            android:id="@+id/run_script"
+            android:icon="@drawable/play"
+            android:title="@string/run"
+            app:showAsAction="always" />
 
     <item
-        android:id="@+id/text_redo"
-        android:icon="@drawable/redo"
-        android:title="@string/redo"
-        app:showAsAction="ifRoom" />
+            android:id="@+id/text_undo"
+            android:icon="@drawable/undo"
+            android:title="@string/undo"
+            app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/search_panel_st"
-        android:title="@string/search_text" />
+            android:id="@+id/text_redo"
+            android:icon="@drawable/redo"
+            android:title="@string/redo"
+            app:showAsAction="ifRoom" />
+
+    <item
+            android:id="@+id/search_panel_st"
+            android:title="@string/search_text" />
 
     <item android:title="@string/settings">
         <menu>
             <item
-                android:id="@+id/text_wordwrap"
-                android:checkable="true"
-                android:title="@string/wordwrap" />
+                    android:id="@+id/text_wordwrap"
+                    android:checkable="true"
+                    android:title="@string/wordwrap" />
             <item
-                android:id="@+id/editor_line_number"
-                android:checkable="true"
-                android:checked="true"
-                android:title="@string/line_number_visibility" />
-        </menu>
-    </item>
-
-    <item android:title="@string/examples" android:id="@+id/examples_menu">
-        <menu>
+                    android:id="@+id/editor_line_number"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:title="@string/line_number_visibility" />
         </menu>
     </item>
 
     <item
-        android:id="@+id/about"
-        android:title="@string/about" />
+            android:title="@string/examples"
+            android:id="@+id/examples_menu">
+        <menu></menu>
+    </item>
+
+    <item
+            android:id="@+id/about"
+            android:title="@string/about" />
 </menu>
