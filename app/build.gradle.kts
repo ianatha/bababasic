@@ -56,6 +56,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":libbababasic"))
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     implementation("com.google.android.play:app-update-ktx:2.0.1")

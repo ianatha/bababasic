@@ -249,7 +249,7 @@ class PuffinBasicIRListener(
     private val `in`: CharStream,
     private val ir: PuffinBasicIR,
     private val graphics: Boolean
-) : PuffinBasicBaseListener() {
+) : org.puffinbasic.antlr4.PuffinBasicBaseListener() {
     private val linenumGenerator: AtomicInteger = AtomicInteger()
     private val nodeToInstruction: ParseTreeProperty<PuffinBasicIR.Instruction> =
         ParseTreeProperty()
@@ -370,7 +370,7 @@ class PuffinBasicIRListener(
     //
     // Expr
     //
-    override fun exitVariable(ctx: PuffinBasicParser.VariableContext) {
+    override fun exitVariable(ctx: org.puffinbasic.antlr4.PuffinBasicParser.VariableContext) {
         val instruction =
             if (ctx.leafvariable() != null) exitLeafVariable(ctx.leafvariable()) else exitStructVariable(
                 ctx.structvariable()
@@ -1548,7 +1548,7 @@ class PuffinBasicIRListener(
 
     private fun getArray1dVariableInstruction(
         ctx: ParserRuleContext,
-        varCtx: PuffinBasicParser.VariableContext,
+        varCtx: org.puffinbasic.antlr4.PuffinBasicParser.VariableContext,
         numeric: Boolean
     ): PuffinBasicIR.Instruction {
         val varInstr = lookupInstruction(varCtx)
@@ -1563,7 +1563,7 @@ class PuffinBasicIRListener(
 
     private fun getArray2dVariableInstruction(
         ctx: ParserRuleContext,
-        varCtx: PuffinBasicParser.VariableContext
+        varCtx: org.puffinbasic.antlr4.PuffinBasicParser.VariableContext
     ): PuffinBasicIR.Instruction {
         val varInstr = lookupInstruction(varCtx)
         assertVariable(ir.symbolTable[varInstr.result]) { getCtxString(ctx) }
@@ -1574,7 +1574,7 @@ class PuffinBasicIRListener(
 
     private fun getArrayNdVariableInstruction(
         ctx: ParserRuleContext,
-        varCtx: PuffinBasicParser.VariableContext
+        varCtx: org.puffinbasic.antlr4.PuffinBasicParser.VariableContext
     ): PuffinBasicIR.Instruction {
         val varInstr = lookupInstruction(varCtx)
         assertVariable(ir.symbolTable[varInstr.result]) { getCtxString(ctx) }

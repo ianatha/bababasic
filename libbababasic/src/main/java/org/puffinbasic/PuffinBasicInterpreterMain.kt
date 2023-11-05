@@ -1,7 +1,5 @@
 package org.puffinbasic
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.common.base.Strings
 import net.sourceforge.argparse4j.ArgumentParsers
 import net.sourceforge.argparse4j.impl.Arguments
@@ -42,24 +40,29 @@ import kotlin.math.max
 object PuffinBasicInterpreterMain {
     private const val UNKNOWN_SOURCE_FILE = "<UNKNOWN>"
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @JvmStatic
     fun main(args: Array<String>) {
-        val userOptions = parseCommandLineArgs(*args)
+        val userOptions = org.puffinbasic.PuffinBasicInterpreterMain.parseCommandLineArgs(*args)
         val mainSource = userOptions.filename
         val t0 = Instant.now()
-        val sourceCode = loadSource(mainSource)
-        logTimeTaken("LOAD", t0, userOptions.timing)
+        val sourceCode = org.puffinbasic.PuffinBasicInterpreterMain.loadSource(mainSource)
+        org.puffinbasic.PuffinBasicInterpreterMain.logTimeTaken("LOAD", t0, userOptions.timing)
         val stdinout = SystemInputOutputFile(System.`in`, System.out)
         try {
-            interpretAndRun(userOptions, mainSource, sourceCode, stdinout, SystemEnv())
+            org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun(
+                userOptions,
+                mainSource,
+                sourceCode,
+                stdinout,
+                SystemEnv()
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             System.exit(1)
         }
     }
 
-    private fun parseCommandLineArgs(vararg args: String): UserOptions {
+    private fun parseCommandLineArgs(vararg args: String): org.puffinbasic.PuffinBasicInterpreterMain.UserOptions {
         val parser = ArgumentParsers
             .newFor("PuffinBasic")
             .build()
@@ -87,7 +90,7 @@ object PuffinBasicInterpreterMain {
             System.exit(1)
         }
         checkNotNull(res)
-        return UserOptions(
+        return org.puffinbasic.PuffinBasicInterpreterMain.UserOptions(
             res.getBoolean("logduplicate"),
             res.getBoolean("list"),
             res.getBoolean("ir"),
@@ -97,7 +100,6 @@ object PuffinBasicInterpreterMain {
         )
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private fun loadSource(filename: String?): String {
         val sb = StringBuilder()
         try {
@@ -117,15 +119,20 @@ object PuffinBasicInterpreterMain {
         return sb.toString()
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Throws(PuffinBasicRuntimeError::class)
     fun interpretAndRun(
-        userOptions: UserOptions,
+        userOptions: org.puffinbasic.PuffinBasicInterpreterMain.UserOptions,
         sourceCode: String,
         stdinout: PuffinUserInterfaceFile?,
         env: Environment?
     ) {
-        interpretAndRun(userOptions, UNKNOWN_SOURCE_FILE, sourceCode, stdinout, env)
+        org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun(
+            userOptions,
+            org.puffinbasic.PuffinBasicInterpreterMain.UNKNOWN_SOURCE_FILE,
+            sourceCode,
+            stdinout,
+            env
+        )
     }
 
     @JvmStatic()
@@ -136,12 +143,12 @@ object PuffinBasicInterpreterMain {
         throwOnDuplicate: ThrowOnDuplicate = ThrowOnDuplicate.THROW,
     ): PuffinBasicSourceFile {
         val importPath = PuffinBasicImportPath(sourceFilename)
-        val sourceFile = syntaxCheckAndSortByLineNumber(
+        val sourceFile = org.puffinbasic.PuffinBasicInterpreterMain.syntaxCheckAndSortByLineNumber(
             importPath,
             sourceFilename,
             sourceCode,
             throwOnDuplicate,
-            SourceFileMode.MAIN
+            org.puffinbasic.PuffinBasicInterpreterMain.SourceFileMode.MAIN
         )
         if (sourceFile.sourceCode.isEmpty()) {
             throw PuffinBasicSyntaxError(
@@ -151,38 +158,41 @@ object PuffinBasicInterpreterMain {
         return sourceFile
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Throws(PuffinError::class)
     fun interpretAndRun(
-        userOptions: UserOptions,
+        userOptions: org.puffinbasic.PuffinBasicInterpreterMain.UserOptions,
         sourceFilename: String?,
         sourceCode: String,
         stdinout: PuffinUserInterfaceFile?,
         env: Environment?
     ) {
         val t1 = Instant.now()
-        val sourceFile = checkSyntax(
+        val sourceFile = org.puffinbasic.PuffinBasicInterpreterMain.checkSyntax(
             sourceFilename,
             sourceCode,
             if (userOptions.logOnDuplicate) ThrowOnDuplicate.LOG else ThrowOnDuplicate.THROW
         )
-        logTimeTaken("SORT", t1, userOptions.timing)
-        log("LIST", userOptions.listSourceCode)
-        log(sourceFile.sourceCode, userOptions.listSourceCode)
+        org.puffinbasic.PuffinBasicInterpreterMain.logTimeTaken("SORT", t1, userOptions.timing)
+        org.puffinbasic.PuffinBasicInterpreterMain.log("LIST", userOptions.listSourceCode)
+        org.puffinbasic.PuffinBasicInterpreterMain.log(
+            sourceFile.sourceCode,
+            userOptions.listSourceCode
+        )
         val t2 = Instant.now()
-        val ir = generateIR(sourceFile, userOptions.graphics)
-        logTimeTaken("IR", t2, userOptions.timing)
-        log("IR", userOptions.printIR)
+        val ir =
+            org.puffinbasic.PuffinBasicInterpreterMain.generateIR(sourceFile, userOptions.graphics)
+        org.puffinbasic.PuffinBasicInterpreterMain.logTimeTaken("IR", t2, userOptions.timing)
+        org.puffinbasic.PuffinBasicInterpreterMain.log("IR", userOptions.printIR)
         if (userOptions.printIR) {
             ir.getInstructions().withIndex().forEach { (i, instruction) ->
-                log("$i: $instruction", true)
+                org.puffinbasic.PuffinBasicInterpreterMain.log("$i: $instruction", true)
             }
         }
-        log("RUN", userOptions.timing)
+        org.puffinbasic.PuffinBasicInterpreterMain.log("RUN", userOptions.timing)
         val t3 = Instant.now()
         val runtime = PuffinBasicRuntime(ir, stdinout!!, env!!)
         runtime.run()
-        logTimeTaken("RUN", t3, userOptions.timing)
+        org.puffinbasic.PuffinBasicInterpreterMain.logTimeTaken("RUN", t3, userOptions.timing)
     }
 
     private fun log(s: String, log: Boolean) {
@@ -191,11 +201,10 @@ object PuffinBasicInterpreterMain {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private fun logTimeTaken(tag: String, t1: Instant, log: Boolean) {
         val duration = Duration.between(t1, Instant.now())
         val timeSec = duration.seconds + duration.nano / 1000000000.0
-        log("[$tag] time taken = $timeSec s", log)
+        org.puffinbasic.PuffinBasicInterpreterMain.log("[$tag] time taken = $timeSec s", log)
     }
 
     private fun run(ir: PuffinBasicIR, out: PuffinUserInterfaceFile, env: Environment) {
@@ -211,9 +220,9 @@ object PuffinBasicInterpreterMain {
         val symbolTable = PuffinBasicSymbolTable()
         val ir = PuffinBasicIR(symbolTable)
         for (importFile in sourceFile.importFiles) {
-            generateIR(importFile, ir, graphics)
+            org.puffinbasic.PuffinBasicInterpreterMain.generateIR(importFile, ir, graphics)
         }
-        generateIR(sourceFile, ir, graphics)
+        org.puffinbasic.PuffinBasicInterpreterMain.generateIR(sourceFile, ir, graphics)
         return ir
     }
 
@@ -223,9 +232,9 @@ object PuffinBasicInterpreterMain {
         graphics: Boolean
     ) {
         val `in` = sourceFile.sourceCodeStream
-        val lexer = PuffinBasicLexer(`in`)
+        val lexer = org.puffinbasic.antlr4.PuffinBasicLexer(`in`)
         val tokens = CommonTokenStream(lexer)
-        val parser = PuffinBasicParser(tokens)
+        val parser = org.puffinbasic.antlr4.PuffinBasicParser(tokens)
         val tree = parser.prog()
         val walker = ParseTreeWalker()
         val irListener = PuffinBasicIRListener(sourceFile, `in`, ir, graphics)
@@ -233,28 +242,28 @@ object PuffinBasicInterpreterMain {
         irListener.semanticCheckAfterParsing()
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private fun syntaxCheckAndSortByLineNumber(
         importPath: PuffinBasicImportPath,
         sourceFile: String?,
         input: String,
         throwOnDuplicate: ThrowOnDuplicate,
-        sourceFileMode: SourceFileMode
+        sourceFileMode: org.puffinbasic.PuffinBasicInterpreterMain.SourceFileMode
     ): PuffinBasicSourceFile {
         val `in` = CharStreams.fromString(input)
-        val syntaxErrorListener = ThrowingErrorListener(input)
-        val lexer = PuffinBasicLexer(`in`)
+        val syntaxErrorListener =
+            org.puffinbasic.PuffinBasicInterpreterMain.ThrowingErrorListener(input)
+        val lexer = org.puffinbasic.antlr4.PuffinBasicLexer(`in`)
         lexer.removeErrorListeners()
         lexer.addErrorListener(syntaxErrorListener)
         val tokens = CommonTokenStream(lexer)
-        val parser = PuffinBasicParser(tokens)
+        val parser = org.puffinbasic.antlr4.PuffinBasicParser(tokens)
         parser.removeErrorListeners()
         parser.addErrorListener(syntaxErrorListener)
         val tree = parser.prog()
         val walker = ParseTreeWalker()
         val linenumListener = LinenumberListener(`in`, throwOnDuplicate)
         walker.walk(linenumListener, tree)
-        if (sourceFileMode == SourceFileMode.LIB) {
+        if (sourceFileMode == org.puffinbasic.PuffinBasicInterpreterMain.SourceFileMode.LIB) {
             if (linenumListener.hasLineNumbers()) {
                 throw PuffinBasicRuntimeError(
                     PuffinBasicRuntimeError.ErrorCode.IMPORT_ERROR,
@@ -270,11 +279,13 @@ object PuffinBasicInterpreterMain {
         }
         val importSourceFiles = LinkedHashSet<PuffinBasicSourceFile>()
         for (importFilename in linenumListener.getImportFiles()) {
-            val importedInput = loadSource(importPath.find(importFilename))
-            val importSourceFile = syntaxCheckAndSortByLineNumber(
-                importPath, importFilename, importedInput,
-                throwOnDuplicate, SourceFileMode.LIB
-            )
+            val importedInput =
+                org.puffinbasic.PuffinBasicInterpreterMain.loadSource(importPath.find(importFilename))
+            val importSourceFile =
+                org.puffinbasic.PuffinBasicInterpreterMain.syntaxCheckAndSortByLineNumber(
+                    importPath, importFilename, importedInput,
+                    throwOnDuplicate, org.puffinbasic.PuffinBasicInterpreterMain.SourceFileMode.LIB
+                )
             importSourceFiles.add(importSourceFile)
             importSourceFiles.addAll(importSourceFile.importFiles)
         }
@@ -334,8 +345,8 @@ object PuffinBasicInterpreterMain {
         val filename: String?
     ) {
         companion object {
-            fun ofTest(): UserOptions {
-                return UserOptions(
+            fun ofTest(): org.puffinbasic.PuffinBasicInterpreterMain.UserOptions {
+                return org.puffinbasic.PuffinBasicInterpreterMain.UserOptions(
                     false, false, false, false, false, null
                 )
             }

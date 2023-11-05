@@ -17,4 +17,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "QBasic"
 include(":app")
- 
+include(":libbababasic")

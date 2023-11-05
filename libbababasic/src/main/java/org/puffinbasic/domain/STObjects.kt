@@ -1,7 +1,5 @@
 package org.puffinbasic.domain
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.common.collect.ImmutableList
 import org.puffinbasic.domain.Variable.VariableName
 import org.puffinbasic.error.PuffinBasicInternalError
@@ -1588,7 +1586,6 @@ class STObjects {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private class STStringScalarDateValue : STValue {
         private var date: LocalDate? = null
         override fun printFormat(): String? {

@@ -1,6 +1,5 @@
 package org.puffinbasic
 
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Before
@@ -165,7 +164,7 @@ class IntegrationTest {
     private fun runTestString(source: String, output: String) {
         val bos = ByteArrayOutputStream()
         val out = PrintStream(bos)
-        PuffinBasicInterpreterMain.interpretAndRun(
+        org.puffinbasic.PuffinBasicInterpreterMain.interpretAndRun(
             UserOptions.ofTest(),
             source,
             SystemInputOutputFile(System.`in`, out),
