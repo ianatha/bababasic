@@ -79,8 +79,6 @@ import io.github.rosemoe.sora.widget.component.EditorAutoCompletion
 import io.github.rosemoe.sora.widget.component.Magnifier
 import io.github.rosemoe.sora.widget.getComponent
 import io.github.rosemoe.sora.widget.subscribeEvent
-import kotlinx.coroutines.coroutineScope
-import org.eclipse.tm4e.core.registry.IGrammarSource
 import org.eclipse.tm4e.core.registry.IThemeSource
 import org.puffinbasic.PuffinBasicInterpreterMain.checkSyntax
 import org.puffinbasic.error.PuffinBasicSyntaxError

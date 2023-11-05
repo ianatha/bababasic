@@ -99,7 +99,7 @@ class BabaTerminalSession(
     override fun initializeEmulator(columns: Int, rows: Int) {
         mEmulator = TerminalEmulator(this, columns, rows, mTranscriptRows, mClient)
         val fileName = "editor.bas"
-        val userOptions = PuffinBasicInterpreterMain.UserOptions(
+        val userOptions = org.puffinbasic.PuffinBasicInterpreterMain.UserOptions(
             logOnDuplicate = false,
             listSourceCode = false,
             printIR = false,

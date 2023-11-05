@@ -201,7 +201,8 @@ class PuffinBasicRuntime(
     private var files: PuffinBasicFiles? = null
     private var readData: ReadData? = null
     private var graphicsState: GraphicsRuntime.GraphicsState? = null
-    private var soundState: SoundState? = null
+    private var soundState: org.puffinbasic.runtime.SoundState? = null
+    private lateinit var graphicsRuntime: IGraphicsRuntime
     private fun computeLabelToInstructionNumber(instructions: List<PuffinBasicIR.Instruction>): MutableMap<Int, Int> {
         val labelToInstrNum: MutableMap<Int, Int> = mutableMapOf()
         for (i in instructions.indices) {
@@ -254,7 +255,8 @@ class PuffinBasicRuntime(
         files = PuffinBasicFiles(stdio)
         readData = processDataInstructions(instructions)
         graphicsState = GraphicsRuntime.GraphicsState(stdio)
-        soundState = SoundState()
+        graphicsRuntime = GraphicsRuntime()
+        soundState = org.puffinbasic.runtime.SoundState()
         try {
             val numInstructions = instructions.size
             var end = false
@@ -273,7 +275,7 @@ class PuffinBasicRuntime(
                 }
             }
         } finally {
-            GraphicsRuntime.end(graphicsState)
+            graphicsRuntime.end(graphicsState)
             soundState!!.close()
         }
     }
@@ -571,7 +573,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 1) {
                     throw PuffinBasicInternalError("Expected 1 param, but found: $params")
                 }
-                GraphicsRuntime.hsb2rgb(ir.symbolTable, params!![0], instruction)
+                graphicsRuntime.hsb2rgb(ir.symbolTable, params!![0], instruction)
                 params!!.clear()
             }
 
@@ -615,16 +617,16 @@ class PuffinBasicRuntime(
                 if (params!!.size != 3) {
                     throw PuffinBasicInternalError("Expected 1 param, but found: $params")
                 }
-                GraphicsRuntime.screen(graphicsState, ir.symbolTable, params, instruction)
+                graphicsRuntime.screen(graphicsState, ir.symbolTable, params, instruction)
                 params!!.clear()
             }
 
-            OpCode.REPAINT -> GraphicsRuntime.repaint(graphicsState)
+            OpCode.REPAINT -> graphicsRuntime.repaint(graphicsState)
             OpCode.CIRCLE -> {
                 if (params!!.size != 3) {
                     throw PuffinBasicInternalError("Expected 3 params, but found: $params")
                 }
-                GraphicsRuntime.circle(graphicsState, ir.symbolTable, params, instruction)
+                graphicsRuntime.circle(graphicsState, ir.symbolTable, params, instruction)
                 params!!.clear()
             }
 
@@ -632,7 +634,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 2) {
                     throw PuffinBasicInternalError("Expected 2 params, but found: $params")
                 }
-                GraphicsRuntime.line(graphicsState, ir.symbolTable, params, instruction)
+                graphicsRuntime.line(graphicsState, ir.symbolTable, params, instruction)
                 params!!.clear()
             }
 
@@ -640,7 +642,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 1) {
                     throw PuffinBasicInternalError("Expected 1 params, but found: $params")
                 }
-                GraphicsRuntime.color(graphicsState, ir.symbolTable, params!![0], instruction)
+                graphicsRuntime.color(graphicsState, ir.symbolTable, params!![0], instruction)
                 params!!.clear()
             }
 
@@ -648,7 +650,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 2) {
                     throw PuffinBasicInternalError("Expected 2 params, but found: $params")
                 }
-                GraphicsRuntime.paint(graphicsState, ir.symbolTable, params, instruction)
+                graphicsRuntime.paint(graphicsState, ir.symbolTable, params, instruction)
                 params!!.clear()
             }
 
@@ -656,7 +658,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 2) {
                     throw PuffinBasicInternalError("Expected 2 params, but found: $params")
                 }
-                GraphicsRuntime.pset(graphicsState, ir.symbolTable, params, instruction)
+                graphicsRuntime.pset(graphicsState, ir.symbolTable, params, instruction)
                 params!!.clear()
             }
 
@@ -664,7 +666,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 2) {
                     throw PuffinBasicInternalError("Expected 2 params, but found: $params")
                 }
-                GraphicsRuntime.get(graphicsState, ir.symbolTable, params, instruction)
+                graphicsRuntime.get(graphicsState, ir.symbolTable, params, instruction)
                 params!!.clear()
             }
 
@@ -672,7 +674,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 2) {
                     throw PuffinBasicInternalError("Expected 2 params, but found: $params")
                 }
-                GraphicsRuntime.put(
+                graphicsRuntime.put(
                     graphicsState,
                     ir.symbolTable,
                     params!![0],
@@ -686,7 +688,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 1) {
                     throw PuffinBasicInternalError("Expected 1 param, but found: $params")
                 }
-                GraphicsRuntime.bufferCopyHor(
+                graphicsRuntime.bufferCopyHor(
                     graphicsState,
                     ir.symbolTable,
                     params!![0],
@@ -699,7 +701,7 @@ class PuffinBasicRuntime(
                 if (params!!.size != 1) {
                     throw PuffinBasicInternalError("Expected 1 param, but found: $params")
                 }
-                GraphicsRuntime.font(graphicsState, ir.symbolTable, params!![0], instruction)
+                graphicsRuntime.font(graphicsState, ir.symbolTable, params!![0], instruction)
                 params!!.clear()
             }
 
@@ -707,71 +709,71 @@ class PuffinBasicRuntime(
                 if (params!!.size != 1) {
                     throw PuffinBasicInternalError("Expected 1 param, but found: $params")
                 }
-                GraphicsRuntime.drawstr(graphicsState, ir.symbolTable, params!![0], instruction)
+                graphicsRuntime.drawstr(graphicsState, ir.symbolTable, params!![0], instruction)
                 params!!.clear()
             }
 
-            OpCode.LOADIMG -> GraphicsRuntime.loadimg(ir.symbolTable, instruction)
-            OpCode.SAVEIMG -> GraphicsRuntime.saveimg(ir.symbolTable, instruction)
-            OpCode.DRAW -> GraphicsRuntime.draw(graphicsState, ir.symbolTable, instruction)
-            OpCode.INKEYDLR -> GraphicsRuntime.inkeydlr(graphicsState, ir.symbolTable, instruction)
-            OpCode.CLS -> GraphicsRuntime.cls(graphicsState)
-            OpCode.BEEP -> GraphicsRuntime.beep(graphicsState)
+            OpCode.LOADIMG -> graphicsRuntime.loadimg(ir.symbolTable, instruction)
+            OpCode.SAVEIMG -> graphicsRuntime.saveimg(ir.symbolTable, instruction)
+            OpCode.DRAW -> graphicsRuntime.draw(graphicsState, ir.symbolTable, instruction)
+            OpCode.INKEYDLR -> graphicsRuntime.inkeydlr(graphicsState, ir.symbolTable, instruction)
+            OpCode.CLS -> graphicsRuntime.cls(graphicsState)
+            OpCode.BEEP -> graphicsRuntime.beep(graphicsState)
             OpCode.LOCATE -> {
                 var row = ir.symbolTable[instruction.op1]!!.value!!.int32
                 var col = if (instruction.op2 != PuffinBasicSymbolTable.NULL_ID) {
                     ir.symbolTable[instruction.op2]!!.value!!.int32
                 } else null
-                GraphicsRuntime.locate(graphicsState, row, col)
+                graphicsRuntime.locate(graphicsState, row, col)
             }
 
-            OpCode.LOADWAV -> GraphicsRuntime.loadwav(soundState, ir.symbolTable, instruction)
-            OpCode.PLAYWAV -> GraphicsRuntime.playwav(soundState, ir.symbolTable, instruction)
-            OpCode.STOPWAV -> GraphicsRuntime.stopwav(soundState, ir.symbolTable, instruction)
-            OpCode.LOOPWAV -> GraphicsRuntime.loopwav(soundState, ir.symbolTable, instruction)
-            OpCode.MOUSEMOVEDX -> GraphicsRuntime.mouseMovedX(
+            OpCode.LOADWAV -> graphicsRuntime.loadwav(soundState, ir.symbolTable, instruction)
+            OpCode.PLAYWAV -> graphicsRuntime.playwav(soundState, ir.symbolTable, instruction)
+            OpCode.STOPWAV -> graphicsRuntime.stopwav(soundState, ir.symbolTable, instruction)
+            OpCode.LOOPWAV -> graphicsRuntime.loopwav(soundState, ir.symbolTable, instruction)
+            OpCode.MOUSEMOVEDX -> graphicsRuntime.mouseMovedX(
                 graphicsState,
                 ir.symbolTable,
                 instruction
             )
 
-            OpCode.MOUSEMOVEDY -> GraphicsRuntime.mouseMovedY(
+            OpCode.MOUSEMOVEDY -> graphicsRuntime.mouseMovedY(
                 graphicsState,
                 ir.symbolTable,
                 instruction
             )
 
-            OpCode.MOUSEDRAGGEDX -> GraphicsRuntime.mouseDraggedX(
+            OpCode.MOUSEDRAGGEDX -> graphicsRuntime.mouseDraggedX(
                 graphicsState,
                 ir.symbolTable,
                 instruction
             )
 
-            OpCode.MOUSEDRAGGEDY -> GraphicsRuntime.mouseDraggedY(
+            OpCode.MOUSEDRAGGEDY -> graphicsRuntime.mouseDraggedY(
                 graphicsState,
                 ir.symbolTable,
                 instruction
             )
 
-            OpCode.MOUSEBUTTONCLICKED -> GraphicsRuntime.mouseButtonClicked(
+            OpCode.MOUSEBUTTONCLICKED -> graphicsRuntime.mouseButtonClicked(
                 graphicsState,
                 ir.symbolTable,
                 instruction
             )
 
-            OpCode.MOUSEBUTTONPRESSED -> GraphicsRuntime.mouseButtonPressed(
+            OpCode.MOUSEBUTTONPRESSED -> graphicsRuntime.mouseButtonPressed(
                 graphicsState,
                 ir.symbolTable,
                 instruction
             )
 
-            OpCode.MOUSEBUTTONRELEASED -> GraphicsRuntime.mouseButtonReleased(
+            OpCode.MOUSEBUTTONRELEASED -> graphicsRuntime.mouseButtonReleased(
                 graphicsState,
                 ir.symbolTable,
                 instruction
             )
 
-            OpCode.ISKEYPRESSED -> GraphicsRuntime.isKeyPressed(
+            OpCode.ISKEYPRESSED -> graphicsRuntime.isKeyPressed(
                 graphicsState,
                 ir.symbolTable,
                 instruction

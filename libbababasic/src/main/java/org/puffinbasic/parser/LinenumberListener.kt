@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class LinenumberListener(
     input: CharStream,
     throwOnDuplicate: ThrowOnDuplicate
-) : PuffinBasicBaseListener() {
+) : org.puffinbasic.antlr4.PuffinBasicBaseListener() {
     private val linenumGenerator: AtomicInteger = AtomicInteger()
     private val input: CharStream
     private val throwOnDuplicate: ThrowOnDuplicate

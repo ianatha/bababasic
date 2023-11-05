@@ -2,41 +2,50 @@ package org.puffinbasic.runtime;
 
 import static java.lang.Thread.sleep;
 
-import android.media.AudioManager;
-import android.media.ToneGenerator;
+//import android.media.AudioManager;
+//import android.media.ToneGenerator;
 
+import org.apache.commons.io.FilenameUtils;
 import org.puffinbasic.domain.PuffinBasicSymbolTable;
+import org.puffinbasic.domain.STObjects;
+import org.puffinbasic.error.PuffinBasicRuntimeError;
 import org.puffinbasic.file.PuffinUserInterfaceFile;
 import org.puffinbasic.parser.PuffinBasicIR.Instruction;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
 //import static org.puffinbasic.runtime.GraphicsUtil.PUT_XOR;
 
-class GraphicsRuntime {
+class GraphicsRuntime implements IGraphicsRuntime {
 
     private static final Pattern DRAW_ARG1 = Pattern.compile("([UDLREFGHA])([BN]+)?([0-9]+)");
     private static final Pattern DRAW_ARG2 = Pattern.compile("M([+\\-]?[0-9]+),([+\\-]?[0-9]+)");
 
-    public static void saveimg(
+    @Override
+    public void saveimg(
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
-//        var path = symbolTable.get(instruction.op1).getValue().getString();
-//        var entry = symbolTable.getVariable(instruction.op2);
-//        var variableValue = entry.getValue();
-//        if (variableValue.getNumArrayDimensions() != 2 || entry.getType().getAtomTypeId() != INT32) {
-//            throw new PuffinBasicRuntimeError(
-//                    GRAPHICS_ERROR,
-//                    "Bad Array Variable, expected Int32 2D-Array Variable: " + entry
-//            );
-//        }
-//
-//        var dims = variableValue.getArrayDimensions();
-//        final BufferedImage image = new BufferedImage(dims.getInt(0), dims.getInt(1), BufferedImage.TYPE_3BYTE_BGR);
-//
-//        image.setRGB(0, 0, image.getWidth(), image.getHeight(),
-//                variableValue.getInt32Array1D(), 0, image.getWidth());
-//
+        var path = symbolTable.get(instruction.op1).getValue().getString();
+        var entry = symbolTable.getVariable(instruction.op2);
+        var variableValue = entry.getValue();
+        if (variableValue.getNumArrayDimensions() != 2 || entry.getType().getAtomTypeId() != STObjects.PuffinBasicAtomTypeId.INT32) {
+            throw new PuffinBasicRuntimeError(
+                    PuffinBasicRuntimeError.ErrorCode.GRAPHICS_ERROR,
+                    "Bad Array Variable, expected Int32 2D-Array Variable: " + entry
+            );
+        }
+
+        var dims = variableValue.getArrayDimensions();
+        final BufferedImage image = new BufferedImage(dims.get(0), dims.get(1), BufferedImage.TYPE_3BYTE_BGR);
+
+        image.setRGB(0, 0, image.getWidth(), image.getHeight(),
+                variableValue.getInt32Array1D(), 0, image.getWidth());
+
 //        var ext = FilenameUtils.getExtension(path);
 //        try {
 //            ImageIO.write(image, ext, new File(path));
@@ -48,7 +57,8 @@ class GraphicsRuntime {
 //        }
     }
 
-    public static void loadimg(
+    @Override
+    public void loadimg(
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
 //        var path = symbolTable.get(instruction.op1).getValue().getString();
@@ -85,7 +95,8 @@ class GraphicsRuntime {
 //                variableValue.getInt32Array1D(), 0, image.getWidth());
     }
 
-    public static void screen(
+    @Override
+    public void screen(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
@@ -117,7 +128,8 @@ class GraphicsRuntime {
 //        EventQueue.invokeLater(() -> graphicsState.getFrame().setVisible(true));
     }
 
-    public static void hsb2rgb(
+    @Override
+    public void hsb2rgb(
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
             Instruction instruction) {
@@ -128,11 +140,13 @@ class GraphicsRuntime {
 //        result.setInt32(Color.HSBtoRGB(h, s, b));
     }
 
-    public static void repaint(GraphicsState graphicsState) {
+    @Override
+    public void repaint(GraphicsState graphicsState) {
 //        graphicsState.getFrame().getDrawingCanvas().renderAndRepaint();
     }
 
-    public static void end(GraphicsState graphicsState) {
+    @Override
+    public void end(GraphicsState graphicsState) {
 //        SwingUtilities.invokeLater(
 //                () -> {
 //                    if (graphicsState.isInitialized()) {
@@ -143,7 +157,8 @@ class GraphicsRuntime {
 //                });
     }
 
-    public static void circle(
+    @Override
+    public void circle(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
@@ -181,7 +196,8 @@ class GraphicsRuntime {
 //        }
     }
 
-    public static void font(
+    @Override
+    public void font(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
@@ -207,7 +223,8 @@ class GraphicsRuntime {
 //        graphicsState.getGraphics2D().setFont(new Font(name, styleVal, size));
     }
 
-    public static void drawstr(
+    @Override
+    public void drawstr(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
@@ -219,7 +236,8 @@ class GraphicsRuntime {
 //        graphicsState.getGraphics2D().drawString(text, x, y);
     }
 
-    public static void draw(
+    @Override
+    public void draw(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -319,7 +337,8 @@ class GraphicsRuntime {
 //        graphicsState.getGraphics2D().draw(path);
     }
 
-    public static void line(
+    @Override
+    public void line(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
@@ -353,7 +372,8 @@ class GraphicsRuntime {
 //        }
     }
 
-    public static void color(
+    @Override
+    public void color(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
@@ -369,11 +389,8 @@ class GraphicsRuntime {
 //        graphicsState.getGraphics2D().setColor(new Color(r, g, b));
     }
 
-    private static int applyColorBounds(int c) {
-        return Math.min(255, Math.max(0, c));
-    }
-
-    public static void paint(
+    @Override
+    public void paint(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
@@ -401,7 +418,8 @@ class GraphicsRuntime {
 //        graphicsState.getFrame().getDrawingCanvas().floodFill(x, y, r, g, b);
     }
 
-    public static void pset(
+    @Override
+    public void pset(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
@@ -429,7 +447,8 @@ class GraphicsRuntime {
 //        graphicsState.getFrame().getDrawingCanvas().point(x, y, r, g, b);
     }
 
-    public static void bufferCopyHor(
+    @Override
+    public void bufferCopyHor(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
@@ -452,7 +471,8 @@ class GraphicsRuntime {
 //        graphicsState.getFrame().getDrawingCanvas().bufferCopyHor(srcx, dstx, w);
     }
 
-    public static void get(
+    @Override
+    public void get(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             List<Instruction> instr0,
@@ -496,7 +516,8 @@ class GraphicsRuntime {
 //        );
     }
 
-    public static void put(
+    @Override
+    public void put(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instr0,
@@ -560,7 +581,8 @@ class GraphicsRuntime {
 //        }
     }
 
-    public static void inkeydlr(
+    @Override
+    public void inkeydlr(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -569,7 +591,8 @@ class GraphicsRuntime {
         symbolTable.get(instruction.result).getValue().setString(key);
     }
 
-    public static void loadwav(
+    @Override
+    public void loadwav(
             SoundState soundState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -578,7 +601,8 @@ class GraphicsRuntime {
 //        variable.setInt32(soundState.load(file));
     }
 
-    public static void playwav(
+    @Override
+    public void playwav(
             SoundState soundState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -586,7 +610,8 @@ class GraphicsRuntime {
 //        soundState.play(id);
     }
 
-    public static void stopwav(
+    @Override
+    public void stopwav(
             SoundState soundState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -594,7 +619,8 @@ class GraphicsRuntime {
 //        soundState.stop(id);
     }
 
-    public static void loopwav(
+    @Override
+    public void loopwav(
             SoundState soundState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -602,7 +628,8 @@ class GraphicsRuntime {
 //        soundState.loop(id);
     }
 
-    public static void mouseMovedX(
+    @Override
+    public void mouseMovedX(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -610,7 +637,8 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getMovedX());
     }
 
-    public static void mouseMovedY(
+    @Override
+    public void mouseMovedY(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -618,7 +646,8 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getMovedY());
     }
 
-    public static void mouseDraggedX(
+    @Override
+    public void mouseDraggedX(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -626,7 +655,8 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getDraggedX());
     }
 
-    public static void mouseDraggedY(
+    @Override
+    public void mouseDraggedY(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -634,7 +664,8 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getDraggedY());
     }
 
-    public static void mouseButtonClicked(
+    @Override
+    public void mouseButtonClicked(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -642,7 +673,8 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getButtonClicked());
     }
 
-    public static void mouseButtonPressed(
+    @Override
+    public void mouseButtonPressed(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -650,7 +682,8 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getButtonPressed());
     }
 
-    public static void mouseButtonReleased(
+    @Override
+    public void mouseButtonReleased(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -658,7 +691,8 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().getMouseState().getButtonReleased());
     }
 
-    public static void isKeyPressed(
+    @Override
+    public void isKeyPressed(
             GraphicsState graphicsState,
             PuffinBasicSymbolTable symbolTable,
             Instruction instruction) {
@@ -667,23 +701,26 @@ class GraphicsRuntime {
 //                graphicsState.getFrame().getDrawingCanvas().isKeyPressed(key) ? -1 : 0);
     }
 
-    public static void cls(GraphicsState graphicsState) {
+    @Override
+    public void cls(GraphicsState graphicsState) {
         graphicsState.stdio.print(VT100.CLEAR_SCREEN);
 //            graphicsState.getFrame().getDrawingCanvas().clear();
     }
 
-    public static void locate(GraphicsState graphicsState, Integer row, Integer col) {
+    @Override
+    public void locate(GraphicsState graphicsState, Integer row, Integer col) {
         graphicsState.stdio.print(VT100.MOVE_TO(row, col));
     }
 
-    public static void beep(GraphicsState graphicsState) {
-        try {
-            ToneGenerator toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
-            toneGenerator.startTone(ToneGenerator.TONE_CDMA_PIP, 100);
-            sleep(100);
-        } catch (Exception e) {
+    @Override
+    public void beep(GraphicsState graphicsState) {
+//        try {
+//            ToneGenerator toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+//            toneGenerator.startTone(ToneGenerator.TONE_CDMA_PIP, 100);
+//            sleep(100);
+//        } catch (Exception e) {
             // ignore
-        }
+//        }
 //            AWT: Toolkit.getDefaultToolkit().beep();
     }
 
