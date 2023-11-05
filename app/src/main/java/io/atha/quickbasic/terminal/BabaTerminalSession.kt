@@ -190,7 +190,6 @@ class BabaTerminalSession(
 
     /** Write data to the shell process.  */
     override fun write(data: ByteArray, offset: Int, count: Int) {
-        Log.i("qb", "mTerminalToProcessIOQueue.write")
         mTerminalToProcessIOQueue.write(data, offset, count)
     }
 
