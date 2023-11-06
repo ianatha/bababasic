@@ -453,7 +453,7 @@ NEXT I%
         "INKEY.bas" to """PRINT "PRESS w,a,s,d TO MOVE THE STAR. PRESS q to QUIT."
 X = 5
 Y = 5
-LABEL "event_loop"
+eventLoop:
 LOCATE 2
 FOR I = 0 TO 10
 FOR J = 0 TO 10
@@ -475,7 +475,7 @@ IF X < 0 THEN X = 0
 IF X > 10 THEN X = 10
 IF Y < 0 THEN Y = 0
 IF Y > 10 THEN Y = 10
-GOTO "event_loop""""
+GOTO eventLoop"""
     )
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
