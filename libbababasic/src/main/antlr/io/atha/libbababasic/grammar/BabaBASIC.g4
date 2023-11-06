@@ -9,11 +9,15 @@ prog
     ;
 
 line
-    : linenum? stmtlist? comment? NEWLINE
+    : (linenum? stmtlist? comment?|linelabel) NEWLINE
     ;
 
 linenum
     : DECIMAL
+    ;
+
+linelabel
+    : name=VARNAME COLON
     ;
 
 comment
@@ -108,7 +112,6 @@ stmt
     | playwavstmt
     | stopwavstmt
     | loopwavstmt
-    | labelstmt
     | liststmt
     | dictstmt
     | setstmt
@@ -256,7 +259,7 @@ gosubstmt
     ;
 
 gosublabelstmt
-    : GOSUB string
+    : GOSUB name=VARNAME
     ;
 
 returnstmt
@@ -324,7 +327,7 @@ endifstmt
     ;
 
 stmtlist
-    : stmt (':' stmt)*
+    : stmt (COLON stmt)*
     ;
 
 forstmt
@@ -340,7 +343,7 @@ gotostmt
     ;
 
 gotolabelstmt
-    : GOTO string
+    : GOTO name=VARNAME
     ;
 
 endstmt
@@ -620,10 +623,6 @@ stopwavstmt
 
 loopwavstmt
     : LOOPWAV variable
-    ;
-
-labelstmt
-    : LABEL name=string
     ;
 
 liststmt
@@ -1311,10 +1310,6 @@ HSB2RGB
     : H S B '2' R G B
     ;
 
-LABEL
-    : L A B E L
-    ;
-
 BEGIN
     : B E G I N
     ;
@@ -1381,6 +1376,10 @@ STRING
 
 COMMA
     : ','
+    ;
+
+COLON
+    : ':'
     ;
 
 SEMICOLON

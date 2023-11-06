@@ -175,7 +175,6 @@ import io.atha.libbababasic.grammar.BabaBASICParser.IfthenbeginstmtContext
 import io.atha.libbababasic.grammar.BabaBASICParser.ImportstmtContext
 import io.atha.libbababasic.grammar.BabaBASICParser.InputhashstmtContext
 import io.atha.libbababasic.grammar.BabaBASICParser.InputstmtContext
-import io.atha.libbababasic.grammar.BabaBASICParser.LabelstmtContext
 import io.atha.libbababasic.grammar.BabaBASICParser.LeafvariableContext
 import io.atha.libbababasic.grammar.BabaBASICParser.LetstmtContext
 import io.atha.libbababasic.grammar.BabaBASICParser.LineContext
@@ -3485,7 +3484,7 @@ class IRListener(
     }
 
     override fun exitGosublabelstmt(ctx: GosublabelstmtContext) {
-        val gotoLabel = ir.symbolTable.addLabel(ctx.string().STRING().text)
+        val gotoLabel = ir.symbolTable.addLabel(ctx.VARNAME().text)
         val pushReturnLabel = ir.addInstruction(
             sourceFile,
             currentLineNumber,
@@ -3547,7 +3546,7 @@ class IRListener(
     }
 
     override fun exitGotolabelstmt(ctx: GotolabelstmtContext) {
-        val gotoLabel = ir.symbolTable.addLabel(ctx.string().STRING().text)
+        val gotoLabel = ir.symbolTable.addLabel(ctx.VARNAME().text)
         ir.addInstruction(
             sourceFile,
             currentLineNumber,
@@ -4197,8 +4196,8 @@ class IRListener(
         }
     }
 
-    override fun exitLabelstmt(ctx: LabelstmtContext) {
-        val label = ctx.string().STRING().text
+    override fun exitLinelabel(ctx: BabaBASICParser.LinelabelContext) {
+        val label = ctx.VARNAME().text
         ir.addInstruction(
             sourceFile,
             currentLineNumber,
