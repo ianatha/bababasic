@@ -131,10 +131,10 @@ class SymbolTable {
     }
 
     fun addLabel(label: String): Int {
-        var id: Int = labelNameToId.getOrDefault(label, -1)
+        var id: Int = labelNameToId.getOrDefault(label.toLowerCase(), -1)
         if (id == -1) {
             id = addLabel()
-            labelNameToId[label] = id
+            labelNameToId[label.toLowerCase()] = id
         }
         return id
     }

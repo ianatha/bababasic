@@ -81,6 +81,9 @@ class IntegrationTest {
     fun testGosublabel() = runTest("gosublabel.bas", "gosublabel.bas.output")
 
     @Test fun testGotoLabel() = runTest("gotolabel.bas", "gotolabel.bas.output")
+
+    @Test fun testGotoLabelCaseInsensitive() = runTest("gotolabel_case_insensitive.bas", "gotolabel.bas.output")
+
     @Test
     fun testDef() = runTest("def.bas", "def.bas.output")
     @Test
