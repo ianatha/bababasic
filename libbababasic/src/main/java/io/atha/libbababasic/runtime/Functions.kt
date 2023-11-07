@@ -396,10 +396,7 @@ object Functions {
         try {
             result!!.float64 = str!!.toDouble()
         } catch (e: NumberFormatException) {
-            throw RuntimeError(
-                RuntimeError.ErrorCode.DATA_OUT_OF_RANGE,
-                "Failed to parse string: $str as numeric"
-            )
+            result!!.float64 = 0.0
         }
     }
 

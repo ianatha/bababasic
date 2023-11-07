@@ -156,6 +156,11 @@ class IntegrationTest {
     }
 
     @Test
+    fun testValOfString() {
+        runTest("val_of_string.bas", "val_of_string.bas.output")
+    }
+
+    @Test
     fun testJim01() {
         val e = assertFailsWith<RuntimeError> {
             runTest("jim_01.bas", "")
