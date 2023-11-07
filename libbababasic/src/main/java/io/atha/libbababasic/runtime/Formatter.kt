@@ -30,11 +30,17 @@ object Formatter {
 
     @JvmStatic
     fun printFormatFloat32(value: Float): String {
+        if (value == -0f) {
+            return " 0.0 "
+        }
         return if (value < 0) "$value " else " $value "
     }
 
     @JvmStatic
     fun printFormatFloat64(value: Double): String {
+        if (value == -0.0) {
+            return " 0.0 "
+        }
         return if (value < 0) "$value " else " $value "
     }
 
