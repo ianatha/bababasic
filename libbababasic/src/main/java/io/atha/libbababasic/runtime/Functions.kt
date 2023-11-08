@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.Instant
 import java.time.ZonedDateTime
+import java.util.Date
 import java.util.Random
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
@@ -22,6 +23,20 @@ import kotlin.math.roundToLong
 import kotlin.math.sqrt
 
 object Functions {
+    @JvmStatic
+    fun timedlr(symbolTable: SymbolTable, instruction: IR.Instruction) {
+        val result = symbolTable[instruction.result]!!.value
+        val now = Date()
+        result!!.string = String.format("%1\$tT.%1\$tL000", now)
+    }
+
+    @JvmStatic
+    fun datedlr(symbolTable: SymbolTable, instruction: IR.Instruction) {
+        val result = symbolTable[instruction.result]!!.value
+        val now = Date()
+        result!!.string = String.format("%1\$tm-%1\$td-%1\$tY", now)
+    }
+
     @JvmStatic
     fun abs(symbolTable: SymbolTable, instruction: IR.Instruction) {
         val op1Entry = symbolTable[instruction.op1]

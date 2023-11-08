@@ -26,6 +26,8 @@ import io.atha.libbababasic.file.BBFile.FileAccessMode
 import io.atha.libbababasic.file.BBFile.FileOpenMode
 import io.atha.libbababasic.grammar.BabaBASICBaseListener
 import io.atha.libbababasic.grammar.BabaBASICParser
+import io.atha.libbababasic.grammar.BabaBASICParser.FuncDateDlrContext
+import io.atha.libbababasic.grammar.BabaBASICParser.FuncTimeDlrContext
 import io.atha.libbababasic.grammar.BabaBASICParser.AccessContext
 import io.atha.libbababasic.grammar.BabaBASICParser.Array1dcopystmtContext
 import io.atha.libbababasic.grammar.BabaBASICParser.Array1dsortstmtContext
@@ -1127,6 +1129,24 @@ class IRListener(
             ctx, addFuncWithExprInstruction(OpCode.CVD, ctx, ctx.expr(),
                 NumericOrString.STRING,
                 ir.symbolTable.addTmp(PuffinBasicAtomTypeId.DOUBLE) { c: STEntry? -> })
+        )
+    }
+
+    override fun exitFuncDateDlr(ctx: FuncDateDlrContext) {
+        nodeToInstruction.put(
+            ctx, ir.addInstruction(
+                sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
+                OpCode.DATEDLR, SymbolTable.NULL_ID, SymbolTable.NULL_ID,
+                ir.symbolTable.addTmp(PuffinBasicAtomTypeId.STRING) { _: STEntry? -> })
+        )
+    }
+
+    override fun exitFuncTimeDlr(ctx: FuncTimeDlrContext) {
+        nodeToInstruction.put(
+            ctx, ir.addInstruction(
+                sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
+                OpCode.TIMEDLR, SymbolTable.NULL_ID, SymbolTable.NULL_ID,
+                ir.symbolTable.addTmp(PuffinBasicAtomTypeId.STRING) { _: STEntry? -> })
         )
     }
 
