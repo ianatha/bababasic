@@ -38,6 +38,10 @@ class AndroidSystemInAndOut(private val context: Activity) : BBUIFile {
         return result.toString()
     }
 
+    override fun peekHasChar(): Boolean {
+        return bufIn.available > 0
+    }
+
     private fun takeInputCharBlocking(): Char {
         val mask1Byte = 0b10000000
         val mask2Byte = 0b11000000

@@ -612,7 +612,7 @@ class BBRuntime(
             OpCode.RESTORE -> readData!!.restore()
             OpCode.READ -> read(readData!!, ir.symbolTable, instruction)
             OpCode.ENVIRONDLR -> environdlr(env, ir.symbolTable, instruction)
-            OpCode.SLEEP -> sleep(ir.symbolTable, instruction)
+            OpCode.SLEEP -> sleep(files!!, ir.symbolTable, instruction)
             OpCode.SCREEN -> {
                 if (params!!.size != 3) {
                     throw InternalError("Expected 1 param, but found: $params")
