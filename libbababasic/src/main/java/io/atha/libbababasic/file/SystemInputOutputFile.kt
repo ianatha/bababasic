@@ -24,6 +24,10 @@ class SystemInputOutputFile(
         return readLine()
     }
 
+    override fun peekHasChar(): Boolean {
+        return `in`.ready()
+    }
+
     override fun takeInputChar(): Char? {
         return null
     }

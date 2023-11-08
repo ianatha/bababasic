@@ -17,6 +17,9 @@ import io.atha.libbababasic.file.BBUIFile
 import io.atha.libbababasic.parser.IR
 import io.atha.libbababasic.runtime.Formatter.FormatterCache
 import io.atha.libbababasic.runtime.Types.assertBothStringOrNumeric
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.apache.commons.csv.CSVRecord
@@ -27,13 +30,16 @@ import java.util.Random
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.LockSupport
 import kotlin.math.roundToLong
+import kotlinx.coroutines.selects.select
 
 object Statements {
     @JvmStatic
     fun sleep(
+        files: BBFiles,
         symbolTable: SymbolTable,
         instruction: IR.Instruction
     ) {
+        val channel = kotlinx.coroutines.channels.Channel<Unit>()
         val sleepArg = symbolTable[instruction.op1]!!.value!!.float64
         if (sleepArg < 0) {
             throw RuntimeError(
@@ -41,7 +47,33 @@ object Statements {
                 "Sleep time seconds cannot be less than 0."
             )
         }
-        LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos((sleepArg * 1000L).roundToLong()))
+
+        val readJob = GlobalScope.launch {
+            while (true) {
+                if (files.sys.peekHasChar()) {
+                    channel.close()
+                    break
+                }
+            }
+        }
+
+        val timerJob = GlobalScope.launch {
+            LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos((sleepArg * 1000L).roundToLong()))
+            channel.close()
+        }
+
+        return try {
+            runBlocking {
+                select<Unit> {
+                    channel.onReceiveCatching {
+                        it
+                    }
+                }
+            }
+        } finally {
+            readJob.cancel()
+            timerJob.cancel()
+        }
     }
 
     @JvmStatic

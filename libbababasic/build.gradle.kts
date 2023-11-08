@@ -8,6 +8,7 @@ plugins {
 dependencies {
     antlr("org.antlr:antlr4:4.13.1")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.antlr:antlr4-runtime:4.13.1")
     implementation("com.google.guava:guava:29.0-jre")
     implementation("org.apache.commons:commons-csv:1.7")
