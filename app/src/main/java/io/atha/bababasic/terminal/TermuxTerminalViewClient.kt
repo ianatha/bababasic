@@ -640,7 +640,7 @@ class TermuxTerminalViewClient(
             return
         }
         val urls = urlSet.toTypedArray()
-        Collections.reverse(Arrays.asList(*urls)) // Latest first.
+        mutableListOf(*urls).reverse() // Latest first.
 
         // Click to copy url to clipboard:
         val dialog: AlertDialog = AlertDialog.Builder(mActivity).setItems(
@@ -659,7 +659,7 @@ class TermuxTerminalViewClient(
             val lv =
                 dialog.listView // this is a ListView with your "buds" in it
             lv.onItemLongClickListener =
-                AdapterView.OnItemLongClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+                AdapterView.OnItemLongClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
                     dialog.dismiss()
                     val url = urls[position] as String
                     ShareUtils.openUrl(mActivity, url)
@@ -677,14 +677,14 @@ class TermuxTerminalViewClient(
             mActivity, TermuxConstants.TERMUX_APP_NAME + " Report Issue",
             "debug info?", //mActivity.getString(R.string.msg_add_termux_debug_info),
             "yes", // mActivity.getString(R.string.action_yes),
-            { dialog: DialogInterface?, which: Int ->
+            { _: DialogInterface?, _: Int ->
                 reportIssueFromTranscript(
                     transcriptText,
                     true
                 )
             },
             "no", //mActivity.getString(R.string.action_no),
-            { dialog: DialogInterface?, which: Int ->
+            { _: DialogInterface?, _: Int ->
                 reportIssueFromTranscript(
                     transcriptText,
                     false
