@@ -49,6 +49,7 @@ import io.atha.libbababasic.runtime.Functions.cvd
 import io.atha.libbababasic.runtime.Functions.cvi
 import io.atha.libbababasic.runtime.Functions.cvl
 import io.atha.libbababasic.runtime.Functions.cvs
+import io.atha.libbababasic.runtime.Functions.datedlr
 import io.atha.libbababasic.runtime.Functions.e
 import io.atha.libbababasic.runtime.Functions.environdlr
 import io.atha.libbababasic.runtime.Functions.eof
@@ -89,6 +90,7 @@ import io.atha.libbababasic.runtime.Functions.strdlr
 import io.atha.libbababasic.runtime.Functions.stringdlr
 import io.atha.libbababasic.runtime.Functions.tan
 import io.atha.libbababasic.runtime.Functions.tanh
+import io.atha.libbababasic.runtime.Functions.timedlr
 import io.atha.libbababasic.runtime.Functions.timer
 import io.atha.libbababasic.runtime.Functions.timerMillis
 import io.atha.libbababasic.runtime.Functions.toDeg
@@ -287,6 +289,8 @@ class BBRuntime(
     private fun runInstruction(instruction: IR.Instruction): Boolean {
         var nextProgramCounter = programCounter + 1
         when (instruction.opCode) {
+            OpCode.TIMEDLR -> timedlr(ir.symbolTable, instruction)
+            OpCode.DATEDLR -> datedlr(ir.symbolTable, instruction)
             OpCode.VARREF -> varref(ir.symbolTable, instruction)
             OpCode.DIM -> {
                 if (params!!.isEmpty()) {

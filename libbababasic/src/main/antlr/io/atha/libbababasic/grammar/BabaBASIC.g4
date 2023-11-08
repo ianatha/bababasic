@@ -248,6 +248,8 @@ func
     | ALLOCARRAY varsuffix LPAREN expr (COMMA expr)? RPAREN # FuncAllocArray
     | LTRIMDLR LPAREN str=expr RPAREN                       # FuncLTrimDlr
     | RTRIMDLR LPAREN str=expr RPAREN                       # FuncRTrimDlr
+    | DATEDLR                                               # FuncDateDlr
+    | TIMEDLR                                               # FuncTimeDlr
     ;
 
 funcname
@@ -804,6 +806,14 @@ LTRIMDLR
 
 RTRIMDLR
     : R T R I M DOLLAR
+    ;
+
+DATEDLR
+    : D A T E DOLLAR
+    ;
+
+TIMEDLR
+    : T I M E DOLLAR
     ;
 
 GOSUB
