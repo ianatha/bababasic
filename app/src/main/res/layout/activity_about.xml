@@ -53,6 +53,17 @@
                 android:textAlignment="center" />
 
         <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <ImageButton
+            android:id="@+id/githubLink"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/github" />
+
+        <Space
                 android:layout_width="match_parent"
                 android:layout_height="24dp" />
 

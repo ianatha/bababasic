@@ -1,6 +1,8 @@
 package io.atha.bababasic
 
+import android.content.Intent
 import android.content.pm.PackageInfo
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.atha.bababasic.databinding.ActivityAboutBinding
@@ -18,6 +20,12 @@ class ActivityAbout : AppCompatActivity() {
 
         binding.okButton.setOnClickListener {
             finish()
+        }
+
+        binding.githubLink.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://github.com/ianatha/bababasic")
+            startActivity(intent)
         }
     }
 }
