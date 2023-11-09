@@ -31,4 +31,5 @@
     <string name="close">Close</string>
     <string name="examples">Examples</string>
     <string name="show_keyboard">Show Keyboard</string>
+    <string name="show_help">Show Help</string>
 </resources>
