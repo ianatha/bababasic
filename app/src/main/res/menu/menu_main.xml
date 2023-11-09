@@ -20,6 +20,12 @@
             app:showAsAction="always" />
 
     <item
+        android:id="@+id/show_help"
+        android:icon="@drawable/help"
+        android:title="@string/show_help"
+        app:showAsAction="always" />
+
+    <item
             android:id="@+id/text_undo"
             android:icon="@drawable/undo"
             android:title="@string/undo"

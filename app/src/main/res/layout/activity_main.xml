@@ -114,7 +114,7 @@
             android:id="@+id/editor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="40dp"
+
             android:scrollbarThumbHorizontal="@drawable/scrollbar_thumb"
             android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
             android:scrollbarTrackHorizontal="@drawable/scrollbar_track"
@@ -123,25 +123,49 @@
             app:lnPanelPositionMode="follow" />
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="-40dp"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="-40dp"
+        android:orientation="vertical">
 
         <HorizontalScrollView
-                android:contentDescription="@string/symbol_keyboard"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                tools:ignore="UselessParent">
+            android:contentDescription="@string/symbol_keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            tools:ignore="UselessParent">
 
             <io.github.rosemoe.sora.widget.SymbolInputView
-                    android:id="@+id/symbol_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp" />
+                android:id="@+id/symbol_input"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
 
         </HorizontalScrollView>
 
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginTop="-160dp"
+        android:orientation="vertical">
+        <ScrollView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="160dp">
+            <TextView
+                android:id="@+id/help_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey_400"
+                android:fontFamily="monospace"
+                android:paddingHorizontal="8dp"
+                android:textSize="14dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:visibility="gone" />
+        </ScrollView>
+    </LinearLayout>
+
 
 </LinearLayout>

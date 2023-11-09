@@ -28,6 +28,7 @@ import io.atha.bababasic.databinding.ActivityMainBinding
 import io.atha.bababasic.editor.switchThemeIfRequired
 import io.atha.libbababasic.Interpreter.checkSyntax
 import io.atha.libbababasic.error.SyntaxError
+import io.atha.libbababasic.runtime.helpFor
 import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.event.EditorKeyEvent
 import io.github.rosemoe.sora.event.KeyBindingEvent
@@ -325,6 +326,21 @@ class ActivityMain : AppCompatActivity() {
 
     private fun updatePositionText() {
         val cursor = binding.editor.cursor
+        val word = getClosestWord(binding.editor.text.toString(), cursor.left)
+        val help = helpFor(word)
+        if (help == null) {
+            if (word == null) {
+                binding.helpView.text = "No help found"
+            } else {
+                binding.helpView.text = "No help found for $word"
+            }
+        } else {
+            binding.helpView.text = help
+        }
+        return
+
+
+
         var text =
             (1 + cursor.leftLine).toString() + ":" + cursor.leftColumn + ";" + cursor.left + " "
         text += if (cursor.isSelected) {
@@ -492,6 +508,14 @@ class ActivityMain : AppCompatActivity() {
         val id = item.itemId
         val editor = binding.editor
         when (id) {
+            R.id.show_help -> {
+                if (binding.helpView.visibility == View.VISIBLE) {
+                    binding.helpView.visibility = View.GONE
+                } else {
+                    binding.helpView.visibility = View.VISIBLE
+                }
+            }
+
             R.id.open_file -> {
                 firebaseAnalytics.logEvent("open", null)
                 val intent = Intent()
@@ -634,3 +658,16 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 }
+
+
+val separators = listOf(" ", "\n", "\t")
+fun getClosestWord(text: String, cursorPosition: Int): String? {
+    if (cursorPosition !in text.indices) {
+        return null // Cursor position is out of bounds
+    }
+    val start = text.substring(0, cursorPosition).lastIndexOfAny(separators) + 1
+    val end = text.indexOfAny(separators, cursorPosition).takeIf { it != -1 } ?: text.length
+
+    return text.substring(start, end)
+}
+
