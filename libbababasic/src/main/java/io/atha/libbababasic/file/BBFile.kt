@@ -13,6 +13,9 @@ interface BBFile {
     fun readLine(): String?
     fun readBytes(n: Int): ByteArray?
     fun print(s: String)
+    fun writeCodepoint(c: Int) {
+        c.toChar().toString().toByteArray(Charsets.UTF_8).forEach { writeByte(it) }
+    }
     fun writeByte(b: Byte)
     fun eof(): Boolean
     fun put(recordNumber: Int, symbolTable: SymbolTable)

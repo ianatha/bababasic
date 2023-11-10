@@ -127,8 +127,8 @@ class AndroidGraphicsRuntime(val stdio: BBUIFile) : GraphicsRuntime {
     }
 
     override fun inkeydlr(symbolTable: SymbolTable?, instruction: IR.Instruction?) {
-        val key: String = stdio.takeInputChar()
-        symbolTable!![instruction!!.result]!!.value!!.string = key
+        val key = stdio.takeInputChar()
+        symbolTable!![instruction!!.result]!!.value!!.string = key?.toString() ?: ""
     }
 
     override fun loadwav(

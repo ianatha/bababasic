@@ -25,8 +25,8 @@ class SystemInputOutputFile(
         return readLine()
     }
 
-    override fun takeInputChar(): String {
-        return ""
+    override fun takeInputChar(): Char? {
+        return null
     }
 
     override fun outputText(text: String) {

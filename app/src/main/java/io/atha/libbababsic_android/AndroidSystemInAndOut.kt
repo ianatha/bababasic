@@ -1,6 +1,7 @@
 package io.atha.libbababsic_android
 
 import android.app.Activity
+import android.util.Log
 import io.atha.libbababasic.domain.SymbolTable
 import io.atha.libbababasic.error.RuntimeError
 import io.atha.libbababasic.file.BBUIFile
@@ -17,38 +18,56 @@ class AndroidSystemInAndOut(private val context: Activity) : BBUIFile {
     override fun inputDialog(prompt: String): String {
         var result: StringBuffer = StringBuffer()
         do {
+            Log.i("input", "buffer: ${result.toString()}")
             val c = takeInputCharBlocking()
-            if (c == "\r") {
+            Log.i("input", "c: $c")
+//            , byteArraySize: ${c.toByteArray().size}, len: ${c.length}")
+            if (c == '\r') {
                 break
-            } else if (c.toByteArray()[0] == 127.toByte()) {
+            } else if (c == 127.toChar()) {
                 if (result.isNotEmpty()) {
                     result.deleteCharAt(result.length - 1)
                     outputText("\b \b")
                 }
             } else {
-                outputText(c)
+                outputText(c.toString())
                 result.append(c)
             }
-        } while (c != "\r")
+        } while (c != '\r')
         outputText(BabaSystem.lineSeparator())
         return result.toString()
     }
 
-    private fun takeInputCharBlocking(): String {
-        val b = bufIn.inputStream.read()
-        val c = b.toChar()
-        val s = c.toString()
-        return s
+    private fun takeInputCharBlocking(): Char {
+        val mask1Byte = 0b10000000
+        val mask2Byte = 0b11000000
+        val mask3Byte = 0b11100000
+        val mask4Byte = 0b11110000
+
+        val b1 = bufIn.inputStream.read()
+        return when {
+            b1 and mask1Byte == 0 -> b1.toChar()
+            b1 and mask2Byte == mask2Byte && b1 and 0b00100000 == 0 -> readMultiByteChar(b1, 2)
+            b1 and mask3Byte == mask3Byte && b1 and 0b00010000 == 0 -> readMultiByteChar(b1, 3)
+            b1 and mask4Byte == mask4Byte && b1 and 0b00001000 == 0 -> readMultiByteChar(b1, 4)
+            else -> throw RuntimeException("Invalid UTF-8 byte: $b1")
+        }
     }
 
-    override fun takeInputChar(): String {
+    private fun readMultiByteChar(firstByte: Int, totalBytes: Int): Char {
+        val bytes = ByteArray(totalBytes)
+        bytes[0] = firstByte.toByte()
+        for (i in 1 until totalBytes) {
+            bytes[i] = bufIn.inputStream.read().toByte()
+        }
+        return String(bytes, Charsets.UTF_8).first()
+    }
+
+    override fun takeInputChar(): Char? {
         return if (bufIn.available > 0) {
-            val b = bufIn.inputStream.read()
-            val c = b.toChar()
-            val s = c.toString()
-            s
+            takeInputCharBlocking()
         } else {
-            ""
+            null
         }
     }
 
