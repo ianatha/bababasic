@@ -63,6 +63,16 @@ import java.util.stream.Collectors
 
 
 class ActivityMain : AppCompatActivity() {
+    init {
+        val testLabSetting = Settings.System.getString(contentResolver, "firebase.test.lab")
+        if ("true" == testLabSetting) {
+            val bundle = Bundle().apply {
+                putString("traffic_type", "testlab")
+            }
+            Firebase.analytics.setDefaultEventParameters(bundle)
+        }
+    }
+
     lateinit var firebaseAnalytics: FirebaseAnalytics
     lateinit var binding: ActivityMainBinding
 
@@ -70,10 +80,6 @@ class ActivityMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
         CrashHandler.INSTANCE.init(this)
-        val testLabSetting = Settings.System.getString(contentResolver, "firebase.test.lab")
-        if ("true" == testLabSetting) {
-            firebaseAnalytics.setAnalyticsCollectionEnabled(false)
-        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         prepareView()
         setContentView(binding.root)
