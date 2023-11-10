@@ -70,13 +70,18 @@ class ActivityMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
         CrashHandler.INSTANCE.init(this)
-        val testLabSetting = Settings.System.getString(contentResolver, "firebase.test.lab")
-        if ("true" == testLabSetting) {
-            firebaseAnalytics.setAnalyticsCollectionEnabled(false)
-        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         prepareView()
         setContentView(binding.root)
+
+        val testLabSetting = Settings.System.getString(contentResolver, "firebase.test.lab")
+        if ("true" == testLabSetting) {
+            val bundle = Bundle().apply {
+                putString("traffic_type", "testlab")
+            }
+            Firebase.analytics.setDefaultEventParameters(bundle)
+        }
+
         checkForUpdates()
     }
 
