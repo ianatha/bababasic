@@ -496,6 +496,9 @@ GOTO eventLoop"""
         val examples = menu.findItem(R.id.examples_menu).subMenu!!
         EXAMPLES.forEach { (name, code) ->
             examples.add(name).setOnMenuItemClickListener {
+                firebaseAnalytics.logEvent("open", Bundle().apply {
+                    putString("example", name)
+                })
                 setText(code, name)
                 true
             }
@@ -545,6 +548,7 @@ GOTO eventLoop"""
         val editor = binding.editor
         when (id) {
             R.id.open_file -> {
+                firebaseAnalytics.logEvent("open", null)
                 val intent = Intent()
                     .setType("text/plain")
                     .putExtra(EXTRA_LOCAL_ONLY, true)
@@ -560,6 +564,7 @@ GOTO eventLoop"""
             }
 
             R.id.save_file -> {
+                firebaseAnalytics.logEvent("save", null)
                 val intent = Intent()
                     .setType("text/plain")
                     .putExtra(EXTRA_LOCAL_ONLY, true)
@@ -579,6 +584,7 @@ GOTO eventLoop"""
             R.id.text_redo -> editor.redo()
 
             R.id.run_script -> {
+                firebaseAnalytics.logEvent("ran_script", null)
                 val text = editor.text.toString()
                 try {
                     checkSyntax("input.bas", text + "\n")
