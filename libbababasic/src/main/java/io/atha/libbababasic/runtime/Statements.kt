@@ -26,6 +26,7 @@ import java.util.Arrays
 import java.util.Random
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.LockSupport
+import kotlin.math.roundToLong
 
 object Statements {
     @JvmStatic
@@ -33,14 +34,14 @@ object Statements {
         symbolTable: SymbolTable,
         instruction: IR.Instruction
     ) {
-        val millis = symbolTable[instruction.op1]!!.value!!.int32
-        if (millis < 0) {
+        val sleepArg = symbolTable[instruction.op1]!!.value!!.float64
+        if (sleepArg < 0) {
             throw RuntimeError(
                 RuntimeError.ErrorCode.DATA_OUT_OF_RANGE,
-                "Sleep time millis cannot be less than 0."
+                "Sleep time seconds cannot be less than 0."
             )
         }
-        LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(millis.toLong()))
+        LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos((sleepArg * 1000L).roundToLong()))
     }
 
     @JvmStatic
