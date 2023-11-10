@@ -3,7 +3,7 @@ package io.atha.libbababasic.runtime
 import io.atha.libbababasic.file.BBFile
 
 class PrintBuffer {
-    private val buffer: MutableList<Byte> = mutableListOf()
+    private val buffer: MutableList<Int> = mutableListOf()
     private var cursor = 0
 
     fun appendAtCursor(value: String) {
@@ -11,13 +11,13 @@ class PrintBuffer {
             buffer.add(SPACE)
         }
         for (element in value) {
-            buffer[cursor++] = element.code.toByte()
+            buffer[cursor++] = element.code
         }
     }
 
     fun flush(file: BBFile) {
         for (i in buffer.indices) {
-            file.writeByte(buffer[i])
+            file.writeCodepoint(buffer[i])
         }
         for (i in buffer.indices) {
             buffer[i] = SPACE
@@ -27,6 +27,6 @@ class PrintBuffer {
     }
 
     companion object {
-        private const val SPACE = ' '.code.toByte()
+        private const val SPACE = ' '.code
     }
 }
