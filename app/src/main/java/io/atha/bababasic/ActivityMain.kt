@@ -415,10 +415,6 @@ class ActivityMain : AppCompatActivity() {
         super.onPause()
     }
 
-    private val defaultScript = "10 PRINT \"HELLO WORLD\"\n" +
-            "20 INPUT \"Name? \", A$\n" +
-            "30 PRINT \"HELLO \" + A$\n"
-
     override fun onResume() {
         super.onResume()
         val sharedPref = getPreferences(Context.MODE_PRIVATE)!!
@@ -428,7 +424,11 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private val EXAMPLES = mapOf(
-        "HELLO.bas" to """10 PRINT "HELLO WORLD"
+        "HELLO.bas" to """PRINT "HELLO WORLD"
+PRINT "Καλημέρα κόσμε"
+PRINT "ハローワールド"
+INPUT "Name? ", A$
+PRINT "HELLO " + A$
 """,
         "PRIME.bas" to """FOR I% = 1 TO 10000
   J% = 3
@@ -477,6 +477,8 @@ IF Y < 0 THEN Y = 0
 IF Y > 10 THEN Y = 10
 GOTO eventLoop"""
     )
+
+    private val defaultScript = EXAMPLES["HELLO.bas"]!!
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
