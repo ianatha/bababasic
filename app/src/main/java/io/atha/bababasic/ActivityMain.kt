@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -69,7 +70,10 @@ class ActivityMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
         CrashHandler.INSTANCE.init(this)
-
+        val testLabSetting = Settings.System.getString(contentResolver, "firebase.test.lab")
+        if ("true" == testLabSetting) {
+            firebaseAnalytics.setAnalyticsCollectionEnabled(false)
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         prepareView()
         setContentView(binding.root)
