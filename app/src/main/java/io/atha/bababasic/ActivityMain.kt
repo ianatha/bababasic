@@ -447,7 +447,7 @@ NEXT I%
 40 PRINT C
 50 LET A = B
 60 LET B = C
-65 SLEEP 500
+65 SLEEP 0.5
 70 GOTO 30
 """,
         "INKEY.bas" to """PRINT "PRESS w,a,s,d TO MOVE THE STAR. PRESS q to QUIT."
