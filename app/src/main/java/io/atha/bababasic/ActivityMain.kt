@@ -171,7 +171,7 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun prepareSymbolInputView() {
-        val typeface = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
+        val typeface = Typeface.createFromAsset(assets, "Nouveau_IBM.ttf")
         val inputView = binding.symbolInput
         inputView.bindEditor(binding.editor)
         inputView.addSymbols(
@@ -187,7 +187,7 @@ class ActivityMain : AppCompatActivity() {
         prepareSymbolInputView()
         prepareSearchTool()
 
-        val typeface = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
+        val typeface = Typeface.createFromAsset(assets, "Nouveau_IBM.ttf")
 
         binding.editor.apply {
             typefaceText = typeface

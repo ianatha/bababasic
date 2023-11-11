@@ -136,7 +136,7 @@ class ActivityRun : AppCompatActivity() {
         )
 
         binding.terminal.setBackgroundColor(Color.BLACK)
-        val typeface = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
+        val typeface = Typeface.createFromAsset(assets, "Nouveau_IBM.ttf")
         binding.terminal.setTextSize(16)
         binding.terminal.setTypeface(typeface)
         binding.terminal.attachSession(session)
