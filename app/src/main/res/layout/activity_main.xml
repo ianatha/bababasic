@@ -124,28 +124,6 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="-40dp"
-        android:orientation="vertical">
-
-        <HorizontalScrollView
-            android:contentDescription="@string/symbol_keyboard"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            tools:ignore="UselessParent">
-
-            <io.github.rosemoe.sora.widget.SymbolInputView
-                android:id="@+id/symbol_input"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp" />
-
-        </HorizontalScrollView>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_marginTop="-160dp"
         android:orientation="vertical">
@@ -167,5 +145,20 @@
         </ScrollView>
     </LinearLayout>
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="-40dp"
+        android:orientation="vertical">
+        <HorizontalScrollView
+            android:contentDescription="@string/symbol_keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            tools:ignore="UselessParent">
+            <io.github.rosemoe.sora.widget.SymbolInputView
+                android:id="@+id/symbol_input"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+        </HorizontalScrollView>
+    </LinearLayout>
 </LinearLayout>
