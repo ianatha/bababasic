@@ -136,11 +136,12 @@ class ActivityRun : AppCompatActivity() {
         )
 
         binding.terminal.setBackgroundColor(Color.BLACK)
-        binding.terminal.setTextSize(30)
-        binding.terminal.setTypeface(Typeface.MONOSPACE)
+        val typeface = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
+        binding.terminal.setTextSize(16)
+        binding.terminal.setTypeface(typeface)
         binding.terminal.attachSession(session)
         binding.terminal.setTerminalViewClient(viewClient)
-        session.initializeEmulator(30, 10)
+        session.initializeEmulator(1, 1)
         setContentView(binding.root)
         viewClient.onCreate()
     }
