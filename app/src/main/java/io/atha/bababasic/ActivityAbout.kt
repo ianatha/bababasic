@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.atha.bababasic.databinding.ActivityAboutBinding
 
-class ActivityAbout : AppCompatActivity() {
+class ActivityAbout : BabaActivity() {
     private lateinit var binding: ActivityAboutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,5 +27,7 @@ class ActivityAbout : AppCompatActivity() {
             intent.data = Uri.parse("https://github.com/ianatha/bababasic")
             startActivity(intent)
         }
+
+        initFirebase()
     }
 }

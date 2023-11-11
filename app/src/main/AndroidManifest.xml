@@ -2,14 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission
-            android:name="com.google.android.gms.permission.AD_ID"
-            tools:node="remove" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
-    <uses-sdk tools:overrideLibrary="io.github.rosemoe.sora.lsp" />
+<!--    <meta-data-->
+<!--        android:name="com.google.firebase.messaging.default_notification_icon"-->
+<!--        android:resource="@drawable/ic_stat_ic_notification" />-->
+<!--    <meta-data-->
+<!--        android:name="com.google.firebase.messaging.default_notification_color"-->
+<!--        android:resource="@color/colorAccent" />-->
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value="@string/default_notification_channel_id" />
 
     <application
             android:icon="@mipmap/ic_launcher"
@@ -18,6 +24,14 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <profileable
                 android:shell="true"
@@ -61,5 +75,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
