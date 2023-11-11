@@ -1,4 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="false">Weather</string>
+    <string name="fcm_message" translatable="false">FCM Message</string>
+
     <string name="layout_tv_last">Last</string>
     <string name="layout_tv_next">Next</string>
     <string name="layout_tv_replace">Replace</string>

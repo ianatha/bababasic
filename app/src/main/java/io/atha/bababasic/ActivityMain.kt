@@ -8,7 +8,6 @@ import android.content.res.Configuration
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -17,13 +16,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import io.atha.bababasic.databinding.ActivityMainBinding
 import io.atha.bababasic.editor.switchThemeIfRequired
 import io.atha.libbababasic.Interpreter.checkSyntax
@@ -51,9 +43,6 @@ import io.github.rosemoe.sora.widget.component.EditorAutoCompletion
 import io.github.rosemoe.sora.widget.component.Magnifier
 import io.github.rosemoe.sora.widget.getComponent
 import io.github.rosemoe.sora.widget.subscribeEvent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.eclipse.tm4e.core.registry.IThemeSource
 import java.io.BufferedReader
 import java.io.IOException
@@ -62,49 +51,17 @@ import java.io.OutputStream
 import java.util.regex.PatternSyntaxException
 import java.util.stream.Collectors
 
-
-class ActivityMain : AppCompatActivity() {
-    lateinit var firebaseAnalytics: FirebaseAnalytics
+class ActivityMain : BabaActivity() {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        firebaseAnalytics = Firebase.analytics
-        CrashHandler.INSTANCE.init(this)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         prepareView()
         setContentView(binding.root)
 
-        val testLabSetting = Settings.System.getString(contentResolver, "firebase.test.lab")
-        if ("true" == testLabSetting) {
-            val bundle = Bundle().apply {
-                putString("traffic_type", "testlab")
-            }
-            Firebase.analytics.setDefaultEventParameters(bundle)
-        }
-
-        checkForUpdates()
-    }
-
-    private fun checkForUpdates() {
-        val context = this
-        CoroutineScope(Dispatchers.Main).launch {
-            val appUpdateManager = AppUpdateManagerFactory.create(context)
-            val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-
-            appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                ) {
-                    appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
-                        context,
-                        1011
-                    )
-                }
-            }
-        }
+        initFirebase()
     }
 
     private var searchOptions = SearchOptions(false, false)

@@ -18,7 +18,7 @@ data class RunDatum(
     val src: String,
 ) : Serializable
 
-class ActivityRun : AppCompatActivity() {
+class ActivityRun : BabaActivity() {
     private lateinit var viewClient: TermuxTerminalViewClient
     private lateinit var mPreferences: AppSharedPreferences
     lateinit var binding: ActivityRunBinding
@@ -144,6 +144,7 @@ class ActivityRun : AppCompatActivity() {
         session.initializeEmulator(1, 1)
         setContentView(binding.root)
         viewClient.onCreate()
+        initFirebase()
     }
 
     fun getTerminalView(): TerminalView = binding.terminal
