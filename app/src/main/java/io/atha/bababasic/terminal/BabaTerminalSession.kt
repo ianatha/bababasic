@@ -149,6 +149,9 @@ class BabaTerminalSession(
                                 storage[key] = value
                             }
 
+                            override fun getStorageFolder(): String {
+                                return mActivity.getExternalFilesDir(null)!!.absolutePath
+                            }
                         },
                         AndroidGraphicsRuntime(stdin),
                         AndroidSoundState()

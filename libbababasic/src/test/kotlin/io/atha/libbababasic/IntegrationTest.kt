@@ -41,6 +41,10 @@ class IntegrationTest {
             override fun set(key: String, value: String) {
                 map[key] = value
             }
+
+            override fun getStorageFolder(): String {
+                return ""
+            }
         }
     }
 

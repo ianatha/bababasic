@@ -3,9 +3,15 @@ package io.atha.libbababasic.file
 import io.atha.libbababasic.error.RuntimeError
 import io.atha.libbababasic.file.BBFile.FileAccessMode
 import io.atha.libbababasic.file.BBFile.FileOpenMode
+import io.atha.libbababasic.runtime.Environment
 
-class BBFiles(@JvmField val sys: BBUIFile) {
+class BBFiles(@JvmField val sys: BBUIFile, val env: Environment) {
     private val files: MutableMap<Int, BBFile> = mutableMapOf()
+
+    // write a function that asks the user for a folder to use as the root for storage
+    fun getMappedPath(x: String): String {
+        return env.getStorageFolder() + "/" + x
+    }
 
     fun open(
         fileNumber: Int,
@@ -18,22 +24,22 @@ class BBFiles(@JvmField val sys: BBUIFile) {
         val file: BBFile = when (openMode) {
             FileOpenMode.RANDOM -> {
                 BBRandomAccessFile(
-                    filename,
+                    getMappedPath(filename),
                     accessMode!!,
                     recordLen
                 )
             }
 
             FileOpenMode.INPUT -> {
-                BBSequentialAccessInputFile(filename)
+                BBSequentialAccessInputFile(getMappedPath(filename) + filename)
             }
 
             FileOpenMode.OUTPUT -> {
-                BBSequentialAccessOutputFile(filename, false)
+                BBSequentialAccessOutputFile(getMappedPath(filename), false)
             }
 
             else -> {
-                BBSequentialAccessOutputFile(filename, true)
+                BBSequentialAccessOutputFile(getMappedPath(filename), true)
             }
         }
         val existing = files[fileNumber]

@@ -253,7 +253,7 @@ class BBRuntime(
         random = Random()
         formatterCache = FormatterCache()
         params = ArrayList(4)
-        files = BBFiles(stdio)
+        files = BBFiles(stdio, env)
         readData = processDataInstructions(instructions)
         try {
             val numInstructions = instructions.size

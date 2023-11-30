@@ -17,4 +17,8 @@ class SystemEnv : Environment {
     override fun set(key: String, value: String) {
         overrides[key] = value
     }
+
+    override fun getStorageFolder(): String {
+        return System.getProperty("user.dir")
+    }
 }
