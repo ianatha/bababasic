@@ -32,6 +32,24 @@ NEXT I%
 65 SLEEP 0.5
 70 GOTO 30
 """,
+    "FILES.bas" to """
+PRINT "Read (R) or Write (W)?"
+INPUT CMD${'$'}
+IF CMD${'$'} = "R" THEN BEGIN
+    OPEN "example" FOR INPUT AS #1
+    INPUT#1, L${'$'}
+    PRINT "The first line of the file is: "
+    PRINT L${'$'}
+    CLOSE #1
+END IF
+IF CMD${'$'} = "W" THEN BEGIN
+    OPEN "example" FOR OUTPUT AS #1
+    PRINT "Input data to write to the file:"
+    INPUT D${'$'}
+    PRINT#1, D${'$'}
+    CLOSE #1
+END IF
+""",
     "INKEY.bas" to """PRINT "PRESS w,a,s,d TO MOVE THE STAR. PRESS q to QUIT."
 X = 5
 Y = 5
