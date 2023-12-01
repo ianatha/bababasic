@@ -31,7 +31,7 @@ class BBFiles(@JvmField val sys: BBUIFile, val env: Environment) {
             }
 
             FileOpenMode.INPUT -> {
-                BBSequentialAccessInputFile(getMappedPath(filename) + filename)
+                BBSequentialAccessInputFile(getMappedPath(filename))
             }
 
             FileOpenMode.OUTPUT -> {
