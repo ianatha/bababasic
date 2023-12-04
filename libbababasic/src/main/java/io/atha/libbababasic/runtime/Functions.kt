@@ -405,6 +405,12 @@ object Functions {
     }
 
     @JvmStatic
+    fun kill(files: BBFiles, symbolTable: SymbolTable, instruction: IR.Instruction) {
+        var filespec = symbolTable[instruction.op1]!!.value!!.string
+        files.kill(filespec!!)
+    }
+
+    @JvmStatic
     fun `val`(symbolTable: SymbolTable, instruction: IR.Instruction) {
         val str = symbolTable[instruction.op1]!!.value!!.string
         val result = symbolTable[instruction.result]!!.value

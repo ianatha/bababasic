@@ -143,7 +143,7 @@ class IR(@JvmField val symbolTable: SymbolTable) {
         MOUSEBUTTONPRESSED("mousebuttonpressed"), MOUSEBUTTONRELEASED("mousebuttonreleased"), ISKEYPRESSED(
             "iskeypressed"
         ),
-        LTRIMDLR("ltrim$"), RTRIMDLR("rtrim$"), DATEDLR("date$"), TIMEDLR("date$")
+        LTRIMDLR("ltrim$"), RTRIMDLR("rtrim$"), DATEDLR("date$"), TIMEDLR("date$"), KILL("kill")
     }
 
     class InputRef(

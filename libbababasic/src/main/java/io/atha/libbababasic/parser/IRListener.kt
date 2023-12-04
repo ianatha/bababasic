@@ -4938,6 +4938,15 @@ class IRListener(
         )
     }
 
+    override fun exitKillstmt(ctx: BabaBASICParser.KillstmtContext) {
+        val filespecExpr = lookupInstruction(ctx.expr())
+        Types.assertString(ir.symbolTable[filespecExpr.result]!!.type!!.atomTypeId) { getCtxString(ctx) }
+        ir.addInstruction(
+            sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
+            OpCode.KILL, filespecExpr.result, SymbolTable.NULL_ID, SymbolTable.NULL_ID
+        )
+    }
+
     private fun assertGraphics() {
         if (!graphics) {
             throw InternalError(
