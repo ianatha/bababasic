@@ -60,6 +60,7 @@ import io.atha.libbababasic.runtime.Functions.fnint
 import io.atha.libbababasic.runtime.Functions.hexdlr
 import io.atha.libbababasic.runtime.Functions.inputdlr
 import io.atha.libbababasic.runtime.Functions.instr
+import io.atha.libbababasic.runtime.Functions.kill
 import io.atha.libbababasic.runtime.Functions.leftdlr
 import io.atha.libbababasic.runtime.Functions.len
 import io.atha.libbababasic.runtime.Functions.loc
@@ -771,6 +772,7 @@ class BBRuntime(
 
             OpCode.LTRIMDLR -> ltrimdlr(ir.symbolTable, instruction)
             OpCode.RTRIMDLR -> rtrimdlr(ir.symbolTable, instruction)
+            OpCode.KILL -> kill(files!!, ir.symbolTable, instruction)
             OpCode.COMMENT -> {}
             OpCode.VARIABLE -> {}
             OpCode.VALUE -> {}

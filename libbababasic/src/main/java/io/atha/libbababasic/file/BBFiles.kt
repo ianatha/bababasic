@@ -4,6 +4,14 @@ import io.atha.libbababasic.error.RuntimeError
 import io.atha.libbababasic.file.BBFile.FileAccessMode
 import io.atha.libbababasic.file.BBFile.FileOpenMode
 import io.atha.libbababasic.runtime.Environment
+import java.nio.file.FileVisitOption
+import java.nio.file.FileVisitResult
+import java.nio.file.Files
+import java.nio.file.SimpleFileVisitor
+import java.nio.file.attribute.BasicFileAttributes
+import java.nio.file.Path
+import kotlin.io.path.Path
+import kotlin.io.path.PathWalkOption
 
 class BBFiles(@JvmField val sys: BBUIFile, val env: Environment) {
     private val files: MutableMap<Int, BBFile> = mutableMapOf()
@@ -80,4 +88,43 @@ class BBFiles(@JvmField val sys: BBUIFile, val env: Environment) {
             }
         }
     }
+
+    fun kill(filespec: String) {
+        // TODO: implement
+        // delete files from the storage folder that match filespec
+        val storageFolder = getMappedPath("")
+        val matcher = FileMatcher(filespec)
+        Files.walkFileTree(
+            Path(storageFolder),
+            setOf(FileVisitOption.FOLLOW_LINKS),
+            Int.MAX_VALUE,
+            matcher
+        )
+
+        matcher.matchedFiles.forEach { file ->
+            try {
+                Files.delete(file)
+                println("Deleted file: $file")
+            } catch (e: Exception) {
+                println("Failed to delete file: $file")
+                e.printStackTrace()
+            }
+        }
+    }
 }
+
+class FileMatcher(private val spec: String) : SimpleFileVisitor<Path>() {
+    val matchedFiles = mutableListOf<Path>()
+
+    override fun visitFile(file: Path?, attrs: BasicFileAttributes?): FileVisitResult {
+        if (file != null && Files.isRegularFile(file) && matchesSpec(file.fileName.toString(), spec)) {
+            matchedFiles.add(file)
+        }
+        return FileVisitResult.CONTINUE
+    }
+}
+
+fun matchesSpec(fileName: String, spec: String): Boolean {
+    return fileName.matches(spec.replace(".", "\\.").replace("*", ".*").toRegex())
+}
+

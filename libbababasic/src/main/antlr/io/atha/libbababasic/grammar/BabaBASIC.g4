@@ -51,6 +51,8 @@ stmt
     | functionreturnstmt
     | functionendstmt
     | importstmt
+    | killstmt
+    | namestmt
     | libtagstmt
     | dimstmt
     | reallocstmt
@@ -370,6 +372,14 @@ functionendstmt
 
 importstmt
     : IMPORT filename=string
+    ;
+
+namestmt
+    : NAME oldfilename=expr AS newfilename=expr
+    ;
+
+killstmt
+    : KILL filespec=expr
     ;
 
 libtagstmt
@@ -741,6 +751,14 @@ REM
 
 FUNCTION
     : F U N C T I O N
+    ;
+
+NAME
+    : N A M E
+    ;
+
+KILL
+    : K I L L
     ;
 
 LIBTAG
