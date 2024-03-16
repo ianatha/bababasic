@@ -4938,6 +4938,18 @@ class IRListener(
         )
     }
 
+    override fun exitNamestmt(ctx: BabaBASICParser.NamestmtContext) {
+        val oldfilenameExpr = lookupInstruction(ctx.expr())
+        Types.assertString(ir.symbolTable[filespecExpr.result]!!.type!!.atomTypeId) { getCtxString(ctx) }
+        val newfilenameExpr = lookupInstruction(ctx.expr())
+        Types.assertString(ir.symbolTable[filespecExpr.result]!!.type!!.atomTypeId) { getCtxString(ctx) }
+        // TODO
+        ir.addInstruction(
+            sourceFile, currentLineNumber, ctx.start.startIndex, ctx.stop.stopIndex,
+            OpCode.NAME, SymbolTable.NULL_ID, oldfilenameExpr.result, newfilenameExpr.result
+        )
+    }
+
     override fun exitKillstmt(ctx: BabaBASICParser.KillstmtContext) {
         val filespecExpr = lookupInstruction(ctx.expr())
         Types.assertString(ir.symbolTable[filespecExpr.result]!!.type!!.atomTypeId) { getCtxString(ctx) }
